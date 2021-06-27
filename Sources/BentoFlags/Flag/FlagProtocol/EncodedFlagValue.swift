@@ -26,4 +26,41 @@ public enum EncodedFlagValue: Equatable {
     case integer(Int)
     case none
     case string(String)
+    
+    // MARK: - Initialization
+    
+    /// Create a new encoded data type from a generic object received as init.
+    ///
+    /// - Parameters:
+    ///   - object: object to decode.
+    ///   - typeHint: type of data.
+    internal init?<Value>(object: Any, classType: Value.Type) where Value: FlagProtocol {
+        switch object {
+        case let value as Bool where classType.EncodedValue == Bool.self || classType.EncodedValue == Optional<Bool>.self:
+            self = .bool(value)
+        case let value as Data:
+            self = .data(value)
+        case let value as Int:
+            self = .integer(value)
+        case let value as Float:
+            self = .float(value)
+        case let value as Double:
+            self = .double(value)
+        case let value as String:
+            self = .string(value)
+        case is NSNull:
+            self = .none
+        case let value as [Any]:
+            self = .array(value.compactMap({
+                EncodedFlagValue(object: $0, classType: classType)
+            }))
+        case let value as [String: Any]:
+            self = .dictionary(value.compactMapValues({
+                EncodedFlagValue(object: $0, classType: classType)
+            }))
+        default:
+            return nil
+        }
+    }
+    
 }
