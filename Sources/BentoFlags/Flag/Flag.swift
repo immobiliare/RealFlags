@@ -13,9 +13,9 @@
 import Foundation
 
 /// This a wrapper which represent a single Feature Flag.
-/// The type that you wrap with `@Flag` must conform to `FlagValue`.
+/// The type that you wrap with `@Flag` must conform to `FlagProtocol`.
 @propertyWrapper
-public struct Flag<Value: FlagValue>: Identifiable, CustomDebugStringConvertible {
+public struct Flag<Value: FlagProtocol>: Identifiable, CustomDebugStringConvertible {
     
     // MARK: - Public Properties
     
@@ -50,12 +50,12 @@ public struct Flag<Value: FlagValue>: Identifiable, CustomDebugStringConvertible
     
     // MARK: - Private Properties
     
-    internal let keyEncoding: KeyEncodingStrategy
+    internal let keyEncoding: FlagKeyEncodingStrategy
     
     // MARK: - Initialization
     
     public init(name: String? = nil,
-                keyEncoding: KeyEncodingStrategy = .default,
+                keyEncoding: FlagKeyEncodingStrategy = .default,
                 defaultValue: Value,
                 description: FlagMetadata) {
         

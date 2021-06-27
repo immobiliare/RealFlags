@@ -12,8 +12,9 @@
 
 import Foundation
 
-public protocol FlagValue {
-    
-
-    
+/// This is a protocol which allows you to group a list of `Flag` and `FlagCollection` objects
+/// to better organize available feature flags; we must be able to initialize an empty collection.
+public protocol FlagCollectionProtocol {
+    init()
 }
+
