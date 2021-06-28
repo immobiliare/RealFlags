@@ -1,6 +1,6 @@
     import XCTest
     @testable import BentoFlags
-    @testable import BentoFlagsFirebase
+   // @testable import BentoFlagsFirebase
 
     final class BentoFlagsTests: XCTestCase {
         func testExample() {
@@ -8,9 +8,9 @@
             // Use XCTAssert and related functions to verify your tests produce the correct
             // results.
             
-            let eStorage = EphemeralProvider(name: "my provider")
-            let firebaseRemote = FirebaseRemoteConfigProvider()
-            let loader = FlagsLoader(MyCollection.self, providers: [firebaseRemote])
+             let eStorage = EphemeralProvider(name: "my provider")
+          //  let firebaseRemote = FirebaseRemoteConfigProvider()
+            let loader = FlagsLoader(MyCollection.self, providers: [eStorage])
             
             let r = loader.sottogruppo.testFlag
             print(r)

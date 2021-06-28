@@ -32,17 +32,17 @@ public class EphemeralProvider: FlagProvider, Identifiable {
     
     // MARK: - FlagProvider Conformance
     
-    public func valueForFlag<Value>(_ key: String) -> Value? where Value : FlagProtocol {
-        storage[key] as? Value
+    public func valueForFlag<Value>(key: FlagKeyPath) -> Value? where Value : FlagProtocol {
+        storage[key.fullPath] as? Value
     }
     
-    public func setValue<Value>(_ value: Value?, forFlag key: String) throws where Value : FlagProtocol {
+    public func setValue<Value>(_ value: Value?, forFlag key: FlagKeyPath) throws where Value : FlagProtocol {
         guard let value = value else {
-            storage.removeValue(forKey: key)
+            storage.removeValue(forKey: key.fullPath)
             return
         }
         
-        storage.updateValue(value, forKey: key)
+        storage.updateValue(value, forKey: key.fullPath)
     }
     
 }

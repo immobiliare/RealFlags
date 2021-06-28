@@ -11,11 +11,11 @@ import BentoFlags
 public class FirebaseRemoteConfigProvider: FlagProvider {
     public var name: String = "Firebase"
     
-    public func valueForFlag<Value>(_ key: String) -> Value? where Value : FlagProtocol {
+    public func valueForFlag<Value>(key: FlagKeyPath) -> Value? where Value : FlagProtocol {
         nil
     }
     
-    public func setValue<Value>(_ value: Value?, forFlag key: String) throws where Value : FlagProtocol {
+    public func setValue<Value>(_ value: Value?, forFlag key: FlagKeyPath) throws where Value : FlagProtocol {
         
     }
     

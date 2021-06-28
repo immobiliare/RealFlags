@@ -24,7 +24,7 @@ public protocol AnyFlagCollection {
 extension FlagCollection: AnyFlagCollection {
 
     public func flags() -> [AnyFlag] {
-        let properties = Mirror(reflecting: self.wrappedValue).children.lazy.map { $0.value }
+        _ = Mirror(reflecting: self.wrappedValue).children.lazy.map { $0.value }
         return []
     }
 

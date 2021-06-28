@@ -29,7 +29,7 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
     /// The value associated with flag; if specified it will be get by reading the value of the provider, otherwise
     /// the `defaultValue` is used instead.
     public var wrappedValue: Value {
-        fetchValue(key)
+        fetchValue()
     }
     
     /// A reference to the `Flag` itself is available as a projected value
@@ -41,9 +41,8 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
     /// This is the full keypath which will be send to the associated providers to get the value
     /// of the feature flag. It's composed according to the `FlagLoader`'s configuration.
     /// If you need to override the behaviour by setting your own key pass `key` to init function.
-    public var key: String {
-        let pathSeparator = loader.instance?.keyConfiguration.pathSeparator ?? "/"
-        return loader.fullKeyPathForProperty(fixedKey: fixedKey).joined(separator: pathSeparator)
+    public var keyPath: FlagKeyPath {
+        loader.keyPathForProperty(withFixedKey: fixedKey)
     }
     
     /// Metadata information associated with the flag.
@@ -93,7 +92,7 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
     }
     
     public var debugDescription: String {
-        "\(key)=\(wrappedValue)"
+        "\(keyPath.fullPath)=\(wrappedValue)"
     }
     
     // MARK: - Internal Functions
@@ -101,13 +100,14 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
     /// Return the value of the property by asking to the list of providers set.
     ///
     /// - Returns: `Value?`
-    func fetchValue(_ propertyKey: String) -> Value {
+    func fetchValue() -> Value {
         guard let loader = loader.instance else {
             return defaultValue // no loader has been set, we want to get the fallback result.
         }
         
+        let keyPath = self.keyPath
         for provider in loader.providers ?? [] where isProviderAllowed(provider) {
-            if let value: Value = provider.valueForFlag(propertyKey) {
+            if let value: Value = provider.valueForFlag(key: keyPath) {
                 // first valid result for provider is taken and returned
                 return value
             }
@@ -147,7 +147,7 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
 extension Flag: Equatable where Value: Equatable {
     
     public static func ==(lhs: Flag, rhs: Flag) -> Bool {
-        return lhs.key == rhs.key && lhs.wrappedValue == rhs.wrappedValue
+        return lhs.keyPath == rhs.keyPath && lhs.wrappedValue == rhs.wrappedValue
     }
     
 }
@@ -157,7 +157,7 @@ extension Flag: Equatable where Value: Equatable {
 extension Flag: Hashable where Value: Hashable {
     
     public func hash(into hasher: inout Hasher) {
-        hasher.combine(key)
+        hasher.combine(keyPath)
         hasher.combine(wrappedValue)
     }
     
@@ -178,17 +178,17 @@ internal class LoaderBox {
     /// Path to the property.
     var propertyPath: [String] = []
     
-    /// Compose the full path.
-    ///
-    /// - Parameter fixedKey: fixed key of property.
-    /// - Returns: String
-    func fullKeyPathForProperty(fixedKey: String?) -> [String] {
+    func keyPathForProperty(withFixedKey fixedKey: String?) -> FlagKeyPath {
         let keyTransform = instance?.keyConfiguration.keyTransform ?? .none
-        let prefix = instance?.keyConfiguration.globalPrefix
+        let pathSeparator = instance?.keyConfiguration.pathSeparator ?? "/"
 
-        let key = (fixedKey ?? propertyName) ?? ""
-        let path = propertyPath.map( { $0.transform(keyTransform) }) + [key.transform(keyTransform)]
-        return ([prefix] + path).compactMap({ $0 })
+        let propertyKey = (fixedKey ?? propertyName) ?? ""
+        var components = propertyPath.map( { $0.transform(keyTransform) }) + [propertyKey.transform(keyTransform)]
+        if let prefix = instance?.keyConfiguration.globalPrefix {
+            components.insert(prefix.transform(keyTransform), at: 0)
+        }
+        
+        return FlagKeyPath(components: components, separator: pathSeparator)
     }
     
     init() {}

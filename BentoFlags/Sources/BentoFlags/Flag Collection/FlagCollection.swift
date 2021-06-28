@@ -27,6 +27,11 @@ public struct FlagCollection<Group: FlagCollectionProtocol>: FeatureFlagConfigur
     /// How we should display this group in Vexillographer
     public let uiRepresentation: UIRepresentation
     
+    /// Full keypath of the group.
+    public var keyPath: FlagKeyPath {
+        loader.keyPathForProperty(withFixedKey: fixedKey)
+    }
+    
     // MARK: - Private Properties
     
     /// The loader used to retrive the fetched value for property flags.
@@ -34,15 +39,18 @@ public struct FlagCollection<Group: FlagCollectionProtocol>: FeatureFlagConfigur
     /// by the `configureWithLoader()` function.
     private var loader = LoaderBox()
     
-    private var key: String {
-        let pathSeparator = loader.instance?.keyConfiguration.pathSeparator ?? "/"
-        return loader.fullKeyPathForProperty(fixedKey: fixedKey).joined(separator: pathSeparator)
-    }
-    
+    /// Fixed key used to override the default path composing mechanism.
     private var fixedKey: String?
     
     // MARK: - Initialization
     
+    /// Initialize a new group of feature flags.
+    ///
+    /// - Parameters:
+    ///   - name: name of the group. You can omit it, it's used only to describe the property.
+    ///   - key: fixed key. It's used to compose the full path of the properties. Set a non `nil` value to override the automatic path calculation.
+    ///   - description: description of the group; you are encouraged to setup it in order to document your feature flags.
+    ///   - uiRepresentation: the ui control used to represent the control.
     public init(name: String? = nil,
                 key: String? = nil,
                 description: FlagMetadata,
@@ -56,17 +64,17 @@ public struct FlagCollection<Group: FlagCollectionProtocol>: FeatureFlagConfigur
         self.metadata = newMetadata
     }
     
-    // MARK: - Private Methods
+    // MARK: - Internal Methods
     
     public func configureWithLoader(_ loader: FlagsLoaderProtocol, propertyName: String, keyPath: [String]) {
         self.loader.instance = loader
         self.loader.propertyPath = keyPath
         self.loader.propertyName = propertyName
         
-        let fullPathComponents = self.loader.fullKeyPathForProperty(fixedKey: fixedKey)
+        let keyPath = self.loader.keyPathForProperty(withFixedKey: fixedKey)
         let properties = Mirror(reflecting: wrappedValue).children.lazy.featureFlagsConfigurableProperties()
         for property in properties {
-            property.value.configureWithLoader(loader, propertyName: property.label, keyPath: fullPathComponents)
+            property.value.configureWithLoader(loader, propertyName: property.label, keyPath: keyPath.pathComponents)
         }
     }
     

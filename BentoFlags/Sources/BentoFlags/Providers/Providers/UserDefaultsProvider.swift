@@ -24,9 +24,9 @@ extension UserDefaults: FlagProvider {
         return "UserDefaults-Standard"
     }
     
-    public func valueForFlag<Value>(_ key: String) -> Value? where Value : FlagProtocol {
+    public func valueForFlag<Value>(key: FlagKeyPath) -> Value? where Value : FlagProtocol {
         guard
-            let rawObject = object(forKey: key), // attempt to retrive the object from userdefault's apis
+            let rawObject = object(forKey: key.fullPath), // attempt to retrive the object from userdefault's apis
             let encodedFlag = EncodedFlagValue(object: rawObject, classType: Value.self) else {
             return nil
         }
@@ -34,14 +34,14 @@ extension UserDefaults: FlagProvider {
         return Value(encoded: encodedFlag)
     }
     
-    public func setValue<Value>(_ value: Value?, forFlag key: String) throws where Value : FlagProtocol {
+    public func setValue<Value>(_ value: Value?, forFlag key: FlagKeyPath) throws where Value : FlagProtocol {
         guard let value = value else {
             // nil object means we want to remove the data from the source
-            removeObject(forKey: key)
+            removeObject(forKey: key.fullPath)
             return
         }
         
-        setValue(value.encoded().nsObject(), forKey: key)
+        setValue(value.encoded().nsObject(), forKey: key.fullPath)
     }
     
 }

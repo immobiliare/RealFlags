@@ -12,15 +12,6 @@
 
 import Foundation
 
-public protocol FlagsLoaderProtocol: AnyObject {
-    
-    /// Ordered list of providers for data.
-    var providers: [FlagProvider]? { get }
-    
-    var keyConfiguration: KeyConfiguration { get }
-    
-}
-
 /// `FlagsLoader` is used to fetch data for certain group of feature flags.
 /// You will initialize a new loader with a certain type of group and an ordered
 /// list of providers to query. Then you can fetch feature flag's values directly
@@ -74,12 +65,17 @@ public class FlagsLoader<Collection: FlagCollectionProtocol>: FlagsLoaderProtoco
     
 }
 
+// MARK: - KeyConfiguration
+
 public struct KeyConfiguration {
     
+    /// Global prefix to append at the beginning of a key.
     public let globalPrefix: String?
     
+    /// Transformation to apply for each path component.
     public let keyTransform: String.Transform
     
+    /// Path separator, by default is `/`
     public let pathSeparator: String
     
     public init(prefix: String? = nil, pathSeparator: String = "/", keyTransform: String.Transform = .snakeCase) {

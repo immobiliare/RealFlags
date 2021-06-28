@@ -27,14 +27,14 @@ public protocol FlagProvider {
     /// Fetch value for a specific flag.
     ///
     /// - Parameter key: key of the flag to retrive.
-    func valueForFlag<Value>(_ key: String) -> Value? where Value: FlagProtocol
+    func valueForFlag<Value>(key: FlagKeyPath) -> Value? where Value: FlagProtocol
     
     /// Store a new value for a flag value.
     ///
     /// - Parameters:
     ///   - value: value to set; `nil` value is set to clear any previously set value for given key.
-    ///   - key: key to set.
-    func setValue<Value>(_ value: Value?, forFlag key: String) throws where Value: FlagProtocol
+    ///   - key: key path to set.
+    func setValue<Value>(_ value: Value?, forFlag key: FlagKeyPath) throws where Value: FlagProtocol
         
     #if !os(Linux)
     // Apple platform also support Combine framework to provide realtime notification of new events to any subscriber.
