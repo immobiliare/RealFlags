@@ -17,4 +17,3 @@ import Foundation
 public protocol FlagCollectionProtocol {
     init()
 }
-

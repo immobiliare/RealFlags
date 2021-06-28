@@ -13,7 +13,7 @@
 import Foundation
 
 @propertyWrapper
-public struct FlagCollection<Group: FlagCollectionProtocol>: Identifiable {
+public struct FlagCollection<Group: FlagCollectionProtocol>: FeatureFlagConfigurableProtocol, Identifiable {
     
     /// All collections must be `Identifiable`
     public let id = UUID()
@@ -29,16 +29,25 @@ public struct FlagCollection<Group: FlagCollectionProtocol>: Identifiable {
     
     // MARK: - Private Properties
     
-    /// How to the encode the key.
-    private let keyEncoding: FlagKeyEncodingStrategy
+    /// The loader used to retrive the fetched value for property flags.
+    /// This value is assigned when the instance of the Flag is created and it set automatically
+    /// by the `configureWithLoader()` function.
+    private var loader = LoaderBox()
+    
+    private var key: String {
+        let pathSeparator = loader.instance?.keyConfiguration.pathSeparator ?? "/"
+        return loader.fullKeyPathForProperty(fixedKey: fixedKey).joined(separator: pathSeparator)
+    }
+    
+    private var fixedKey: String?
     
     // MARK: - Initialization
     
     public init(name: String? = nil,
-                keyEncoding: FlagKeyEncodingStrategy = .default,
+                key: String? = nil,
                 description: FlagMetadata,
                 uiRepresentation: UIRepresentation = .asNavigation) {
-        self.keyEncoding = keyEncoding
+        self.fixedKey = key
         self.wrappedValue = Group()
         self.uiRepresentation = uiRepresentation
 
@@ -46,6 +55,21 @@ public struct FlagCollection<Group: FlagCollectionProtocol>: Identifiable {
         newMetadata.name = name
         self.metadata = newMetadata
     }
+    
+    // MARK: - Private Methods
+    
+    public func configureWithLoader(_ loader: FlagsLoaderProtocol, propertyName: String, keyPath: [String]) {
+        self.loader.instance = loader
+        self.loader.propertyPath = keyPath
+        self.loader.propertyName = propertyName
+        
+        let fullPathComponents = self.loader.fullKeyPathForProperty(fixedKey: fixedKey)
+        let properties = Mirror(reflecting: wrappedValue).children.lazy.featureFlagsConfigurableProperties()
+        for property in properties {
+            property.value.configureWithLoader(loader, propertyName: property.label, keyPath: fullPathComponents)
+        }
+    }
+    
 }
 
 // MARK: - FlagCollection (Equatable)
