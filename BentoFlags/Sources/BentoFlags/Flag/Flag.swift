@@ -29,7 +29,7 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
     /// The value associated with flag; if specified it will be get by reading the value of the provider, otherwise
     /// the `defaultValue` is used instead.
     public var wrappedValue: Value {
-        fetchValue()
+        flagValue()
     }
     
     /// A reference to the `Flag` itself is available as a projected value
@@ -94,13 +94,11 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
     public var debugDescription: String {
         "\(keyPath.fullPath)=\(wrappedValue)"
     }
-    
-    // MARK: - Internal Functions
-    
+        
     /// Return the value of the property by asking to the list of providers set.
     ///
     /// - Returns: `Value?`
-    func fetchValue() -> Value {
+    public func flagValue() -> Value {
         guard let loader = loader.instance else {
             return defaultValue // no loader has been set, we want to get the fallback result.
         }
@@ -117,6 +115,8 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
         return defaultValue
     }
     
+    // MARK: - Internal Functions
+
     /// Return `true` if a provider is in the list of allowed providers specified in `limitProviders`.
     ///
     /// - Parameter provider: provider to check.
