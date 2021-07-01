@@ -53,6 +53,7 @@ internal extension String {
 
 public extension String {
     
+    /// Transform of the keys.
     enum Transform {
         case none
         case kebabCase

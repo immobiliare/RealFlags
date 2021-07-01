@@ -63,4 +63,30 @@ public enum EncodedFlagValue: Equatable {
         }
     }
     
+    /// Trnsform boxed data in a valid `NSObject` you can store.
+    ///
+    /// - Returns: NSObject
+    internal func nsObject() -> NSObject {
+        switch self {
+        case let .array(value):
+            return value.map({ $0.nsObject() }) as NSArray
+        case let .bool(value):
+            return value as NSNumber
+        case let .data(value):
+            return value as NSData
+        case let .dictionary(value):
+            return value.mapValues({ $0.nsObject() }) as NSDictionary
+        case let .double(value):
+            return value as NSNumber
+        case let .float(value):
+            return value as NSNumber
+        case let .integer(value):
+            return value as NSNumber
+        case .none:
+            return NSNull()
+        case let .string(value):
+            return value as NSString
+        }
+    }
+    
 }

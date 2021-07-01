@@ -14,8 +14,13 @@ import Foundation
 
 /// This is one of the built-in providers for feature flags; it stores features flags into the
 /// UserDefaults dictionary.
+/// Keys are not stored in a tree but locally (the full path is the final key used to store the value).
+/// Values are stored as `Data` and all primitives and `Codable` conformant objects are supported.
 extension UserDefaults: FlagProvider {
     
+    // MARK: - Public Properties
+    
+    /// Name of the storage.
     public var name: String {
         guard self == UserDefaults.standard else {
             return "UserDefaults-\(String(describing: self))"
@@ -24,6 +29,8 @@ extension UserDefaults: FlagProvider {
         return "UserDefaults-Standard"
     }
     
+    // MARK: - FlagProvider Conformance
+
     public func valueForFlag<Value>(key: FlagKeyPath) -> Value? where Value : FlagProtocol {
         guard
             let rawObject = object(forKey: key.fullPath), // attempt to retrive the object from userdefault's apis
@@ -34,43 +41,15 @@ extension UserDefaults: FlagProvider {
         return Value(encoded: encodedFlag)
     }
     
-    public func setValue<Value>(_ value: Value?, forFlag key: FlagKeyPath) throws where Value : FlagProtocol {
+    public func setValue<Value>(_ value: Value?, forFlag key: FlagKeyPath) throws -> Bool where Value : FlagProtocol {
         guard let value = value else {
             // nil object means we want to remove the data from the source
             removeObject(forKey: key.fullPath)
-            return
+            return true
         }
         
         setValue(value.encoded().nsObject(), forKey: key.fullPath)
-    }
-    
-}
-
-// MARK: EncodedFlagValue to NSObject
-
-extension EncodedFlagValue {
-    
-    fileprivate func nsObject() -> NSObject {
-        switch self {
-        case let .array(value):
-            return value.map({ $0.nsObject() }) as NSArray
-        case let .bool(value):
-            return value as NSNumber
-        case let .data(value):
-            return value as NSData
-        case let .dictionary(value):
-            return value.mapValues({ $0.nsObject() }) as NSDictionary
-        case let .double(value):
-            return value as NSNumber
-        case let .float(value):
-            return value as NSNumber
-        case let .integer(value):
-            return value as NSNumber
-        case .none:
-            return NSNull()
-        case let .string(value):
-            return value as NSString
-        }
+        return true
     }
     
 }

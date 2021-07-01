@@ -1,6 +1,6 @@
     import XCTest
     @testable import BentoFlags
-   // @testable import BentoFlagsFirebase
+//   @testable import BentoFlagsFirebase
 
     final class BentoFlagsTests: XCTestCase {
         func testExample() {
@@ -8,11 +8,17 @@
             // Use XCTAssert and related functions to verify your tests produce the correct
             // results.
             
-             let eStorage = EphemeralProvider(name: "my provider")
-          //  let firebaseRemote = FirebaseRemoteConfigProvider()
+            let eStorage = LocalProvider(localURL: URL(fileURLWithPath: "/Users/daniele/Desktop/tet.plist"))
+             //let eStorage = EphemeralProvider(name: "my provider")
+            //let jsonProvider = JSONProvider()
+        //    let firebaseRemote = FirebaseRemoteConfigProvider()
             let loader = FlagsLoader(MyCollection.self, providers: [eStorage])
             
-            let r = loader.sottogruppo.testFlag
+            let r = loader.sottogruppo.user
+            
+            loader.sottogruppo.$user.setValue(User(name: "franco", age: 33, isMale: true), providers: nil)
+//            loader.sottogruppo.$user.setValue(nil, providers: nil)
+
             print(r)
         }
     }
@@ -25,6 +31,9 @@
         @Flag(default: false, description: "This is a test flag")
         var testFlag2: Bool
 
+        @Flag(default: User(name: "gino", age: 23, isMale: true), description: "This is a test flag")
+        var user: User
+        
         /*@Flag(defaultValue: false, description: "This is a test flag")
         var testFlag3: Bool
 
@@ -38,4 +47,10 @@
         @FlagCollection(description: "MERDA")
         var sottogruppo: MyFlags
         
+    }
+    
+    struct User: FlagProtocol, Codable {
+        public var name: String
+        public var age: Int
+        public var isMale: Bool
     }

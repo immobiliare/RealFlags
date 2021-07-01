@@ -34,7 +34,8 @@ public protocol FlagProvider {
     /// - Parameters:
     ///   - value: value to set; `nil` value is set to clear any previously set value for given key.
     ///   - key: key path to set.
-    func setValue<Value>(_ value: Value?, forFlag key: FlagKeyPath) throws where Value: FlagProtocol
+    @discardableResult
+    func setValue<Value>(_ value: Value?, forFlag key: FlagKeyPath) throws -> Bool where Value: FlagProtocol
         
     #if !os(Linux)
     // Apple platform also support Combine framework to provide realtime notification of new events to any subscriber.

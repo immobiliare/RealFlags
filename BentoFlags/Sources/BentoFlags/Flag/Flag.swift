@@ -115,7 +115,44 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
         return defaultValue
     }
     
+    /// Allows to change the value of feature flag by overwriting it to all or certain types
+    /// of providers.
+    ///
+    /// - Parameters:
+    ///   - value: new value to set.
+    ///   - providers: providers where apply changes. Not all provider may support changing flags;
+    ///                if you dont' specify a valid set of provider's type it will be applied to all
+    ///                providers assigned to the parent's `FlagLoader`.
+    /// - Returns: Return the list of provider which accepted the change.
+    @discardableResult
+    public func setValue(_ value: Value?, providers: [FlagProvider.Type]?) -> [FlagProvider] {
+        var alteredProviders = [FlagProvider]()
+        for provider in providersWithTypes(providers) {
+            do {
+                if try provider.setValue(value, forFlag: keyPath) {
+                    alteredProviders.append(provider)
+                }
+            } catch { }
+        }
+        
+        return alteredProviders
+    }
+    
     // MARK: - Internal Functions
+    
+    /// Return a filtered list of associated providers based on `types` received; if no values
+    /// are specified no filter is applied and the list is complete.
+    ///
+    /// - Parameter types: types to filter.
+    /// - Returns: [FlagProvider]
+    private func providersWithTypes(_ types: [FlagProvider.Type]?) -> [FlagProvider] {
+        // no special filter is applied, all the `FlagLoader`'s providers are returned.
+        guard let types = types else { return loader.instance?.providers ?? [] }
+        
+        return loader.instance?.providers?.filter({ providerInstance in
+            types.contains(where: { $0 == type(of: providerInstance) })
+        }) ?? []
+    }
 
     /// Return `true` if a provider is in the list of allowed providers specified in `limitProviders`.
     ///

@@ -19,12 +19,22 @@ protocol AnyFlag {
     
     /// Return the value of the flag.
     func getValueForFlag() -> Any?
+    
+    /// Save a value to a provider (if supported).
+    ///
+    /// - Parameter provider: provider to use.
+    func setValueToProvider(_ provider: FlagProvider) throws
+    
 }
 
 extension Flag: AnyFlag {
     
     func getValueForFlag() -> Any? {
         flagValue()
+    }
+    
+    func setValueToProvider(_ provider: FlagProvider) throws {
+        try provider.setValue(self.wrappedValue, forFlag: keyPath)
     }
     
 }
