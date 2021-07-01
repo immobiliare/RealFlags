@@ -216,10 +216,14 @@ internal class LoaderBox {
     var propertyPath: [String] = []
     
     func keyPathForProperty(withFixedKey fixedKey: String?) -> FlagKeyPath {
+        if let fixedKey = fixedKey {
+            return FlagKeyPath(components: [fixedKey], separator: "/")
+        }
+        
         let keyTransform = instance?.keyConfiguration.keyTransform ?? .none
         let pathSeparator = instance?.keyConfiguration.pathSeparator ?? "/"
 
-        let propertyKey = (fixedKey ?? propertyName) ?? ""
+        let propertyKey = propertyName ?? ""
         var components = propertyPath.map( { $0.transform(keyTransform) }) + [propertyKey.transform(keyTransform)]
         if let prefix = instance?.keyConfiguration.globalPrefix {
             components.insert(prefix.transform(keyTransform), at: 0)

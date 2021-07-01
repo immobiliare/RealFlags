@@ -22,7 +22,7 @@ public struct FlagKeyPath: Equatable, Hashable {
     /// Separator set.
     public let pathSeparator: String
     
-    var fullPath: String {
+    public var fullPath: String {
         pathComponents.joined(separator: pathSeparator)
     }
     

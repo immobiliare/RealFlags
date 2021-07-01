@@ -26,6 +26,7 @@ public enum EncodedFlagValue: Equatable {
     case integer(Int)
     case none
     case string(String)
+    case nsDictionary(NSDictionary)
     
     // MARK: - Initialization
     
@@ -58,6 +59,8 @@ public enum EncodedFlagValue: Equatable {
             self = .dictionary(value.compactMapValues({
                 EncodedFlagValue(object: $0, classType: classType)
             }))
+        case let value as NSDictionary:
+            self = .nsDictionary(value)
         default:
             return nil
         }
@@ -86,6 +89,8 @@ public enum EncodedFlagValue: Equatable {
             return NSNull()
         case let .string(value):
             return value as NSString
+        case let .nsDictionary(value):
+            return value as NSDictionary
         }
     }
     
