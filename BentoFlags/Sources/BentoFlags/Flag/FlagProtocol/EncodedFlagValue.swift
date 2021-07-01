@@ -26,8 +26,8 @@ public enum EncodedFlagValue: Equatable {
     case integer(Int)
     case none
     case string(String)
-    case nsDictionary(NSDictionary)
-    
+    case json(NSDictionary)
+
     // MARK: - Initialization
     
     /// Create a new encoded data type from a generic object received as init.
@@ -60,7 +60,7 @@ public enum EncodedFlagValue: Equatable {
                 EncodedFlagValue(object: $0, classType: classType)
             }))
         case let value as NSDictionary:
-            self = .nsDictionary(value)
+            self = .json(value)
         default:
             return nil
         }
@@ -89,7 +89,7 @@ public enum EncodedFlagValue: Equatable {
             return NSNull()
         case let .string(value):
             return value as NSString
-        case let .nsDictionary(value):
+        case let .json(value):
             return value as NSDictionary
         }
     }

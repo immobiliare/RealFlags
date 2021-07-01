@@ -14,23 +14,9 @@ import Foundation
 import BentoFlags
 import FirebaseRemoteConfig
 
-// MARK: - FirebaseRemoteConfigProviderDelegate
-
-public protocol FirebaseRemoteConfigProviderDelegate: AnyObject {
-    
-    /// Called when initialization did ends.
-    ///
-    /// - Parameters:
-    ///   - remote: remote configuration provider.
-    ///   - didFetchData: status.
-    ///   - error: error description if any.
-    func firebaseProvider(_ remote: FirebaseRemoteConfigProvider, didFetchData: RemoteConfigFetchAndActivateStatus, error: Error?)
-    
-}
-
-// MARK: - FirebaseRemoteConfigProvider
-
-public class FirebaseRemoteConfigProvider: FlagProvider {
+/// FirebaseRemoteProvider is an layer above the FirebaseRemoteConfig which support
+/// retriving data from Firebase's Remote Config.
+public class FirebaseRemoteProvider: FlagProvider {
     
     // MARK: - Public Properties
     
@@ -113,30 +99,24 @@ public class FirebaseRemoteConfigProvider: FlagProvider {
         case is UInt64.Type:
             return firebaseData.numberValue.uint64Value as? Value
             
-        default:
-            return nil
+        case is JSONData.Type:
+            return JSONData(firebaseData.jsonValue as? NSDictionary) as? Value
             
+        case is URL.Type:
+            return URL(string: firebaseData.stringValue ?? "") as? Value
+            
+        case is Date.Type:
+            return ISO8601DateFormatter().date(from: firebaseData.stringValue ?? "") as? Value
+            
+        default:
+            return firebaseData.jsonValue as? Value
+
         }
     }
     
     public func setValue<Value>(_ value: Value?, forFlag key: FlagKeyPath) throws -> Bool where Value : FlagProtocol {
+        // Set is not supported
         false
     }
     
-    
-}
-
-// MARK: - Unwrap Type
-
-protocol OptionalProtocol {
-  // the metatype value for the wrapped type.
-  static var wrappedType: Any.Type { get }
-}
-
-extension Optional : OptionalProtocol {
-  static var wrappedType: Any.Type { return Wrapped.self }
-}
-
-internal func wrappedTypeFromOptionalType(_ type: Any.Type) -> Any.Type? {
-  return (type as? OptionalProtocol.Type)?.wrappedType
 }
