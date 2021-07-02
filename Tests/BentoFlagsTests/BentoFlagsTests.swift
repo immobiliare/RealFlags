@@ -25,20 +25,20 @@
     
     struct MyFlags: FlagCollectionProtocol {
         
-        @Flag(default: false, description: "This is a test flag")
+        @FeatureFlag(default: false, description: "This is a test flag")
         var testFlag: Bool
         
-        @Flag(default: false, description: "This is a test flag")
+        @FeatureFlag(default: false, description: "This is a test flag")
         var testFlag2: Bool
         
-        @Flag(default: User(name: "gino", age: 23, isMale: true), description: "This is a test flag")
+        @FeatureFlag(default: User(name: "gino", age: 23, isMale: true), description: "This is a test flag")
         var user: User
         
     }
     
     struct MyCollection: FlagCollectionProtocol {
         
-        @FlagCollection(description: "The collection")
+        @FeatureFlagCollection(description: "The collection")
         var sottogruppo: MyFlags
         
     }

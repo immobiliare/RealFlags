@@ -13,9 +13,9 @@
 import Foundation
 
 /// This a wrapper which represent a single Feature Flag.
-/// The type that you wrap with `@Flag` must conform to `FlagProtocol`.
+/// The type that you wrap with `@FeatureFlag` must conform to `FlagProtocol`.
 @propertyWrapper
-public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identifiable, CustomDebugStringConvertible {
+public struct FeatureFlag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identifiable, CustomDebugStringConvertible {
     
     // MARK: - Public Properties
     
@@ -34,7 +34,7 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
     
     /// A reference to the `Flag` itself is available as a projected value
     /// so you can access to all associated informations.
-    public var projectedValue: Flag<Value> {
+    public var projectedValue: FeatureFlag<Value> {
         self
     }
     
@@ -60,7 +60,7 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
     /// The loader used to retrive the fetched value for property flags.
     /// This value is assigned when the instance of the Flag is created and it set automatically
     /// by the `configureWithLoader()` function.
-    private var loader = LoaderBox()
+    internal private(set) var loader = LoaderBox()
     
     /// You can force a fixed key for a property instead of using auto-evaluation.
     private var fixedKey: String?
@@ -181,9 +181,9 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
 
 // MARK: - Flag (Equatable)
 
-extension Flag: Equatable where Value: Equatable {
+extension FeatureFlag: Equatable where Value: Equatable {
     
-    public static func ==(lhs: Flag, rhs: Flag) -> Bool {
+    public static func ==(lhs: FeatureFlag, rhs: FeatureFlag) -> Bool {
         return lhs.keyPath == rhs.keyPath && lhs.wrappedValue == rhs.wrappedValue
     }
     
@@ -191,7 +191,7 @@ extension Flag: Equatable where Value: Equatable {
 
 // MARK: - Flag (Hashable)
 
-extension Flag: Hashable where Value: Hashable {
+extension FeatureFlag: Hashable where Value: Hashable {
     
     public func hash(into hasher: inout Hasher) {
         hasher.combine(keyPath)

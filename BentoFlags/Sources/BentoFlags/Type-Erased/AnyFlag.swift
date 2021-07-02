@@ -27,7 +27,7 @@ protocol AnyFlag {
     
 }
 
-extension Flag: AnyFlag {
+extension FeatureFlag: AnyFlag {
     
     func getValueForFlag() -> Any? {
         flagValue()

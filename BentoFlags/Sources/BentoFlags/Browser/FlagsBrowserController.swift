@@ -1,0 +1,17 @@
+//
+//  BentoFlags
+//  Easily manage feature flags in Swift.
+//
+//  Created by Daniele Margutti
+//  Email: hello@danielemargutti.com
+//  Web: http://www.danielemargutti.com
+//
+//  Copyright ©2021 Daniele Margutti. All rights reserved.
+//  Licensed under MIT License.
+//
+
+import UIKit
+
+public class FlagsBrowserController: UIViewController {
+    
+}

@@ -19,7 +19,7 @@ protocol AnyFlagCollection {
 
 }
 
-extension FlagCollection: AnyFlagCollection {
+extension FeatureFlagCollection: AnyFlagCollection {
     
     func featureFlags () -> [AnyFlag] {
         return Mirror(reflecting: self.wrappedValue)

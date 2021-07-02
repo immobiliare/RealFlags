@@ -13,7 +13,7 @@
 import Foundation
 
 @propertyWrapper
-public struct FlagCollection<Group: FlagCollectionProtocol>: FeatureFlagConfigurableProtocol, Identifiable {
+public struct FeatureFlagCollection<Group: FlagCollectionProtocol>: FeatureFlagConfigurableProtocol, Identifiable {
     
     /// All collections must be `Identifiable`
     public let id = UUID()
@@ -82,9 +82,9 @@ public struct FlagCollection<Group: FlagCollectionProtocol>: FeatureFlagConfigur
 
 // MARK: - FlagCollection (Equatable)
 
-extension FlagCollection: Equatable where Group: Equatable {
+extension FeatureFlagCollection: Equatable where Group: Equatable {
     
-    public static func == (lhs: FlagCollection, rhs: FlagCollection) -> Bool {
+    public static func == (lhs: FeatureFlagCollection, rhs: FeatureFlagCollection) -> Bool {
         lhs.wrappedValue == rhs.wrappedValue
     }
     
@@ -92,7 +92,7 @@ extension FlagCollection: Equatable where Group: Equatable {
 
 // MARK: - FlagCollection (Hashable)
 
-extension FlagCollection: Hashable where Group: Hashable {
+extension FeatureFlagCollection: Hashable where Group: Hashable {
     
     public func hash(into hasher: inout Hasher) {
         hasher.combine(self.wrappedValue)
@@ -103,7 +103,7 @@ extension FlagCollection: Hashable where Group: Hashable {
 
 // MARK: - FlagCollection (UIRepresentation)
 
-public extension FlagCollection {
+public extension FeatureFlagCollection {
 
     /// How to display this group in Vexillographer
     ///
