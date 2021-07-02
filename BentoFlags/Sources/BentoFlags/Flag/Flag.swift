@@ -94,17 +94,20 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
     public var debugDescription: String {
         "\(keyPath.fullPath)=\(wrappedValue)"
     }
-        
+    
     /// Return the value of the property by asking to the list of providers set.
+    /// If a `providerType` is passed only that type is read.
     ///
-    /// - Returns: `Value?`
-    public func flagValue() -> Value {
-        guard let loader = loader.instance else {
+    /// - Parameter providerType: provider type, if `nil` the providers list with `allowedProviders` is read.
+    /// - Returns: Value
+    public func flagValue(from providerType: FlagProvider.Type? = nil) -> Value {
+        guard loader.instance != nil else {
             return defaultValue // no loader has been set, we want to get the fallback result.
         }
         
+        let providersToQuery = providersWithTypes([providerType].compactMap({ $0}))
         let keyPath = self.keyPath
-        for provider in loader.providers ?? [] where isProviderAllowed(provider) {
+        for provider in providersToQuery where isProviderAllowed(provider) {
             if let value: Value = provider.valueForFlag(key: keyPath) {
                 // first valid result for provider is taken and returned
                 return value

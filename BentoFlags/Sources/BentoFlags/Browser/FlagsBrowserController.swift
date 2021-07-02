@@ -18,7 +18,7 @@ public class FlagsBrowserController: UIViewController {
     
     public enum DataType {
         case flag(AnyFlag)
-        case collectionsOfLoader(AnyFlagsLoader)
+        case flags(AnyFlagsLoader)
         case loaders([AnyFlagsLoader])
     }
     
@@ -74,10 +74,12 @@ public class FlagsBrowserController: UIViewController {
     
     private func reloadData() {
         switch data {
-        case .collectionsOfLoader(let collection):
-            break
+        case .flags(let loader):
+            self.items = reloadDataForLoader(loader)
+            
         case .flag(let flag):
-            break
+            self.items = reloadDataForFlag(flag)
+            
         case .loaders(let loaders):
             self.items = reloadDataForLoaders(loaders)
         
@@ -86,6 +88,41 @@ public class FlagsBrowserController: UIViewController {
     
     private func reloadDataForLoaders(_ loaders: [AnyFlagsLoader]) -> [FlagBrowserItem] {
         loaders.map { FlagBrowserItem(loader: $0) }
+    }
+    
+    private func reloadDataForLoader(_ loader: AnyFlagsLoader) -> [FlagBrowserItem] {
+        let section = FlagBrowserItem(title: "\(loader.featureFlags.count) Feature Flags")
+        section.childs = loader.featureFlags.map { flag in
+            FlagBrowserItem(title: flag.name,
+                            subtitle: flag.description,
+                            value: flag.getValueDescriptionForFlag(from: nil),
+                            accessoryType: .disclosureIndicator,
+                            selectable: true, representedObj: flag)
+        }
+        return [section]
+    }
+    
+    private func reloadDataForFlag(_ flag: AnyFlag) -> [FlagBrowserItem] {
+        var sections = [FlagBrowserItem]()
+        
+        let mainSection = FlagBrowserItem(title: "INFORMATIONS")
+        mainSection.childs = [
+            FlagBrowserItem(title: "Key", value: flag.name),
+            FlagBrowserItem(title: "Key Path", value: flag.keyPath.fullPath),
+            FlagBrowserItem(title: "Type", value: flag.typeDescription)
+        ]
+        sections.append(mainSection)
+              
+        let providersSection = FlagBrowserItem(title: "ORDERED PROVIDERS")
+        providersSection.childs = flag.providers.map({ provider -> FlagBrowserItem in
+            FlagBrowserItem(title: provider.name,
+                            subtitle: provider.shortDescription,
+                            value: flag.getValueDescriptionForFlag(from: type(of: provider)),
+                            accessoryType: .disclosureIndicator)
+        })
+        sections.append(providersSection)
+        
+        return sections
     }
     
     private func didSelectItem(_ item: FlagBrowserItem) {
@@ -97,13 +134,22 @@ public class FlagsBrowserController: UIViewController {
         case let loader as AnyFlagsLoader:
             browseLoader(loader)
             
+        case let flag as AnyFlag:
+            browseFlagDetail(flag)
+            
         default:
             break
         }
     }
     
+    private func browseFlagDetail(_ flag: AnyFlag) {
+        let data: DataType = .flag(flag)
+        let controller = FlagsBrowserController(data: data, title: flag.name)
+        navigationController?.pushViewController(controller, animated: true)
+    }
+    
     private func browseLoader(_ loader: AnyFlagsLoader) {
-        let data: DataType = .collectionsOfLoader(loader)
+        let data: DataType = .flags(loader)
         let controller = FlagsBrowserController(data: data, title: loader.collectionType)
         navigationController?.pushViewController(controller, animated: true)
     }

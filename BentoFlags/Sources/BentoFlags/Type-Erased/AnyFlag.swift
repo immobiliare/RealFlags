@@ -14,11 +14,30 @@ import Foundation
 
 public protocol AnyFlag {
     
+    /// Name of the flag
+    var name: String { get }
+    
+    /// Description of the flag.
+    var description: String { get }
+    
     /// Return the key for flag.
     var keyPath: FlagKeyPath { get }
     
+    /// Description of data type represented.
+    var typeDescription: String { get }
+    
+    /// Associated providers.
+    var providers: [FlagProvider] { get }
+        
     /// Return the value of the flag.
-    func getValueForFlag() -> Any?
+    ///
+    /// - Parameter providerType: you can specify a particular provider to query; otherwise standard's flag behaviour is applied.
+    func getValueForFlag(from providerType: FlagProvider.Type?) -> Any?
+    
+    /// Get a readable description of the value.
+    ///
+    /// - Parameter providerType: you can specify a particular provider to query; otherwise standard's flag behaviour is applied.
+    func getValueDescriptionForFlag(from providerType: FlagProvider.Type?) -> String
     
     /// Save a value to a provider (if supported).
     ///
@@ -29,8 +48,33 @@ public protocol AnyFlag {
 
 extension Flag: AnyFlag {
     
-    public func getValueForFlag() -> Any? {
-        flagValue()
+    public var providers: [FlagProvider] {
+        loader.instance?.providers ?? []
+    }
+    
+    public var typeDescription: String {
+        String(describing: type(of: wrappedValue.self))
+    }
+    
+    public func getValueForFlag(from providerType: FlagProvider.Type? = nil) -> Any? {
+        flagValue(from: providerType)
+    }
+    
+    public func getValueDescriptionForFlag(from providerType: FlagProvider.Type? = nil) -> String {
+        guard let value = getValueForFlag() else {
+            return ""
+        }
+        
+        return String(describing: value)
+    }
+    
+
+    public var name: String {
+        metadata.name ?? loader.propertyName ?? ""
+    }
+    
+    public var description: String {
+        metadata.description
     }
     
     public func setValueToProvider(_ provider: FlagProvider) throws {

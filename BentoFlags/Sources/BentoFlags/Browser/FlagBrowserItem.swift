@@ -20,7 +20,7 @@ public class FlagBrowserItem {
     public private(set) var subtitle: String?
     public private(set) var value: String?
     
-    public private(set) var childs = [FlagBrowserItem]()
+    public var childs = [FlagBrowserItem]()
     public private(set) var accessoryType: UITableViewCell.AccessoryType = .none
     public private(set) var isSelectable = false
     
@@ -56,7 +56,7 @@ public class FlagBrowserItem {
                             accessoryType: .disclosureIndicator,
                             selectable: true),
             FlagBrowserItem(title: "Browse Flags",
-                            value: "\(loader.collection?.featureFlags().count ?? 0)",
+                            value: "\(loader.featureFlags.count)",
                             accessoryType: .disclosureIndicator,
                             selectable: true,
                             representedObj: loader)

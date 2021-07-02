@@ -59,6 +59,14 @@ public class FlagsLoader<Collection: FlagCollectionProtocol>: FlagsLoaderProtoco
             .joined(separator: "; ")
             + ")"
     }
+    
+    public lazy var featureFlags: [AnyFlag] = {
+        return Mirror(reflecting: loadedCollection)
+            .children
+            .lazy
+            .map { $0.value }
+            .featureFlags()
+    }()
 
     // MARK: - dynamicMemberLookup Support
     
@@ -97,5 +105,3 @@ public struct KeyConfiguration {
     }
     
 }
-    
-

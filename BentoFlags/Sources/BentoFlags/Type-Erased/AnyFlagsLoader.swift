@@ -20,21 +20,15 @@ public protocol AnyFlagsLoader {
     /// Type of collection group loaded by loader instance.
     var collectionType: String { get }
     
-    /// Collection of flags
-    var collection: AnyFlagCollection? { get }
-
+    /// List of feature flags of the loader.
+    var featureFlags: [AnyFlag] { get }
+    
 }
 
 extension FlagsLoader: AnyFlagsLoader {
 
     public var collectionType: String {
         String(describing: type(of: loadedCollection))
-    }
-    
-    public var collection: AnyFlagCollection? {
-        print(loadedCollection)
-        let x = loadedCollection as? AnyFlagCollection
-        return x
     }
     
 }

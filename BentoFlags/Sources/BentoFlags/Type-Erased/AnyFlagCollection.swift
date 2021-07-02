@@ -16,13 +16,13 @@ public protocol AnyFlagCollection {
     
     /// Return the list of all feature flags of the collection.
     func featureFlags() -> [AnyFlag]
-
+    
 }
 
 extension FlagCollection: AnyFlagCollection {
     
     public func featureFlags () -> [AnyFlag] {
-        return Mirror(reflecting: self.wrappedValue)
+        Mirror(reflecting: wrappedValue)
             .children
             .lazy
             .map { $0.value }
@@ -36,6 +36,23 @@ extension FlagCollection: AnyFlagCollection {
                 }
             }
             .flatMap { $0 }
+    }
+    
+}
+
+internal extension Sequence {
+    
+    func featureFlags () -> [AnyFlag] {
+        self.compactMap { element -> [AnyFlag]? in
+            if let flag = element as? AnyFlag {
+                return [flag]
+            } else if let group = element as? AnyFlagCollection {
+                return group.featureFlags()
+            } else {
+                return nil
+            }
+        }
+        .flatMap { $0 }
     }
     
 }
