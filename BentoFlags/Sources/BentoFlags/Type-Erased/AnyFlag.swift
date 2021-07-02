@@ -24,10 +24,13 @@ public protocol AnyFlag {
     var keyPath: FlagKeyPath { get }
     
     /// Description of data type represented.
-    var typeDescription: String { get }
+    var readableDataType: String { get }
     
     /// Associated providers.
     var providers: [FlagProvider] { get }
+    
+    /// Description of the flag.
+    var defaultFallbackValue: Any? { get }
         
     /// Return the value of the flag.
     ///
@@ -48,11 +51,15 @@ public protocol AnyFlag {
 
 extension Flag: AnyFlag {
     
+    public var defaultFallbackValue: Any? {
+        defaultValue
+    }
+
     public var providers: [FlagProvider] {
         loader.instance?.providers ?? []
     }
     
-    public var typeDescription: String {
+    public var readableDataType: String {
         String(describing: type(of: wrappedValue.self))
     }
     
@@ -61,8 +68,8 @@ extension Flag: AnyFlag {
     }
     
     public func getValueDescriptionForFlag(from providerType: FlagProvider.Type? = nil) -> String {
-        guard let value = getValueForFlag() else {
-            return ""
+        guard let value = getValueForFlag(from: providerType) else {
+            return "nil"
         }
         
         return String(describing: value)

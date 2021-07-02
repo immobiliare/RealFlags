@@ -29,7 +29,7 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
     /// The value associated with flag; if specified it will be get by reading the value of the provider, otherwise
     /// the `defaultValue` is used instead.
     public var wrappedValue: Value {
-        flagValue()
+        flagValue() ?? defaultValue
     }
     
     /// A reference to the `Flag` itself is available as a projected value
@@ -100,7 +100,7 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
     ///
     /// - Parameter providerType: provider type, if `nil` the providers list with `allowedProviders` is read.
     /// - Returns: Value
-    public func flagValue(from providerType: FlagProvider.Type? = nil) -> Value {
+    public func flagValue(from providerType: FlagProvider.Type? = nil, fallback: Bool = true) -> Value? {
         guard loader.instance != nil else {
             return defaultValue // no loader has been set, we want to get the fallback result.
         }
@@ -114,8 +114,7 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
             }
         }
         
-        // no value are found iterating loader's providers so we'll return the fallback value.
-        return defaultValue
+        return nil
     }
     
     /// Allows to change the value of feature flag by overwriting it to all or certain types

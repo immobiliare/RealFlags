@@ -20,6 +20,7 @@ public class FlagsBrowserController: UIViewController {
         case flag(AnyFlag)
         case flags(AnyFlagsLoader)
         case loaders([AnyFlagsLoader])
+        case flagData(AnyFlag)
     }
     
     // MARK: - Private Properties
@@ -82,6 +83,9 @@ public class FlagsBrowserController: UIViewController {
             
         case .loaders(let loaders):
             self.items = reloadDataForLoaders(loaders)
+            
+        case .flagData(let flag):
+            self.items = []
         
         }
     }
@@ -107,13 +111,14 @@ public class FlagsBrowserController: UIViewController {
         
         let mainSection = FlagBrowserItem(title: "INFORMATIONS")
         mainSection.childs = [
-            FlagBrowserItem(title: "Key", value: flag.name),
-            FlagBrowserItem(title: "Key Path", value: flag.keyPath.fullPath),
-            FlagBrowserItem(title: "Type", value: flag.typeDescription)
+            FlagBrowserItem(title: "Key", subtitle: flag.keyPath.fullPath, value: flag.name),
+            FlagBrowserItem(title: "Type", value: flag.readableDataType),
+            FlagBrowserItem(title: "Default Fallback", value: flag.readableDefaultFallbackValue),
+            FlagBrowserItem(title: "Description", subtitle: flag.description)
         ]
         sections.append(mainSection)
               
-        let providersSection = FlagBrowserItem(title: "ORDERED PROVIDERS")
+        let providersSection = FlagBrowserItem(title: "HIERARCHY SOURCE PROVIDERS")
         providersSection.childs = flag.providers.map({ provider -> FlagBrowserItem in
             FlagBrowserItem(title: provider.name,
                             subtitle: provider.shortDescription,
@@ -197,3 +202,14 @@ extension FlagsBrowserController: UITableViewDataSource, UITableViewDelegate {
     
 }
 
+extension AnyFlag {
+    
+    var readableDefaultFallbackValue: String {
+        guard let val = defaultFallbackValue else {
+            return "<null>"
+        }
+        
+        return String(describing: val)
+    }
+    
+}
