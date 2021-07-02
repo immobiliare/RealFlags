@@ -22,6 +22,9 @@ public class LocalProvider: FlagProvider, Identifiable {
     /// Name of the ephemeral provider
     public let name: String
     
+    /// Short description
+    public var shortDescription: String?
+    
     /// If you specify a local URL data will be stored automatically and resumed from that file.
     /// If you don't specify a local URL storage is ephemeral and no data will be stored.
     /// You can use this file to provide a writable data set.
@@ -42,7 +45,8 @@ public class LocalProvider: FlagProvider, Identifiable {
     ///   - name: name of the storage.
     ///   - values: initial dataset.
     public init(name: String? = nil, values: [String: Any] = [:]) {
-        self.name = "Ephemeral-" + (name ?? UUID().uuidString).lowercased()
+        self.name = (name ?? "Ephemeral Provider")
+        self.shortDescription = (UUID().uuidString).lowercased()
         self.storage = values
         self.localURL = nil
     }
@@ -55,7 +59,8 @@ public class LocalProvider: FlagProvider, Identifiable {
         
         self.localURL = localURL
         self.storage = (!fileExists ? [:] : NSDictionary(contentsOfFile: localURL.path) as? [String: Any] ?? [:])
-        self.name = (localURL.path as NSString).lastPathComponent
+        self.shortDescription = "File Backed \((localURL.path as NSString).lastPathComponent)"
+        self.name = "Local Provider"
     }
     
     // MARK: - FlagProvider Conformance

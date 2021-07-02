@@ -26,7 +26,7 @@ public class FlagsManager {
     public let keyConfiguration: KeyConfiguration
     
     /// Currently loaders.
-    public var loaders = [String: AnyFlagsLoader]()
+    public private(set) var loaders = [String: AnyFlagsLoader]()
     
     // MARK: - Initialization
     

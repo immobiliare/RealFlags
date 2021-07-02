@@ -12,7 +12,7 @@
 
 import Foundation
 
-protocol AnyFlag {
+public protocol AnyFlag {
     
     /// Return the key for flag.
     var keyPath: FlagKeyPath { get }
@@ -27,13 +27,13 @@ protocol AnyFlag {
     
 }
 
-extension FeatureFlag: AnyFlag {
+extension Flag: AnyFlag {
     
-    func getValueForFlag() -> Any? {
+    public func getValueForFlag() -> Any? {
         flagValue()
     }
     
-    func setValueToProvider(_ provider: FlagProvider) throws {
+    public func setValueToProvider(_ provider: FlagProvider) throws {
         try provider.setValue(self.wrappedValue, forFlag: keyPath)
     }
     

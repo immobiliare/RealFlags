@@ -17,14 +17,12 @@ import Foundation
 /// list of providers to query. Then you can fetch feature flag's values directly
 /// by accessing to the relative properties from this instance via dynamic member lookup.
 @dynamicMemberLookup
-public class FlagsLoader<Collection: FlagCollectionProtocol>: FlagsLoaderProtocol {
-    
-    // MARK: - Private Properties
-    
-    /// Collection of feature flag loaded.
-    private var loadedCollection: Collection
+public class FlagsLoader<Collection: FlagCollectionProtocol>: FlagsLoaderProtocol, CustomDebugStringConvertible {
     
     // MARK: - Public Properties
+    
+    /// Collection of feature flag loaded.
+    public private(set) var loadedCollection: Collection
     
     /// Providers where we'll get the data.
     public var providers: [FlagProvider]?
@@ -46,6 +44,20 @@ public class FlagsLoader<Collection: FlagCollectionProtocol>: FlagsLoaderProtoco
         self.providers = providers
         self.keyConfiguration = keyConfiguration
         initializeCollectionObjects()
+    }
+    
+    // MARK: - Public Functions
+    
+    public var debugDescription: String {
+        return "FlagLoader<\(String(describing: Collection.self))>("
+            + Mirror(reflecting: loadedCollection).children
+            .map { _, value -> String in
+                (value as? CustomDebugStringConvertible)?.debugDescription
+                    ?? (value as? CustomStringConvertible)?.description
+                    ?? String(describing: value)
+            }
+            .joined(separator: "; ")
+            + ")"
     }
 
     // MARK: - dynamicMemberLookup Support

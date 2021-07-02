@@ -13,6 +13,7 @@
 import Foundation
 import BentoFlags
 import FirebaseRemoteConfig
+import Firebase
 
 /// FirebaseRemoteProvider is an layer above the FirebaseRemoteConfig which support
 /// retriving data from Firebase's Remote Config.
@@ -21,7 +22,12 @@ public class FirebaseRemoteProvider: FlagProvider {
     // MARK: - Public Properties
     
     /// Name of the remote configuration.
-    public var name: String = "FirebaseRemoteConfigProvider"
+    public var name: String = "Firebase Remote"
+    
+    /// Short description.
+    public var shortDescription: String? {
+        FirebaseApp.app()?.name
+    }
     
     /// Delegate.
     public weak var delegate: FirebaseRemoteConfigProviderDelegate?

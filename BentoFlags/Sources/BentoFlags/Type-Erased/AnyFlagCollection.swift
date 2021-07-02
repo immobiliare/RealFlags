@@ -12,16 +12,16 @@
 
 import Foundation
 
-protocol AnyFlagCollection {
+public protocol AnyFlagCollection {
     
     /// Return the list of all feature flags of the collection.
     func featureFlags() -> [AnyFlag]
 
 }
 
-extension FeatureFlagCollection: AnyFlagCollection {
+extension FlagCollection: AnyFlagCollection {
     
-    func featureFlags () -> [AnyFlag] {
+    public func featureFlags () -> [AnyFlag] {
         return Mirror(reflecting: self.wrappedValue)
             .children
             .lazy

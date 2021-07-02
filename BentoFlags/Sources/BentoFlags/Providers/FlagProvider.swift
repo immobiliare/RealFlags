@@ -24,6 +24,9 @@ public protocol FlagProvider {
     /// It will be used when you need to show the source in some UI.
     var name: String { get }
     
+    /// Short description of the object used into the UI.
+    var shortDescription: String? { get }
+    
     /// Fetch value for a specific flag.
     ///
     /// - Parameter key: key of the flag to retrive.

@@ -16,7 +16,25 @@ public protocol AnyFlagsLoader {
     
     /// Providers of the flag.
     var providers: [FlagProvider]? { get }
+    
+    /// Type of collection group loaded by loader instance.
+    var collectionType: String { get }
+    
+    /// Collection of flags
+    var collection: AnyFlagCollection? { get }
 
 }
 
-extension FlagsLoader: AnyFlagsLoader { }
+extension FlagsLoader: AnyFlagsLoader {
+
+    public var collectionType: String {
+        String(describing: type(of: loadedCollection))
+    }
+    
+    public var collection: AnyFlagCollection? {
+        print(loadedCollection)
+        let x = loadedCollection as? AnyFlagCollection
+        return x
+    }
+    
+}

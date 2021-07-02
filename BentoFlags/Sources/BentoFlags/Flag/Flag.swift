@@ -13,9 +13,9 @@
 import Foundation
 
 /// This a wrapper which represent a single Feature Flag.
-/// The type that you wrap with `@FeatureFlag` must conform to `FlagProtocol`.
+/// The type that you wrap with `@Flag` must conform to `FlagProtocol`.
 @propertyWrapper
-public struct FeatureFlag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identifiable, CustomDebugStringConvertible {
+public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identifiable, CustomDebugStringConvertible {
     
     // MARK: - Public Properties
     
@@ -34,7 +34,7 @@ public struct FeatureFlag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol,
     
     /// A reference to the `Flag` itself is available as a projected value
     /// so you can access to all associated informations.
-    public var projectedValue: FeatureFlag<Value> {
+    public var projectedValue: Flag<Value> {
         self
     }
     
@@ -181,9 +181,9 @@ public struct FeatureFlag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol,
 
 // MARK: - Flag (Equatable)
 
-extension FeatureFlag: Equatable where Value: Equatable {
+extension Flag: Equatable where Value: Equatable {
     
-    public static func ==(lhs: FeatureFlag, rhs: FeatureFlag) -> Bool {
+    public static func ==(lhs: Flag, rhs: Flag) -> Bool {
         return lhs.keyPath == rhs.keyPath && lhs.wrappedValue == rhs.wrappedValue
     }
     
@@ -191,7 +191,7 @@ extension FeatureFlag: Equatable where Value: Equatable {
 
 // MARK: - Flag (Hashable)
 
-extension FeatureFlag: Hashable where Value: Hashable {
+extension Flag: Hashable where Value: Hashable {
     
     public func hash(into hasher: inout Hasher) {
         hasher.combine(keyPath)

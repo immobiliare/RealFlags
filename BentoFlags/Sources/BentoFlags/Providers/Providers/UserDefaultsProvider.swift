@@ -22,8 +22,13 @@ extension UserDefaults: FlagProvider {
     
     /// Name of the storage.
     public var name: String {
+        "UserDefaults"
+    }
+    
+    /// Short description.
+    public var shortDescription: String? {
         guard self == UserDefaults.standard else {
-            return "UserDefaults-\(String(describing: self))"
+            return String(describing: self)
         }
         
         return "UserDefaults-Standard"
