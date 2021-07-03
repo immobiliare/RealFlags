@@ -23,6 +23,14 @@ public class FlagsBrowserDefaultCell: UITableViewCell, Reusable, NibType {
     @IBOutlet public var iconView: UIImageView!
     @IBOutlet public var stackView: UIStackView!
     @IBOutlet public var labelsStackView: UIStackView!
+    
+    public var isDisabled: Bool = false {
+        didSet {
+            titlelabel.textColor = (isDisabled ? .lightGray : .black)
+            valueLabel.textColor = (isDisabled ? .lightGray : .black)
+            subtitleLabel.textColor = (isDisabled ? .lightGray : .darkGray)
+        }
+    }
 
     public static var nibBundle: Bundle {
         .module

@@ -120,10 +120,13 @@ public class FlagsBrowserController: UIViewController {
               
         let providersSection = FlagBrowserItem(title: "HIERARCHY SOURCE PROVIDERS")
         providersSection.childs = flag.providers.map({ provider -> FlagBrowserItem in
-            FlagBrowserItem(title: provider.name,
+            let isDisabled = flag.excludedProviders?.contains(where: { $0 == type(of: provider) }) ?? false
+            let item = FlagBrowserItem(title: provider.name,
                             subtitle: provider.shortDescription,
                             value: flag.getValueDescriptionForFlag(from: type(of: provider)),
                             accessoryType: .disclosureIndicator)
+            item.isDisabled = isDisabled
+            return item
         })
         sections.append(providersSection)
         
@@ -185,6 +188,7 @@ extension FlagsBrowserController: UITableViewDataSource, UITableViewDelegate {
         
         cell.set(title: item.title, subtitle: item.subtitle, value: item.value, image: nil)
         cell.accessoryType = item.accessoryType
+        cell.isDisabled = item.isDisabled
         return cell
     }
     

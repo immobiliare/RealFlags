@@ -49,11 +49,11 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
     /// Typically is a way to associated a context to the flag in order to be fully documented.
     public var metadata: FlagMetadata
     
-    /// You can limit the fetch of the loader to only certain list of provider types
+    /// You can exclude from the fetch of the loader a certain list of provider types
     /// (for example a particular property should be fetched only from UserDefaults and not from Firebase).
     /// If you need of this feature you should set their types here; if `nil` it will use the order specified
     /// by the `FlagsLoader` instance which create the instance.
-    public var allowedProviders: [FlagProvider.Type]?
+    public var excludedProviders: [FlagProvider.Type]?
     
     // MARK: - Private Properties
     
@@ -79,11 +79,11 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
     ///   - description: description of the proprerty; you are encouraged to provide a short description of the feature flag.
     public init(name: String? = nil, key: String? = nil,
                 default defaultValue: Value,
-                allowedProviders: [FlagProvider.Type]? = nil,
+                excludedProviders: [FlagProvider.Type]? = nil,
                 description: FlagMetadata) {
         
         self.defaultValue = defaultValue
-        self.allowedProviders = allowedProviders
+        self.excludedProviders = excludedProviders
         self.fixedKey = key
         
         var info = description
@@ -148,11 +148,22 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
     /// - Parameter types: types to filter.
     /// - Returns: [FlagProvider]
     private func providersWithTypes(_ types: [FlagProvider.Type]?) -> [FlagProvider] {
-        // no special filter is applied, all the `FlagLoader`'s providers are returned.
-        guard let types = types else { return loader.instance?.providers ?? [] }
+        guard let filteredByTypes = types else {
+            return allowedProviders() // no filter applied, return allowed providers.
+        }
         
+        // filter applied, return only providers which meet passed types ignoring allowed providers
         return loader.instance?.providers?.filter({ providerInstance in
-            types.contains(where: { $0 == type(of: providerInstance) })
+            filteredByTypes.contains(where: { $0 == type(of: providerInstance) })
+        }) ?? []
+    }
+    
+    /// Allowed providers from the list of all providers of the parent `FlagsLoader`.
+    ///
+    /// - Returns: [FlagProvider]
+    private func allowedProviders() -> [FlagProvider] {
+        loader.instance?.providers?.filter({
+            isProviderAllowed($0)
         }) ?? []
     }
 
@@ -161,11 +172,11 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
     /// - Parameter provider: provider to check.
     /// - Returns: `true` if it's allowed, `false` otherwise.
     private func isProviderAllowed(_ provider: FlagProvider) -> Bool {
-        guard let allowedProviders = self.allowedProviders else { return true }
+        guard let excludedProviders = self.excludedProviders else { return true }
         
-        return allowedProviders.first { allowedType in
+        return excludedProviders.first { allowedType in
             allowedType == type(of: provider)
-        } != nil
+        } == nil
     }
     
     /// Configure the property with the given loader which created it.

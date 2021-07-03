@@ -23,7 +23,8 @@ public class FlagBrowserItem {
     public var childs = [FlagBrowserItem]()
     public private(set) var accessoryType: UITableViewCell.AccessoryType = .none
     public private(set) var isSelectable = false
-    
+    public var isDisabled = false
+
     public var representedObj: Any?
     
     // MARK: - Initialization

@@ -14,6 +14,9 @@ import Foundation
 
 public protocol AnyFlag {
     
+    /// Allowed provider.
+    var excludedProviders: [FlagProvider.Type]? { get }
+    
     /// Name of the flag
     var name: String { get }
     
