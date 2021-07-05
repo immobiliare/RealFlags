@@ -28,7 +28,9 @@ public protocol AnyFlag {
     
     /// Description of data type represented.
     var readableDataType: String { get }
-    
+
+    var dataType: Any.Type { get }
+
     /// Associated providers.
     var providers: [FlagProvider] { get }
     
@@ -54,6 +56,10 @@ public protocol AnyFlag {
 
 extension Flag: AnyFlag {
     
+    public var dataType: Any.Type {
+        type(of: wrappedValue.self)
+    }
+    
     public var defaultFallbackValue: Any? {
         defaultValue
     }
@@ -63,7 +69,7 @@ extension Flag: AnyFlag {
     }
     
     public var readableDataType: String {
-        String(describing: type(of: wrappedValue.self))
+        String(describing: dataType)
     }
     
     public func getValueForFlag(from providerType: FlagProvider.Type? = nil) -> Any? {

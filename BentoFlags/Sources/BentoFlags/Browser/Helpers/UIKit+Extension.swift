@@ -10,8 +10,19 @@
 //  Licensed under MIT License.
 //
 
-
 import UIKit
+
+// MARK: - String Extension
+
+public extension String {
+    
+    func trunc(length: Int, trailing: String = "…") -> String {
+        return (self.count > length) ? self.prefix(length) + trailing : self
+    }
+    
+}
+
+// MARK: - NibType
 
 public protocol NibType {
     
@@ -40,6 +51,8 @@ public extension NibType where Self: NSObjectProtocol {
 public protocol Reusable {
     static var reusableIdentifier: String { get }
 }
+
+// MARK: - Reusable
 
 public extension Reusable {
     

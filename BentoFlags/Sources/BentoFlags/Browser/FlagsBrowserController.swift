@@ -14,13 +14,18 @@ import UIKit
 
 // MARK: - FlagsBrowserController
 
+public struct FlagInProvider {
+    var flag: AnyFlag
+    var provider: FlagProvider
+}
+
 public class FlagsBrowserController: UIViewController {
     
     public enum DataType {
         case flag(AnyFlag)
         case flags(AnyFlagsLoader)
         case loaders([AnyFlagsLoader])
-        case flagData(AnyFlag)
+        case flagData(FlagInProvider)
     }
     
     // MARK: - Private Properties
@@ -28,11 +33,13 @@ public class FlagsBrowserController: UIViewController {
     /// Loaded loaders.
     public private(set) var data: DataType
     public private(set) var items = [FlagBrowserItem]()
-
+    
     /// Tableview of the content.
     private lazy var tableView: UITableView = {
         let table = UITableView(frame: .zero, style: .insetGrouped)
         table.registerNib(type: FlagsBrowserDefaultCell.self)
+        table.registerNib(type: FlagBrowserDataCell.self)
+        table.estimatedRowHeight = 44.0
         table.dataSource = self
         table.delegate = self
         return table
@@ -55,7 +62,7 @@ public class FlagsBrowserController: UIViewController {
     fileprivate init(data: DataType, title: String? = nil) {
         self.data = data
         super.init(nibName: nil, bundle: nil)
-
+        
         self.title = title ?? "FeatureFlags Browser"
     }
     
@@ -68,6 +75,10 @@ public class FlagsBrowserController: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         self.view = tableView
+    }
+    
+    public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         reloadData()
     }
     
@@ -84,10 +95,76 @@ public class FlagsBrowserController: UIViewController {
         case .loaders(let loaders):
             self.items = reloadDataForLoaders(loaders)
             
-        case .flagData(let flag):
-            self.items = []
-        
+        case .flagData(let flagInProvider):
+            self.items = reloadDataForFlagDetail(flagInProvider.flag, inProvider: flagInProvider.provider)
+            
         }
+        
+        tableView.reloadData()
+    }
+    
+    private func reloadDataForFlagDetail(_ flag: AnyFlag, inProvider provider: FlagProvider) -> [FlagBrowserItem] {
+        let infoSection = FlagBrowserItem(title: "Info")
+        
+        infoSection.childs = [
+            FlagBrowserItem(title: "Key", subtitle: flag.keyPath.fullPath, value: flag.name),
+            FlagBrowserItem(title: "Data Type", value: flag.readableDataType),
+            FlagBrowserItem(title: "Provider", value: provider.name)
+        ]
+        
+        let dataSection = FlagBrowserItem(title: "Current Value")
+        let value = flag.getValueForFlag(from: type(of: provider))
+        let isWritableProvider = provider.isWritable
+        
+        // Current value change options
+        switch flag.dataType {
+        case is String.Type:
+            dataSection.childs.append(
+                FlagBrowserItem(value: (value as? String) ?? "",
+                                disabled: !isWritableProvider,
+                                cellType: .entryTextField)
+            )
+        case is Bool.Type:
+            dataSection.childs.append(
+                FlagBrowserItem(title: "True",
+                                accessoryType: ((value as? Bool) == true ? .checkmark : .none),
+                                selectable: isWritableProvider,
+                                disabled: !isWritableProvider,
+                                actionType: .setBoolValue(true))
+            )
+            dataSection.childs.append(
+                FlagBrowserItem(title: "False",
+                                accessoryType: ((value as? Bool) == false ? .checkmark : .none),
+                                selectable: isWritableProvider,
+                                disabled: !isWritableProvider,
+                                actionType: .setBoolValue(false))
+            )
+        case is Int.Type:
+            dataSection.childs.append(
+                FlagBrowserItem(title: "Value",
+                                subtitle: "Tap to modify the value",
+                                value: String(describing: value!),
+                                accessoryType: (value != nil ? .checkmark : .none),
+                                selectable: isWritableProvider,
+                                disabled: !isWritableProvider,
+                                actionType: .setNumericValue(.int))
+            )
+            
+        default:
+            break
+        }
+        
+        // Clear current value
+        dataSection.childs.append(
+            FlagBrowserItem(title: "No Value",
+                            subtitle: "Tap to clear current value (if any)",
+                            accessoryType: (value == nil ? .checkmark : .none),
+                            selectable: isWritableProvider,
+                            disabled: !isWritableProvider,
+                            actionType: .clearValue)
+        )
+        
+        return [infoSection, dataSection]
     }
     
     private func reloadDataForLoaders(_ loaders: [AnyFlagsLoader]) -> [FlagBrowserItem] {
@@ -109,6 +186,7 @@ public class FlagsBrowserController: UIViewController {
     private func reloadDataForFlag(_ flag: AnyFlag) -> [FlagBrowserItem] {
         var sections = [FlagBrowserItem]()
         
+        // MAIN INFO
         let mainSection = FlagBrowserItem(title: "INFORMATIONS")
         mainSection.childs = [
             FlagBrowserItem(title: "Key", subtitle: flag.keyPath.fullPath, value: flag.name),
@@ -117,49 +195,134 @@ public class FlagsBrowserController: UIViewController {
             FlagBrowserItem(title: "Description", subtitle: flag.description)
         ]
         sections.append(mainSection)
-              
+        
+        // CURRENT VALUE
+        let currentValueSection = FlagBrowserItem(title: "CURRENT VALUE")
+        currentValueSection.childs = [
+            FlagBrowserItem(title: flag.getValueDescriptionForFlag(from: nil))
+        ]
+        sections.append(currentValueSection)
+        
+        // HIERARCHY SOURCE PROVIDERS
         let providersSection = FlagBrowserItem(title: "HIERARCHY SOURCE PROVIDERS")
         providersSection.childs = flag.providers.map({ provider -> FlagBrowserItem in
             let isDisabled = flag.excludedProviders?.contains(where: { $0 == type(of: provider) }) ?? false
             let item = FlagBrowserItem(title: provider.name,
-                            subtitle: provider.shortDescription,
-                            value: flag.getValueDescriptionForFlag(from: type(of: provider)),
-                            accessoryType: .disclosureIndicator)
+                                       subtitle: provider.shortDescription,
+                                       value: flag.getValueDescriptionForFlag(from: type(of: provider)).trunc(length: 20),
+                                       accessoryType: .disclosureIndicator)
             item.isDisabled = isDisabled
+            item.isSelectable = !isDisabled
+            item.representedObj = FlagInProvider(flag: flag, provider: provider)
             return item
         })
         sections.append(providersSection)
-        
+
         return sections
     }
     
-    private func didSelectItem(_ item: FlagBrowserItem) {
+    private func didSelectItem(_ item: FlagBrowserItem, cell: UITableViewCell?) {
         guard let value = item.representedObj else {
+            didSelectAction(item.actionType, cell: cell)
             return
         }
         
         switch value {
         case let loader as AnyFlagsLoader:
-            browseLoader(loader)
+            createAndPushBrowserController(withData: .flags(loader), title: loader.collectionType)
             
         case let flag as AnyFlag:
-            browseFlagDetail(flag)
+            createAndPushBrowserController(withData: .flag(flag), title: flag.name)
+            
+        case let flagInProvider as FlagInProvider:
+            createAndPushBrowserController(withData: .flagData(flagInProvider), title: "\(flagInProvider.provider.name)'s Data")
             
         default:
-            break
+            didSelectAction(item.actionType, cell: cell)
+            
         }
     }
     
-    private func browseFlagDetail(_ flag: AnyFlag) {
-        let data: DataType = .flag(flag)
-        let controller = FlagsBrowserController(data: data, title: flag.name)
+    private func didSelectAction(_ action: FlagBrowserItem.ActionType, cell: UITableViewCell?) {
+        do {
+            switch action {
+            case .none:
+                break
+                
+            case .clearValue:
+                guard case .flagData(let flagInProvider) = data else { return }
+                
+                let value: Bool? = nil
+                try flagInProvider.provider.setValue(value, forFlag: flagInProvider.flag.keyPath)
+                goBackInNavigation()
+                
+            case .setBoolValue(let value):
+                guard case .flagData(let flagInProvider) = data else { return }
+                
+                try flagInProvider.provider.setValue(value, forFlag: flagInProvider.flag.keyPath)
+                goBackInNavigation()
+                
+            case .setStringValue:
+                guard case .flagData(let flagInProvider) = data else { return }
+
+                if let newValue = (cell as? FlagBrowserDataCell)?.valueField.text, newValue.isEmpty == false {
+                    try flagInProvider.provider.setValue(newValue, forFlag: flagInProvider.flag.keyPath)
+                    goBackInNavigation()
+                }
+                
+            case .setNumericValue(let valueType):
+                guard case .flagData(let flagInProvider) = data else { return }
+
+                let alert = UIAlertController(title: "Set Numeric Value", message: nil, preferredStyle: .alert)
+                alert.addTextField { field in
+                    field.keyboardType = .numbersAndPunctuation
+                    field.autocorrectionType = .no
+                }
+                alert.addAction(UIAlertAction(title: "Set", style: .default, handler: { [weak self] _ in
+                    guard let value = alert.textFields?.first?.text, value.isEmpty == false else {
+                        return
+                    }
+                    
+                    do {
+                        switch valueType {
+                        case .double:
+                            let doubleValue = Double(value)
+                            try flagInProvider.provider.setValue(doubleValue, forFlag: flagInProvider.flag.keyPath)
+                        case .float:
+                            let floatValue = Float(value)
+                            try flagInProvider.provider.setValue(floatValue, forFlag: flagInProvider.flag.keyPath)
+                        case .int:
+                            let intValue = Int(value)
+                            try flagInProvider.provider.setValue(intValue, forFlag: flagInProvider.flag.keyPath)
+                        }
+                        
+                        self?.goBackInNavigation()
+                    } catch {
+                        self?.showErrorMessage("Failed to cast value", message: error.localizedDescription)
+                    }
+                    
+                }))
+                alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+                present(alert, animated: true, completion: nil)
+            }
+        } catch {
+            
+        }
+    }
+    
+    private func showErrorMessage(_ title: String, message: String?) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
+    
+    private func createAndPushBrowserController(withData data: DataType, title: String?) {
+        let controller = FlagsBrowserController(data: data, title: title)
         navigationController?.pushViewController(controller, animated: true)
     }
     
-    private func browseLoader(_ loader: AnyFlagsLoader) {
-        let data: DataType = .flags(loader)
-        let controller = FlagsBrowserController(data: data, title: loader.collectionType)
-        navigationController?.pushViewController(controller, animated: true)
+    private func goBackInNavigation() {
+        navigationController?.popViewController(animated: true)
     }
     
 }
@@ -167,6 +330,10 @@ public class FlagsBrowserController: UIViewController {
 // MARK: - FlagsBrowserController (UITableViewDataSource, UITableViewDelegate)
 
 extension FlagsBrowserController: UITableViewDataSource, UITableViewDelegate {
+    
+    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        UITableView.automaticDimension
+    }
     
     public func numberOfSections(in tableView: UITableView) -> Int {
         items.count
@@ -183,13 +350,26 @@ extension FlagsBrowserController: UITableViewDataSource, UITableViewDelegate {
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let item = items[indexPath.section].childs[indexPath.row]
         
-        let cell = FlagsBrowserDefaultCell.dequeue(from: tableView, for: indexPath)
-        _ = cell.contentView
-        
-        cell.set(title: item.title, subtitle: item.subtitle, value: item.value, image: nil)
-        cell.accessoryType = item.accessoryType
-        cell.isDisabled = item.isDisabled
-        return cell
+        switch item.cellType {
+        case .default:
+            let cell = FlagsBrowserDefaultCell.dequeue(from: tableView, for: indexPath)
+            _ = cell.contentView
+            
+            cell.set(title: item.title, subtitle: item.subtitle, value: item.value, image: nil)
+            cell.accessoryType = item.accessoryType
+            cell.isDisabled = item.isDisabled
+            return cell
+            
+        case .entryTextField:
+            let cell = FlagBrowserDataCell.dequeue(from: tableView, for: indexPath)
+            cell.parentTableView = tableView
+            cell.onTapSaveStringData = { [weak self] _ in
+                self?.didSelectAction(.setStringValue, cell: cell)
+            }
+            cell.set(title: "Data", value: item.value ?? "")
+            cell.isDisabled = item.isDisabled
+            return cell
+        }
     }
     
     public func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
@@ -201,7 +381,7 @@ extension FlagsBrowserController: UITableViewDataSource, UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         
         let item = items[indexPath.section].childs[indexPath.row]
-        didSelectItem(item)
+        didSelectItem(item, cell: tableView.cellForRow(at: indexPath))
     }
     
 }

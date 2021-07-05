@@ -14,6 +14,25 @@ import UIKit
 
 public class FlagBrowserItem {
     
+    public enum CellType {
+        case `default`
+        case entryTextField
+    }
+    
+    public enum NumericConversion {
+        case int
+        case float
+        case double
+    }
+    
+    public enum ActionType {
+        case none
+        case setBoolValue(Bool)
+        case setStringValue
+        case setNumericValue(NumericConversion)
+        case clearValue
+    }
+    
     // MARK: - Public Properties
     
     public private(set) var title: String?
@@ -22,11 +41,13 @@ public class FlagBrowserItem {
     
     public var childs = [FlagBrowserItem]()
     public private(set) var accessoryType: UITableViewCell.AccessoryType = .none
-    public private(set) var isSelectable = false
+    public var isSelectable = false
     public var isDisabled = false
 
     public var representedObj: Any?
-    
+    public var cellType: CellType = .default
+    public var actionType: ActionType = .none
+
     // MARK: - Initialization
 
     public init(title: String? = nil,
@@ -34,13 +55,19 @@ public class FlagBrowserItem {
                 value: String? = nil,
                 accessoryType: UITableViewCell.AccessoryType = .none,
                 selectable: Bool = false,
-                representedObj: Any? = nil) {
+                disabled: Bool = false,
+                representedObj: Any? = nil,
+                cellType: CellType = .default,
+                actionType: ActionType = .none) {
         self.title = title
         self.subtitle = subtitle
         self.value = value
         self.accessoryType = accessoryType
         self.isSelectable = selectable
         self.representedObj = representedObj
+        self.cellType = cellType
+        self.actionType = actionType
+        self.isDisabled = disabled
     }
     
     public init(loader: AnyFlagsLoader) {

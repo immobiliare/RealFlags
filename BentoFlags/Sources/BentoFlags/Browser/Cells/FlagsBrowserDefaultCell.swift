@@ -10,7 +10,6 @@
 //  Licensed under MIT License.
 //
 
-
 import UIKit
 
 public class FlagsBrowserDefaultCell: UITableViewCell, Reusable, NibType {

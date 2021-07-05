@@ -24,6 +24,9 @@ public class FirebaseRemoteProvider: FlagProvider {
     /// Name of the remote configuration.
     public var name: String = "Firebase Remote"
     
+    /// Does not support writing values.
+    public var isWritable = false
+    
     /// Short description.
     public var shortDescription: String? {
         FirebaseApp.app()?.name

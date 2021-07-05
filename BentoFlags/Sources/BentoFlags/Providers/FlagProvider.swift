@@ -27,6 +27,10 @@ public protocol FlagProvider {
     /// Short description of the object used into the UI.
     var shortDescription: String? { get }
     
+    /// Return `true` if provider support overwriting values via `setValue()` function.
+    /// Some local providers may support overrides, some remotes may not.
+    var isWritable: Bool { get }
+    
     /// Fetch value for a specific flag.
     ///
     /// - Parameter key: key of the flag to retrive.
@@ -36,7 +40,7 @@ public protocol FlagProvider {
     ///
     /// - Parameters:
     ///   - value: value to set; `nil` value is set to clear any previously set value for given key.
-    ///   - key: key path to set.
+    ///   - key: keypath to set.
     @discardableResult
     func setValue<Value>(_ value: Value?, forFlag key: FlagKeyPath) throws -> Bool where Value: FlagProtocol
         

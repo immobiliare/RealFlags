@@ -34,6 +34,11 @@ extension UserDefaults: FlagProvider {
         return "UserDefaults-Standard"
     }
     
+    /// Support writing values.
+    public var isWritable: Bool {
+        true
+    }
+    
     // MARK: - FlagProvider Conformance
 
     public func valueForFlag<Value>(key: FlagKeyPath) -> Value? where Value : FlagProtocol {

@@ -31,6 +31,9 @@ public class LocalProvider: FlagProvider, Identifiable {
     /// Use `Flag`'s `setValue()` function to overwrite existing keys.
     public let localURL: URL?
     
+    /// Support writing values.
+    public var isWritable = true
+    
     // MARK: - Internal Properties
     
     /// Storage data.

@@ -148,7 +148,7 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
     /// - Parameter types: types to filter.
     /// - Returns: [FlagProvider]
     private func providersWithTypes(_ types: [FlagProvider.Type]?) -> [FlagProvider] {
-        guard let filteredByTypes = types else {
+        guard let filteredByTypes = types, filteredByTypes.isEmpty == false else {
             return allowedProviders() // no filter applied, return allowed providers.
         }
         
