@@ -1,8 +1,8 @@
-## IndomioFlags
+# IndomioFlags
 
 IndomioFlags makes it easy to configure feature flags in your codebase. It's designed for Swift and  provides a simple and elegant abstraction layer over multiple providers you can query with your own priority.
 
-### Features
+## Features
 
 - **Simple & Elegant**: Effectively describe and organize your own flags with a type-safe structure.
 - **Compact**: Thanks to Swift's Property Wrapper you will consistently reduce the amount of code to manage your feature flags.
@@ -12,7 +12,7 @@ IndomioFlags makes it easy to configure feature flags in your codebase. It's des
 - **Fast**: Enable, disable and customize features at runtime
 - **Reactive**: We support Combine extensions (only on Apple platforms)
 
-### How it works: simple scenario
+## What you get
 
 Our goal making IndomioFlags is to provide a type-safe abstract way to describe and query for feature flags.
 
@@ -44,7 +44,7 @@ let fb = FirebaseRemoteProvider()
 let userFlagsLoader = FlagsLoader(UserFlags.self, providers: [fb, local])
 ```
 
-Now you can query values from `userFlagsLoader` by using the `UserFlags` structure (it suppports autocomplete and type-safe value thanks to @dynamicMemberLookup!).  
+Now you can query values from `userFlagsLoader` by using the `UserFlags` structure (it suppports autocomplete and type-safe value thanks to `@dynamicMemberLookup`!).  
 Let me show it:
 
 ```swift
@@ -56,8 +56,15 @@ if userFlagsLoader.showSocialLogin {
 Values are obtained respecting the order you have specified, in this case from Firebase Remote Config service then, when no value is found, into the local repository.  
 If no values are available the default value specified in `@Flags` annotation is returned.
 
-This is a quicklook at the library; if you want to know more follow the documentation below.
+This is just an overview of the library; if you want to know more follow the documentation below.
 
-### Documentation
+## Documentation
 
-The following se
+The following documentation describe detailed usage of the library.
+
+- 1. How to organize your feature flags
+- 2. The `FlagsManager` singleton
+- 3. 
+
+
+### 1. How to organize your feature flags
