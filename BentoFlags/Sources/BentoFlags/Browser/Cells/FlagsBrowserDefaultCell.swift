@@ -26,8 +26,9 @@ public class FlagsBrowserDefaultCell: UITableViewCell, Reusable, NibType {
     public var isDisabled: Bool = false {
         didSet {
             titlelabel.textColor = (isDisabled ? .lightGray : .black)
-            valueLabel.textColor = (isDisabled ? .lightGray : .black)
+            valueLabel.textColor = (isDisabled ? .red : .tintColor)
             subtitleLabel.textColor = (isDisabled ? .lightGray : .darkGray)
+            print(isDisabled)
         }
     }
 
@@ -50,4 +51,17 @@ public class FlagsBrowserDefaultCell: UITableViewCell, Reusable, NibType {
         valueLabel.isHidden = value?.isEmpty ?? true
     }
     
+    public override func prepareForReuse() {
+        super.prepareForReuse()
+        self.isDisabled = false
+    }
+    
+}
+
+extension UIColor {
+    static var tintColor: UIColor {
+        get {
+            UIApplication.shared.windows.first?.rootViewController?.view.tintColor ?? .blue
+        }
+    }
 }

@@ -54,10 +54,23 @@ public protocol AnyFlag {
     
 }
 
+// MARK: - AnyFlag (Flag Conformance)
+
 extension Flag: AnyFlag {
     
     public var dataType: Any.Type {
-        type(of: wrappedValue.self)
+        
+        func isOptional(_ instance: Any) -> Bool {
+            let mirror = Mirror(reflecting: instance)
+            let style = mirror.displayStyle
+            return style == .optional
+        }
+        
+        if isOptional(wrappedValue) {
+            return wrappedTypeFromOptionalType(type(of: wrappedValue.self))!
+        } else {
+            return type(of: wrappedValue.self)
+        }
     }
     
     public var defaultFallbackValue: Any? {
@@ -78,13 +91,12 @@ extension Flag: AnyFlag {
     
     public func getValueDescriptionForFlag(from providerType: FlagProvider.Type? = nil) -> String {
         guard let value = getValueForFlag(from: providerType) else {
-            return "nil"
+            return readableDefaultFallbackValue
         }
         
         return String(describing: value)
     }
     
-
     public var name: String {
         metadata.name ?? loader.propertyName ?? ""
     }

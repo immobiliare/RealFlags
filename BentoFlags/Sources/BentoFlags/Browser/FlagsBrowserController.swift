@@ -31,19 +31,11 @@ public class FlagsBrowserController: UIViewController {
     // MARK: - Private Properties
     
     /// Loaded loaders.
-    public private(set) var data: DataType
+    public private(set) var data: DataType!
     public private(set) var items = [FlagBrowserItem]()
     
     /// Tableview of the content.
-    private lazy var tableView: UITableView = {
-        let table = UITableView(frame: .zero, style: .insetGrouped)
-        table.registerNib(type: FlagsBrowserDefaultCell.self)
-        table.registerNib(type: FlagBrowserDataCell.self)
-        table.estimatedRowHeight = 44.0
-        table.dataSource = self
-        table.delegate = self
-        return table
-    }()
+    @IBOutlet public var tableView: UITableView?
     
     // MARK: - Initialization (with Navigation)
     
@@ -52,29 +44,24 @@ public class FlagsBrowserController: UIViewController {
     }
     
     public static func create(loaders: [AnyFlagsLoader], title: String? = nil) -> UINavigationController {
-        let controller = FlagsBrowserController.init(data: .loaders(loaders), title: title)
+        let controller = UIStoryboard(name: "FlagsBrowserController", bundle: .module).instantiateInitialViewController() as! FlagsBrowserController
+        controller.title = title ?? "FeatureFlags Browser"
+        controller.data = .loaders(loaders)
+        
         let navigation = UINavigationController(rootViewController: controller)
         return navigation
     }
-    
-    // MARK: - Initialization (Private)
-    
-    fileprivate init(data: DataType, title: String? = nil) {
-        self.data = data
-        super.init(nibName: nil, bundle: nil)
-        
-        self.title = title ?? "FeatureFlags Browser"
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
+
     // MARK: - View Lifecycle
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-        self.view = tableView
+        
+        tableView?.registerNib(type: FlagsBrowserDefaultCell.self)
+        tableView?.registerNib(type: FlagBrowserDataCell.self)
+        tableView?.estimatedRowHeight = 44.0
+        tableView?.dataSource = self
+        tableView?.delegate = self
     }
     
     public override func viewWillAppear(_ animated: Bool) {
@@ -98,9 +85,11 @@ public class FlagsBrowserController: UIViewController {
         case .flagData(let flagInProvider):
             self.items = reloadDataForFlagDetail(flagInProvider.flag, inProvider: flagInProvider.provider)
             
+        case .none:
+            break
         }
         
-        tableView.reloadData()
+        tableView?.reloadData()
     }
     
     private func reloadDataForFlagDetail(_ flag: AnyFlag, inProvider provider: FlagProvider) -> [FlagBrowserItem] {
@@ -115,6 +104,7 @@ public class FlagsBrowserController: UIViewController {
         let dataSection = FlagBrowserItem(title: "Current Value")
         let value = flag.getValueForFlag(from: type(of: provider))
         let isWritableProvider = provider.isWritable
+        var isWritableObject = true
         
         // Current value change options
         switch flag.dataType {
@@ -139,9 +129,9 @@ public class FlagsBrowserController: UIViewController {
                                 disabled: !isWritableProvider,
                                 actionType: .setBoolValue(false))
             )
-        case is Int.Type:
+        case is Int.Type, is Int8.Type, is Int16.Type, is Int32.Type, is Int64.Type:
             dataSection.childs.append(
-                FlagBrowserItem(title: "Value",
+                FlagBrowserItem(title: "Int Value",
                                 subtitle: "Tap to modify the value",
                                 value: String(describing: value!),
                                 accessoryType: (value != nil ? .checkmark : .none),
@@ -150,19 +140,48 @@ public class FlagsBrowserController: UIViewController {
                                 actionType: .setNumericValue(.int))
             )
             
+        case is Double.Type:
+            dataSection.childs.append(
+                FlagBrowserItem(title: "Double Value",
+                                subtitle: "Tap to modify the value",
+                                value: String(describing: value!),
+                                accessoryType: (value != nil ? .checkmark : .none),
+                                selectable: isWritableProvider,
+                                disabled: !isWritableProvider,
+                                actionType: .setNumericValue(.double))
+            )
+            
+        case is JSONData.Type:
+            dataSection.childs.append(
+                FlagBrowserItem(value: (value as? String) ?? "",
+                                disabled: !isWritableProvider,
+                                cellType: .entryTextField,
+                                actionType: .setJSONValue)
+            )
+            
         default:
-            break
+            // Cannot edit these objects (Conforms to codable) directly via IDE
+            isWritableObject = false
         }
         
-        // Clear current value
-        dataSection.childs.append(
-            FlagBrowserItem(title: "No Value",
-                            subtitle: "Tap to clear current value (if any)",
-                            accessoryType: (value == nil ? .checkmark : .none),
-                            selectable: isWritableProvider,
-                            disabled: !isWritableProvider,
-                            actionType: .clearValue)
-        )
+        if isWritableObject {
+            // Clear current value
+            dataSection.childs.append(
+                FlagBrowserItem(title: "No Value",
+                                subtitle: "Tap to clear current value (if any)",
+                                accessoryType: (value == nil ? .checkmark : .none),
+                                selectable: isWritableProvider,
+                                disabled: !isWritableProvider,
+                                actionType: .clearValue)
+            )
+        } else {
+            dataSection.childs.append(
+                FlagBrowserItem(title: "Cannot Edit Value",
+                                subtitle: "Value is not editable via IDE, continue via code",
+                                selectable: false,
+                                disabled: true)
+            )
+        }
         
         return [infoSection, dataSection]
     }
@@ -304,6 +323,15 @@ public class FlagsBrowserController: UIViewController {
                 }))
                 alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
                 present(alert, animated: true, completion: nil)
+                
+            case .setJSONValue:
+                guard case .flagData(let flagInProvider) = data else { return }
+
+                if let newValue = (cell as? FlagBrowserDataCell)?.valueField.text, newValue.isEmpty == false,
+                    let jsonData = JSONData(jsonString: newValue) {
+                    try flagInProvider.provider.setValue(jsonData, forFlag: flagInProvider.flag.keyPath)
+                    goBackInNavigation()
+                }
             }
         } catch {
             
@@ -317,7 +345,9 @@ public class FlagsBrowserController: UIViewController {
     }
     
     private func createAndPushBrowserController(withData data: DataType, title: String?) {
-        let controller = FlagsBrowserController(data: data, title: title)
+        let controller = UIStoryboard(name: "FlagsBrowserController", bundle: .module).instantiateInitialViewController() as! FlagsBrowserController
+        controller.title = title ?? ""
+        controller.data = data
         navigationController?.pushViewController(controller, animated: true)
     }
     
@@ -364,7 +394,7 @@ extension FlagsBrowserController: UITableViewDataSource, UITableViewDelegate {
             let cell = FlagBrowserDataCell.dequeue(from: tableView, for: indexPath)
             cell.parentTableView = tableView
             cell.onTapSaveStringData = { [weak self] _ in
-                self?.didSelectAction(.setStringValue, cell: cell)
+                self?.didSelectAction(item.actionType, cell: cell)
             }
             cell.set(title: "Data", value: item.value ?? "")
             cell.isDisabled = item.isDisabled
@@ -374,6 +404,7 @@ extension FlagsBrowserController: UITableViewDataSource, UITableViewDelegate {
     
     public func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
         let item = items[indexPath.section].childs[indexPath.row]
+        print("selectgable \(item.isSelectable)")
         return item.isSelectable
     }
     

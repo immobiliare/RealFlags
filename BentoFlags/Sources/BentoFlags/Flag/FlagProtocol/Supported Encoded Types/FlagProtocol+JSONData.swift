@@ -35,6 +35,17 @@ public class JSONData {
         self.dictionary = dict as NSDictionary
     }
     
+    /// Initialize with json string. Return `nil` if invalid json.
+    ///
+    /// - Parameter jsonString: json string
+    public init?(jsonString: String) {
+        guard let dict = try? JSONSerialization.jsonObject(with: jsonString.data(using: .utf8)!,
+                                                           options: .allowFragments) as? NSDictionary else {
+            return nil
+        }
+        self.dictionary = dict
+    }
+    
     required public init?(encoded value: EncodedFlagValue) {
         switch value {
         case .json(let dict):

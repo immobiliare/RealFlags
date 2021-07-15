@@ -48,6 +48,11 @@ public class FlagBrowserDataCell: UITableViewCell, Reusable, NibType, UITextView
         valueField.delegate = self
     }
     
+    public override func prepareForReuse() {
+        super.prepareForReuse()
+        self.isDisabled = false
+    }
+    
     public func textViewDidChange(_ textView: UITextView) {
         guard let tableView = parentTableView else {
             return
@@ -64,7 +69,6 @@ public class FlagBrowserDataCell: UITableViewCell, Reusable, NibType, UITextView
         tableView.endUpdates()
         
         UIView.setAnimationsEnabled(true)
-        print("\(newSize)")
     }
     
     @IBAction public func didTapSave(_ sender: UIButton) {

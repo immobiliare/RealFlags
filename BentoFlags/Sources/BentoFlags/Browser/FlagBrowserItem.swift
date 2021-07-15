@@ -30,6 +30,7 @@ public class FlagBrowserItem {
         case setBoolValue(Bool)
         case setStringValue
         case setNumericValue(NumericConversion)
+        case setJSONValue
         case clearValue
     }
     
@@ -79,11 +80,10 @@ public class FlagBrowserItem {
                             value: loader.collectionType,
                             selectable: false),
             FlagBrowserItem(title: "Data Providers",
-                            subtitle: loader.providers?.map({ $0.name }).joined(separator: ", "),
-                            value: "\(loader.providers?.count ?? 0)",
+                            value: loader.providers?.map({ $0.name }).joined(separator: "\n"),
                             accessoryType: .disclosureIndicator,
                             selectable: true),
-            FlagBrowserItem(title: "Browse Flags",
+            FlagBrowserItem(title: "Browse",
                             value: "\(loader.featureFlags.count)",
                             accessoryType: .disclosureIndicator,
                             selectable: true,
