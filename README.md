@@ -5,6 +5,7 @@ IndomioFlags makes it easy to configure feature flags in your codebase. It's des
 
 - **Simple & Elegant**: Effectively describe and organize your own flags with a type-safe structure.
 - **Compact**: Thanks to Swift's Property Wrapper you will consistently reduce the amount of code to manage your feature flags.
+- **Extensible**: Feature Flags supports all primitive datatypes: `Int` (and any numeric variant), `String`, `Bool`, `Data`, `Date`, `URL`, `Dictionary`, `Array` (values must conform to `FlagProtocol`), Optional Values and virtually any object conforms to `Codable` protocol!
 - **Transparent**: IndomioFlags abracts over many service implementations with ease.
 - **Extensible**: You can use one of the default data providers or create your own. We support Firebase Remote and Local configurations too.
 - **Configurable**: a simple UI you can integrate in your developer's mode allows you to customize and read flags at glance, even for PMs.
@@ -61,47 +62,15 @@ This is just an overview of the library; if you want to know more follow the doc
 
 The following documentation describe detailed usage of the library.
 
-- 1. Organize feature flags
-- 2. The `FlagsManager` singleton
-- 3. 
-
-
-### 1. Organize feature flags
-
-While IndomioFlags leave you free to organize your feature flags the library's architecture itself encourage you to classify feature flags and group them according to your criteria.  
-You can stay flat or you can create nested categories. 
-A single struct conforms to `FlagCollectionProtocol` may contains both properties and other collections:
-
-```swift
-
-/// Root Collection
-
-struct AppFeatureFlags: FlagCollectionProtocol {
-    @FlagCollection(description: "User's Related Flags Collection")
-    var userFlags: UserFlags
-    
-    @FlagCollection(description: "Experimental Flags Collection")
-    var expFlags: ExperimentalFlags
-
-    // ...
-}
-
-/// Users Related Flags
-
-struct UserFlags: FlagCollectionProtocol {
-    @Flag(default: false, description: "Show Social Login Button")
-    var showSocialLogin: Bool
-    
-    // ...
-}
-
-/// Experimental Flags
-
-struct ExperimentalFlags: FlagCollectionProtocol {
-    @Flag(default: false, description: "New cool cache algorithm")
-    var enableFastPrecache: Bool
-    
-    @Flag(key: "list_layout", default: nil, description: "Layout settings (JSON)")
-    var listLayoutSettings: JSONData?
-}
-```
+- 1. [Introduction](./documentation/introduction.md)
+    - 1.1. `@Flag` Annotation
+    - 1.2. `@Flag` Supported Data Types
+    - 1.3. Load a Feature Flag Collection in a `FlagLoader`
+    - 1.4. Configure Key Evaluation for `FlagsLoader`'s `@Flag`
+    - 1.5. Query a specific data provider
+- 2. [Organize Feature Flags](./documentation/organize_feature_flags.md)
+    - 2.1 The `@FlagCollection` annotation
+    - 2.2 Nested Structures
+- 3. [Advanced Usage](./documentation/advanced_usage.md)
+    3.1. Using `FlagsManager` singleton
+    3.2. 
