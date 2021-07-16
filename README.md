@@ -1,5 +1,4 @@
 # IndomioFlags
-
 IndomioFlags makes it easy to configure feature flags in your codebase. It's designed for Swift and  provides a simple and elegant abstraction layer over multiple providers you can query with your own priority.
 
 ## Features
@@ -62,9 +61,47 @@ This is just an overview of the library; if you want to know more follow the doc
 
 The following documentation describe detailed usage of the library.
 
-- 1. How to organize your feature flags
+- 1. Organize feature flags
 - 2. The `FlagsManager` singleton
 - 3. 
 
 
-### 1. How to organize your feature flags
+### 1. Organize feature flags
+
+While IndomioFlags leave you free to organize your feature flags the library's architecture itself encourage you to classify feature flags and group them according to your criteria.  
+You can stay flat or you can create nested categories. 
+A single struct conforms to `FlagCollectionProtocol` may contains both properties and other collections:
+
+```swift
+
+/// Root Collection
+
+struct AppFeatureFlags: FlagCollectionProtocol {
+    @FlagCollection(description: "User's Related Flags Collection")
+    var userFlags: UserFlags
+    
+    @FlagCollection(description: "Experimental Flags Collection")
+    var expFlags: ExperimentalFlags
+
+    // ...
+}
+
+/// Users Related Flags
+
+struct UserFlags: FlagCollectionProtocol {
+    @Flag(default: false, description: "Show Social Login Button")
+    var showSocialLogin: Bool
+    
+    // ...
+}
+
+/// Experimental Flags
+
+struct ExperimentalFlags: FlagCollectionProtocol {
+    @Flag(default: false, description: "New cool cache algorithm")
+    var enableFastPrecache: Bool
+    
+    @Flag(key: "list_layout", default: nil, description: "Layout settings (JSON)")
+    var listLayoutSettings: JSONData?
+}
+```
