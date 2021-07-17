@@ -55,3 +55,10 @@ You can also remove collection from `FlagsManager` using the `removeCollection()
 
 > NOTE: As you may have noticed only a single collection type can be loaded by a `FlagsManager`: you can't have multiple instances of the same collection type.
 
+## 3.2. Modify a feature flag at runtime 
+
+While generally you don't need to modify value for feature flags, sometimes you may need of this feature. Obivously not all data provider supports 
+
+## 3.3 Flags Browser
+
+Flags Browser is a small UI tool for displaying and manipulating feature flags. You can include it in your product

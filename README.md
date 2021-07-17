@@ -8,9 +8,8 @@ IndomioFlags makes it easy to configure feature flags in your codebase. It's des
 - **Extensible**: Feature Flags supports all primitive datatypes: `Int` (and any numeric variant), `String`, `Bool`, `Data`, `Date`, `URL`, `Dictionary`, `Array` (values must conform to `FlagProtocol`), Optional Values and virtually any object conforms to `Codable` protocol!
 - **Transparent**: IndomioFlags abracts over many service implementations with ease.
 - **Extensible**: You can use one of the default data providers or create your own. We support Firebase Remote and Local configurations too.
-- **Configurable**: a simple UI you can integrate in your developer's mode allows you to customize and read flags at glance, even for PMs.
 - **Fast**: Enable, disable and customize features at runtime
-- **Reactive**: We support Combine extensions (only on Apple platforms)
+- **Integrated UI Tool**: a simple UI you can integrate in your developer's mode allows you to customize and read flags at glance, even for PMs.
 
 ## What you get
 
@@ -62,15 +61,74 @@ This is just an overview of the library; if you want to know more follow the doc
 
 The following documentation describe detailed usage of the library.
 
-- 1. [Introduction](./documentation/introduction.md)
-    - 1.1. `@Flag` Annotation
-    - 1.2. `@Flag` Supported Data Types
-    - 1.3. Load a Feature Flag Collection in a `FlagLoader`
-    - 1.4. Configure Key Evaluation for `FlagsLoader`'s `@Flag`
-    - 1.5. Query a specific data provider
-- 2. [Organize Feature Flags](./documentation/organize_feature_flags.md)
-    - 2.1 The `@FlagCollection` annotation
-    - 2.2 Nested Structures
-- 3. [Advanced Usage](./documentation/advanced_usage.md)
-    3.1. Using `FlagsManager` singleton
-    3.2. 
+- 1 [Introduction](./documentation/introduction.md)  
+    - [1.1 `@Flag` Annotation](./documentation/introduction.md#1.1)   
+    - [1.2 `@Flag` Supported Data Types](./documentation/introduction.md#1.2)   
+    - [1.3 Load a Feature Flag Collection in a `FlagLoader`](./documentation/introduction.md#1.3)   
+    - [1.4 Configure Key Evaluation for `FlagsLoader`'s `@Flag`](./documentation/introduction.md#1.4)   
+    - [1.5 Query a specific data provider](./documentation/introduction.md#1.5)   
+- 2 [Organize Feature Flags](./documentation/organize_feature_flags.md)  
+    - [2.1 The `@FlagCollection` annotation](./documentation/organize_feature_flags.md#2.1)  
+    - [2.2 Nested Structures](./documentation/organize_feature_flags.md#2.2)  
+- 3. [Advanced Usage](./documentation/advanced_usage.md)  
+    [3.1 Using `FlagsManager`](./documentation/advanced_usage.md#3.1)  
+    - [3.2 Use and create new `FlagProvider`](./documentation/advanced_usage.md#3.2)  
+    - [3.3 Modify a feature flag at runtime](./documentation/advanced_usage.md#3.3)  
+    - [3.4 Flags Browser](./documentation/advanced_usage.md#3.4)  
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Support & Contribute](#support)
+- [Powered by IndomioFlags](#powered)
+- [License](#license)
+
+<a name="#requirements"/>
+
+## Requirements
+
+<a name="#installation"/>
+
+## Installation
+
+To use IndomioFlags in your project add it as a dependency in a Swift Package, add it to your Package.swift:
+
+```swift
+dependencies: [
+    .package(url: "", from: "1.0.0")
+]
+```
+
+And add it as a dependency of your target:
+
+```swift
+targets: [
+    .target(name: "MyTarget", dependencies: [
+        .product(name: "", package: "")
+    ])
+]
+```
+
+In Xcode 11+ you can also navigate to the File menu and choose Swift Packages -> Add Package Dependency..., then enter the repository URL and version details.
+
+You can also use CocoaPods
+
+<a name="#support"/>
+
+## Support & Contribute
+
+We'd love for you to contribute to IndomioFlags!  
+If you have any questions on how to use IndomioFlags, bugs and enhancement please feel free to reach out by opening a [GitHub Issue](https://github.com/.../issues).
+
+<a name="#powered"/>
+
+## Powered by IndomioFlags
+
+IndomioFlags was created by the amazing mobile team at ImmobiliareLabs, the Tech dept at Immobiliare.it, the first real estate site in Italy.  
+We are currently using IndomioFlags in all of our products.
+
+**If you are using IndomioFlags in your app [drop us a message](), we'll add it in this collection**.
+
+<a name="#license"/>
+
+## License
+
+IndomioFlags is licensed under the Apache 2.0 license. See the LICENSE file for more information.
