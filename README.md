@@ -60,7 +60,7 @@ If no values are available the default value specified in `@Flags` annotation is
 
 This is just an overview of the library; if you want to know more follow the [documentation below](#documentation).
 
-## 🎛 FlagsBrowser UI
+## 🎛 Flags Browser UI
 
 IndomioFlags also comes with an handy tool you can use to browse and alter feature flags values directly in your client! It can be useful for testing purpose or allow product owners to enable/disable and verify features of the app.
 
@@ -102,11 +102,11 @@ Other sections:
 
 ## Requirements
 
-IndomioFlags can be installed in any platform which supports Swift 5.5+ including Windows and Linux. On Apple platform the following configuration is required:
+IndomioFlags can be installed in any platform which supports Swift 5.4+ including Windows and Linux. On Apple platform the following configuration is required:
 
 - iOS 12+, macOS 11.4+, watchOS 7+, tvOS 9+
 - Xcode 12.5+
-- Swift 5.5
+- Swift 5.4+
 
 <a name="#installation"/>
 

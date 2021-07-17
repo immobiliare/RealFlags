@@ -4,7 +4,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "BentoFlags",
+    name: "IndomioFlags",
     platforms: [
         .iOS(.v13),
         .macOS(.v10_15),
@@ -12,9 +12,8 @@ let package = Package(
         .watchOS(.v6)
     ],
     products: [
-        // Products define the executables and libraries a package produces, and make them visible to other packages.
-        .library(name: "BentoFlags", targets: ["BentoFlags"]),
-        .library(name: "BentoFlagsFirebase", targets: ["BentoFlagsFirebase"])
+        .library(name: "IndomioFlags", targets: ["IndomioFlags"]),
+        .library(name: "IndomioFlagsFirebase", targets: ["IndomioFlagsFirebase"])
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -25,23 +24,21 @@ let package = Package(
         )
     ],
     targets: [
-        // Targets are the basic building blocks of a package. A target can define a module or a test suite.
-        // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
-            name: "BentoFlags",
+            name: "IndomioFlags",
             dependencies: [],
-            path: "BentoFlags/Sources"
+            path: "IndomioFlags/Sources"
         ),
         .target(
-            name: "BentoFlagsFirebase",
+            name: "IndomioFlagsFirebase",
             dependencies: [
-                "BentoFlags",
+                "IndomioFlags",
                 .product(name: "FirebaseRemoteConfig", package: "Firebase"),
             ],
-            path: "BentoFlagsFirebase/Sources"
+            path: "IndomioFlagsFirebase/Sources"
         ),
         .testTarget(
-            name: "BentoFlagsTests",
-            dependencies: ["BentoFlags"]),
+            name: "IndomioFlagsTests",
+            dependencies: ["IndomioFlags"]),
     ]
 )
