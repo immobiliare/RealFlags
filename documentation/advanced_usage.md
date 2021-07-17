@@ -3,6 +3,8 @@
 
 # 3. Advanced Usage
 
+<a name="#3.1"/>
+
 ## 3.1 Using `FlagsManager`
 
 As you see above you need to allocate a `FlagsLoader` to read values for a feature flag collection. You also need to keep this flags loader instances around; `FlagsManager` allows you to collect, keep alive and manage feature flags collection easily.
@@ -55,6 +57,8 @@ You can also remove collection from `FlagsManager` using the `removeCollection()
 
 > NOTE: As you may have noticed only a single collection type can be loaded by a `FlagsManager`: you can't have multiple instances of the same collection type.
 
+<a name="#3.2"/>
+
 ## 3.2 - Use and Creation of Data Providers
 
 IndomioFlags create an abstract layer of the vertical feature flags implementations. You can use or create a new data provider which uses your service without altering the structure of your feature flags.
@@ -79,6 +83,8 @@ IndomioFlags supports the following built-in providers:
 
 Then the following remote providers (you can fetch from a separate package):
 - `FirebaseRemoteProvider` supports Firebase Remote Config feature flag service. It supports only read and only for primitive types (no JSON is supported but you can use your own Strings).
+
+<a name="#3.3"/>
 
 ## 3.3 Firebase Remote Config with `FirebaseRemoteProvider`
 
@@ -125,7 +131,9 @@ extension AppDelegate: FirebaseRemoteConfigProviderDelegate {
 }
 ```
 
-## 3.3 Modify a feature flag at runtime 
+<a name="#3.4"/>
+
+## 3.4 Modify a feature flag at runtime 
 
 While generally you don't need to modify at runtime the value of a feature flag, sometimes you may need of this feature. 
 
@@ -150,6 +158,45 @@ let json = JSONData(["column": 5, "showDesc": true, "title": true])
 appFlags.ui.$layoutAttributes.setValue(json, providers: [LocalProvider.self])
 ```
 
-## 3.4 Flags Browser
+<a name="#3.5"/>
 
-Flags Browser is a small UI tool for displaying and manipulating feature flags. You can include it in your product
+## 3.5 Flags Browser
+
+Flags Browser is a small UI tool for displaying and manipulating feature flags. You can include it in your product.
+
+[gif]
+
+It's really easy to use, just allocate and push our built-in view controller by passing a list of `FlagsLoader` or a `FlagsManager`; IndomioFlags takes care to read all values and show them in a confortable user interface.
+
+If you are using `FlagsManager` to keep organized your flags just pass it to the init:
+
+```swift
+var flagsManager = FlagsManager(providers: [...])
+
+func showFlagsBrowser() {
+    flagsBrowser = FlagsBrowserController.create(manager: flagsManager)
+    present(flagsBrowser, animated: true, completion: nil)
+}
+```
+
+Otherwise you can pass one or more `FlagsLoader` you wanna show:
+
+```swift
+var userFlags: FlagsLoader<UserFlagsCollection> = ...
+var expFlags: FlagsLoader<ExperimentalFlagsCollection> = ...
+
+func showFlagsBrowser() {
+    flagsBrowser = FlagsBrowserController.create(loaders: [userFlags, expFlags])
+    present(flagsBrowser, animated: true, completion: nil)
+}
+```
+
+And you're done! You will get a cool UI with detailed description of each flags along its types and values for each data provider which allows developers and product owners to check and alter the state of the app!
+
+The following properties of `@Flag` properties are used by the Flags Browser to render the UI:
+
+- `name`: provide the readable name of the property. If not specified the signature of the property is used automatically.
+- `description`: provide a short description of the property which is useful both for devs and product owners.
+- `keyPath`: provide the full keypath of the property which is queried to any set data providers. If not specified it will be evaluated automatically ([see here](./documentation/introduction.md#1.1)).
+- `isUILocked`: set to `true` in order to prevent altering the property from the Flags Browser. By default is `false`.
+- `defaultValue`: show the value of fallback when no value can be obtained to any data provider.

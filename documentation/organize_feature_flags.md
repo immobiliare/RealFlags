@@ -3,6 +3,8 @@
 
 # 2. Organize Feature Flags
 
+<a name="#2.1"/>
+
 ## 2.1. The `@FlagCollection` annotation
 
 IndomioFlags allows you to describe complex nested structure for flags. You can, for example, create a collection inside another collection and create a data tree for feature flags which better describe your application's requirements.
@@ -35,6 +37,8 @@ if appFlags.checkout.someProperty == "..." { ... }
 ```
 
 A structure may contains subcollections and properties as you wish.
+
+<a name="#2.2"/>
 
 ## 2.2. Nested Structures
 

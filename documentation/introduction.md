@@ -2,6 +2,8 @@
 
 # 1. Introduction
 
+<a name="#1.1"/>
+
 ## 1.1 `@Flag` Annotation
 
 To create a feature flag you must create a `FlagProtocol` conform object and use the `@Flag` property wrapper annotation.
@@ -36,6 +38,8 @@ var ratingMode: String?
 The following `ratingMode` describe an optional `String` feature flag. When loaded into an instance the loader itself ask the value `ios_app_rating_mode` to any specified data provider.  
 If no value is found the `default` option is returned (in this case, as optional, it just return `nil`).
 
+<a name="#1.2"/>
+
 ## 1.2  `@Flag` Supported Data Types
 
 IndomioFlags allows you to define your own feature flags; it supports any primitive type both in wrapped and optional form:
@@ -53,6 +57,8 @@ Moreover all `Codable` ready object are automatically conforms to `FlagProtocol`
 
 ### NOTE
 While you can define virtually any kind of data type as feature flag using the `@Flag` annotation you must keep in mind not all data providers may supports them.
+
+<a name="#1.3/>
 
 ## 1.3 Load a Feature Flag Collection in a `FlagLoader`
 
@@ -78,6 +84,8 @@ IndomioFlags ask for value in the following order:
 - to `local`, *if no value is returned then ask to*
 - to `firebase` *if no value is returned then*
 - fallback `default` value
+
+<a name="#1.4"/>
 
 ## 1.4 Configure Key Evaluation for `FlagsLoader`'s `@Flag`
 
@@ -139,6 +147,8 @@ var nestedBoolean: Bool
 ```
 
 In this case the automatic key evaluation is disabled for this property and `nestedAwesomeProp` is the value to query to any data provider.
+
+<a name="#1.5"/>
 
 ## 1.5 Query a specific data provider
 

@@ -21,6 +21,11 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
     
     /// Unique identifier of the feature flag.
     public var id = UUID()
+    
+    /// When set to `true` the flag can't be altered by using the Flags Browser.
+    /// By default is set to `false`.
+    /// NOTE: you can still alter it via code.
+    public var isUILocked = false
 
     /// The default value for this flag; this value is used when no provider can obtain the
     /// value you are requesting. Consider it as a fallback.

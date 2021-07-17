@@ -20,6 +20,9 @@ public protocol AnyFlag {
     /// Name of the flag
     var name: String { get }
     
+    /// Is the property locked from Flags Browser.
+    var isUILocked: Bool { get }
+    
     /// Description of the flag.
     var description: String { get }
     

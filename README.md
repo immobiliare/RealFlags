@@ -1,8 +1,10 @@
 # IndomioFlags
 
-IndomioFlags makes it easy to configure feature flags in your codebase. It's designed for Swift and  provides a simple and elegant abstraction layer over multiple providers you can query with your own priority.
+IndomioFlags makes it easy to configure feature flags in your codebase.  
+It's designed for Swift and  provides a simple and elegant abstraction layer over multiple providers you can query with your own priority.  
+It also comes with an handy UI tool to browse and alter values directly at runtime!
 
-## 🎸 Features
+## 🎸 Features Highlights
 
 - **Simple & Elegant**: Effectively describe and organize your own flags with a type-safe structure. It will abstract your implementation and consistently reduce the amount of code to manage your feature flags
 - **Extensible**: You can use one of the default data providers or create your own. We support Firebase Remote and Local configurations too
@@ -56,7 +58,7 @@ If no values are available the default value specified in `@Flags` annotation is
 
 This is just an overview of the library; if you want to know more follow the documentation below.
 
-## FlagsBrowser UI Tool
+## 🎛 FlagsBrowser UI
 
 IndomioFlags also comes with an handy tool you can use to browse and alter feature flags values directly in your client! It can be useful for testing purpose or allow product owners to enable/disable and verify features of the app.
 
@@ -64,7 +66,7 @@ IndomioFlags also comes with an handy tool you can use to browse and alter featu
 
 [gif]
 
-## Documentation
+## 🧑‍🏫 Documentation
 
 The following documentation describe detailed usage of the library.
 
@@ -82,7 +84,7 @@ The following documentation describe detailed usage of the library.
     - [3.2 - Use and Creation of Data Providers](./documentation/advanced_usage.md#3.2)  
     - [3.3 - Firebase Remote Config with `FirebaseRemoteProvider`](./documentation/advanced_usage.md#3.3)  
     - [3.4 - Modify a feature flag at runtime](./documentation/advanced_usage.md#3.4)  
-    - [3.5 - Flags Browser UI Tool](./documentation/advanced_usage.md#3.5)
+    - [3.5 - Flags Browser UI](./documentation/advanced_usage.md#3.5)
 
 Other sections:
 
@@ -96,11 +98,21 @@ Other sections:
 
 ## Requirements
 
+IndomioFlags can be installed in any platform which supports Swift 5.5+ including Windows and Linux. On Apple platform the following configuration is required:
+
+- iOS 12+, macOS 11.4+, watchOS 7+, tvOS 9+
+- Xcode 12.5+
+- Swift 5.5
+
 <a name="#installation"/>
 
 ## Installation
 
-To use IndomioFlags in your project add it as a dependency in a Swift Package, add it to your Package.swift:
+To use IndomioFlags in your project you can use Swift Package Manager (our primary choice) or CocoaPods.
+
+### Swift Package Manager
+
+Aadd it as a dependency in a Swift Package, add it to your Package.swift:
 
 ```swift
 dependencies: [
@@ -120,7 +132,13 @@ targets: [
 
 In Xcode 11+ you can also navigate to the File menu and choose Swift Packages -> Add Package Dependency..., then enter the repository URL and version details.
 
-You can also use CocoaPods
+### CocoaPods
+
+IndomioFlags can be installed with CocoaPods by adding pod 'IndomioFlags' to your Podfile.
+
+```ruby
+pod 'IndomioFlags'
+```
 
 <a name="#support"/>
 

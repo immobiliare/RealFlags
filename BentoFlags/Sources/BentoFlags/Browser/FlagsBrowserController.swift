@@ -104,7 +104,7 @@ public class FlagsBrowserController: UIViewController {
         let dataSection = FlagBrowserItem(title: "Current Value")
         let value = flag.getValueForFlag(from: type(of: provider))
         let isWritableProvider = provider.isWritable
-        var isWritableObject = true
+        var isWritableObject = (flag.isUILocked == false)
         
         // Current value change options
         switch flag.dataType {
