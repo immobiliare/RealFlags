@@ -61,20 +61,23 @@ This is just an overview of the library; if you want to know more follow the doc
 
 The following documentation describe detailed usage of the library.
 
-- 1 [Introduction](./documentation/introduction.md)  
-    - [1.1 `@Flag` Annotation](./documentation/introduction.md#1.1)   
-    - [1.2 `@Flag` Supported Data Types](./documentation/introduction.md#1.2)   
-    - [1.3 Load a Feature Flag Collection in a `FlagLoader`](./documentation/introduction.md#1.3)   
-    - [1.4 Configure Key Evaluation for `FlagsLoader`'s `@Flag`](./documentation/introduction.md#1.4)   
-    - [1.5 Query a specific data provider](./documentation/introduction.md#1.5)   
-- 2 [Organize Feature Flags](./documentation/organize_feature_flags.md)  
-    - [2.1 The `@FlagCollection` annotation](./documentation/organize_feature_flags.md#2.1)  
-    - [2.2 Nested Structures](./documentation/organize_feature_flags.md#2.2)  
-- 3. [Advanced Usage](./documentation/advanced_usage.md)  
-    [3.1 Using `FlagsManager`](./documentation/advanced_usage.md#3.1)  
-    - [3.2 Use and create new `FlagProvider`](./documentation/advanced_usage.md#3.2)  
-    - [3.3 Modify a feature flag at runtime](./documentation/advanced_usage.md#3.3)  
-    - [3.4 Flags Browser](./documentation/advanced_usage.md#3.4)  
+- [1 - Introduction](./documentation/introduction.md)  
+    - [1.1 - `@Flag` Annotation](./documentation/introduction.md#1.1)   
+    - [1.2 - `@Flag` Supported Data Types](./documentation/introduction.md#1.2)   
+    - [1.3 - Load a Feature Flag Collection in a `FlagLoader`](./documentation/introduction.md#1.3)   
+    - [1.4 - Configure Key Evaluation for `FlagsLoader`'s `@Flag`](./documentation/introduction.md#1.4)   
+    - [1.5 - Query a specific data provider](./documentation/introduction.md#1.5)   
+- [2 - Organize Feature Flags](./documentation/organize_feature_flags.md)  
+    - [2.1 - The `@FlagCollection` annotation](./documentation/organize_feature_flags.md#2.1)  
+    - [2.2 - Nested Structures](./documentation/organize_feature_flags.md#2.2)  
+- [3 - Advanced Usage](./documentation/advanced_usage.md)  
+    - [3.1 - Using `FlagsManager`](./documentation/advanced_usage.md#3.1)  
+    - [3.2 - Use and create new `FlagProvider`](./documentation/advanced_usage.md#3.2)  
+    - [3.3 - Modify a feature flag at runtime](./documentation/advanced_usage.md#3.3)  
+    - [3.4 - Flags Browser UI Tool](./documentation/advanced_usage.md#3.4)
+
+Other sections:
+
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Support & Contribute](#support)
