@@ -19,8 +19,8 @@ Our goal making IndomioFlags is to provide a type-safe abstract way to describe 
 The first step is to  describe your collection of flags:
 
 ```swift
+// Define the structure of your feature flags with type-safe properties!
 struct UserFlags: FlagCollectionProtocol {
-    
     @Flag(default: true, description: "Show social login options along native login form")
     var showSocialLogin: Bool
     
@@ -29,7 +29,6 @@ struct UserFlags: FlagCollectionProtocol {
     
     @Flag(key: "rating_mode", default: "at_launch", description: "The behaviour to show the rating popup")
     var appReviewRating: String
-    
 }
 ```
 
@@ -38,12 +37,12 @@ Each feature flags property is identified by the `@Flag` annotation.
 It's time load values for this collection; using a new `FlagsLoader` you will be able to load and query collection's values from one or more data provider:
 
 ```swift
-// Allocate your data provider
+// Allocate your own data providers
 let localProvider = LocalProvider(localURL: fileURL)
 let fbProvider = FirebaseRemoteProvider()
 
-let userFlagsLoader = FlagsLoader(UserFlags.self, 
-                                  providers: [fbProvider, localProvider])
+let userFlagsLoader = FlagsLoader(UserFlags.self, // load ff structures
+                                  providers: [fbProvider, localProvider]) // read from providers
 ```
 
 Now you can query values from `userFlagsLoader` by using the `UserFlags` structure (it suppports autocomplete and type-safe value thanks to `@dynamicMemberLookup`!).  
