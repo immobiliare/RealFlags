@@ -1,21 +1,20 @@
 # IndomioFlags
+
 IndomioFlags makes it easy to configure feature flags in your codebase. It's designed for Swift and  provides a simple and elegant abstraction layer over multiple providers you can query with your own priority.
 
-## Features
+## 🎸 Features
 
-- **Simple & Elegant**: Effectively describe and organize your own flags with a type-safe structure.
-- **Compact**: Thanks to Swift's Property Wrapper you will consistently reduce the amount of code to manage your feature flags.
-- **Extensible**: Feature Flags supports all primitive datatypes: `Int` (and any numeric variant), `String`, `Bool`, `Data`, `Date`, `URL`, `Dictionary`, `Array` (values must conform to `FlagProtocol`), Optional Values and virtually any object conforms to `Codable` protocol!
-- **Transparent**: IndomioFlags abracts over many service implementations with ease.
-- **Extensible**: You can use one of the default data providers or create your own. We support Firebase Remote and Local configurations too.
-- **Fast**: Enable, disable and customize features at runtime
-- **Integrated UI Tool**: a simple UI you can integrate in your developer's mode allows you to customize and read flags at glance, even for PMs.
+- **Simple & Elegant**: Effectively describe and organize your own flags with a type-safe structure. It will abstract your implementation and consistently reduce the amount of code to manage your feature flags
+- **Extensible**: You can use one of the default data providers or create your own. We support Firebase Remote and Local configurations too
+- **Complete**: Feature Flags supports all primitive datatypes and complex objects: `Int` (and any numeric variant), `String`, `Bool`, `Data`, `Date`, `URL`, `Dictionary`, `Array` (values must conform to `FlagProtocol`), Optional Values and virtually any object conforms to `Codable` protocol!
+- **Configurable**: Enable, disable and customize features at runtime
+- **Integrated UI Tool**: the handy UI Tool allows you to customize and read flags at glance
 
-## What you get
+## 🤟 What You Get
 
 Our goal making IndomioFlags is to provide a type-safe abstract way to describe and query for feature flags.
 
-First and foremost you must describe your collection of flags.
+The first step is to  describe your collection of flags:
 
 ```swift
 struct UserFlags: FlagCollectionProtocol {
@@ -57,6 +56,14 @@ If no values are available the default value specified in `@Flags` annotation is
 
 This is just an overview of the library; if you want to know more follow the documentation below.
 
+## FlagsBrowser UI Tool
+
+IndomioFlags also comes with an handy tool you can use to browse and alter feature flags values directly in your client! It can be useful for testing purpose or allow product owners to enable/disable and verify features of the app.
+
+[Checkout the doc for more infos!](./documentation/advanced_usage.md#3.5)
+
+[gif]
+
 ## Documentation
 
 The following documentation describe detailed usage of the library.
@@ -72,9 +79,10 @@ The following documentation describe detailed usage of the library.
     - [2.2 - Nested Structures](./documentation/organize_feature_flags.md#2.2)  
 - [3 - Advanced Usage](./documentation/advanced_usage.md)  
     - [3.1 - Using `FlagsManager`](./documentation/advanced_usage.md#3.1)  
-    - [3.2 - Use and create new `FlagProvider`](./documentation/advanced_usage.md#3.2)  
-    - [3.3 - Modify a feature flag at runtime](./documentation/advanced_usage.md#3.3)  
-    - [3.4 - Flags Browser UI Tool](./documentation/advanced_usage.md#3.4)
+    - [3.2 - Use and Creation of Data Providers](./documentation/advanced_usage.md#3.2)  
+    - [3.3 - Firebase Remote Config with `FirebaseRemoteProvider`](./documentation/advanced_usage.md#3.3)  
+    - [3.4 - Modify a feature flag at runtime](./documentation/advanced_usage.md#3.4)  
+    - [3.5 - Flags Browser UI Tool](./documentation/advanced_usage.md#3.5)
 
 Other sections:
 

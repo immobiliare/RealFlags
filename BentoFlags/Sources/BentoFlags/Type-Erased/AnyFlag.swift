@@ -15,7 +15,7 @@ import Foundation
 public protocol AnyFlag {
     
     /// Allowed provider.
-    var excludedProviders: [FlagProvider.Type]? { get }
+    var excludedProviders: [FlagsProvider.Type]? { get }
     
     /// Name of the flag
     var name: String { get }
@@ -32,7 +32,7 @@ public protocol AnyFlag {
     var dataType: Any.Type { get }
 
     /// Associated providers.
-    var providers: [FlagProvider] { get }
+    var providers: [FlagsProvider] { get }
     
     /// Description of the flag.
     var defaultFallbackValue: Any? { get }
@@ -40,17 +40,17 @@ public protocol AnyFlag {
     /// Return the value of the flag.
     ///
     /// - Parameter providerType: you can specify a particular provider to query; otherwise standard's flag behaviour is applied.
-    func getValueForFlag(from providerType: FlagProvider.Type?) -> Any?
+    func getValueForFlag(from providerType: FlagsProvider.Type?) -> Any?
     
     /// Get a readable description of the value.
     ///
     /// - Parameter providerType: you can specify a particular provider to query; otherwise standard's flag behaviour is applied.
-    func getValueDescriptionForFlag(from providerType: FlagProvider.Type?) -> String
+    func getValueDescriptionForFlag(from providerType: FlagsProvider.Type?) -> String
     
     /// Save a value to a provider (if supported).
     ///
     /// - Parameter provider: provider to use.
-    func setValueToProvider(_ provider: FlagProvider) throws
+    func setValueToProvider(_ provider: FlagsProvider) throws
     
 }
 
@@ -77,7 +77,7 @@ extension Flag: AnyFlag {
         defaultValue
     }
 
-    public var providers: [FlagProvider] {
+    public var providers: [FlagsProvider] {
         loader.instance?.providers ?? []
     }
     
@@ -85,11 +85,11 @@ extension Flag: AnyFlag {
         String(describing: dataType)
     }
     
-    public func getValueForFlag(from providerType: FlagProvider.Type? = nil) -> Any? {
+    public func getValueForFlag(from providerType: FlagsProvider.Type? = nil) -> Any? {
         flagValue(from: providerType)
     }
     
-    public func getValueDescriptionForFlag(from providerType: FlagProvider.Type? = nil) -> String {
+    public func getValueDescriptionForFlag(from providerType: FlagsProvider.Type? = nil) -> String {
         guard let value = getValueForFlag(from: providerType) else {
             return readableDefaultFallbackValue
         }
@@ -105,7 +105,7 @@ extension Flag: AnyFlag {
         metadata.description
     }
     
-    public func setValueToProvider(_ provider: FlagProvider) throws {
+    public func setValueToProvider(_ provider: FlagsProvider) throws {
         try provider.setValue(self.wrappedValue, forFlag: keyPath)
     }
     

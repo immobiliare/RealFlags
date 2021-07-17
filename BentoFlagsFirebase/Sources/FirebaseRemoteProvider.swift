@@ -17,7 +17,7 @@ import Firebase
 
 /// FirebaseRemoteProvider is an layer above the FirebaseRemoteConfig which support
 /// retriving data from Firebase's Remote Config.
-public class FirebaseRemoteProvider: FlagProvider {
+public class FirebaseRemoteProvider: FlagsProvider {
     
     // MARK: - Public Properties
     

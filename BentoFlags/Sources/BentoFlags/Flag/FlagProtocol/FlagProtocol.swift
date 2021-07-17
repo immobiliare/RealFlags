@@ -15,7 +15,7 @@ import Foundation
 /// A type that represents the wrapped value of a `Flag`
 ///
 /// This type exists solely so we can provide hints for boxing/unboxing or encoding/decoding
-/// into various `FlagProvider`s.
+/// into various `FlagsProvider`s.
 public protocol FlagProtocol {
 
     /// Defines the type of encoded type used to represent the flag value.

@@ -16,7 +16,7 @@ import Foundation
 /// UserDefaults dictionary.
 /// Keys are not stored in a tree but locally (the full path is the final key used to store the value).
 /// Values are stored as `Data` and all primitives and `Codable` conformant objects are supported.
-extension UserDefaults: FlagProvider {
+extension UserDefaults: FlagsProvider {
     
     // MARK: - Public Properties
     
@@ -39,7 +39,7 @@ extension UserDefaults: FlagProvider {
         true
     }
     
-    // MARK: - FlagProvider Conformance
+    // MARK: - FlagsProvider Conformance
 
     public func valueForFlag<Value>(key: FlagKeyPath) -> Value? where Value : FlagProtocol {
         guard

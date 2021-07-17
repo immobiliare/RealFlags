@@ -32,7 +32,7 @@ public protocol DelegateProviderProtocol: AnyObject {
 
 // MARK: - DelegateProvider
 
-public class DelegateProvider: FlagProvider, Identifiable {
+public class DelegateProvider: FlagsProvider, Identifiable {
     
     // MARK: - Public Properties
     

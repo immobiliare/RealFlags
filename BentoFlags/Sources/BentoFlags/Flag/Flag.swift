@@ -53,7 +53,7 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
     /// (for example a particular property should be fetched only from UserDefaults and not from Firebase).
     /// If you need of this feature you should set their types here; if `nil` it will use the order specified
     /// by the `FlagsLoader` instance which create the instance.
-    public var excludedProviders: [FlagProvider.Type]?
+    public var excludedProviders: [FlagsProvider.Type]?
     
     // MARK: - Private Properties
     
@@ -79,7 +79,7 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
     ///   - description: description of the proprerty; you are encouraged to provide a short description of the feature flag.
     public init(name: String? = nil, key: String? = nil,
                 default defaultValue: Value,
-                excludedProviders: [FlagProvider.Type]? = nil,
+                excludedProviders: [FlagsProvider.Type]? = nil,
                 description: FlagMetadata) {
         
         self.defaultValue = defaultValue
@@ -100,7 +100,7 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
     ///
     /// - Parameter providerType: provider type, if `nil` the providers list with `allowedProviders` is read.
     /// - Returns: Value
-    public func flagValue(from providerType: FlagProvider.Type? = nil, fallback: Bool = true) -> Value? {
+    public func flagValue(from providerType: FlagsProvider.Type? = nil, fallback: Bool = true) -> Value? {
         guard loader.instance != nil else {
             return defaultValue // no loader has been set, we want to get the fallback result.
         }
@@ -127,8 +127,8 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
     ///                providers assigned to the parent's `FlagLoader`.
     /// - Returns: Return the list of provider which accepted the change.
     @discardableResult
-    public func setValue(_ value: Value?, providers: [FlagProvider.Type]?) -> [FlagProvider] {
-        var alteredProviders = [FlagProvider]()
+    public func setValue(_ value: Value?, providers: [FlagsProvider.Type]?) -> [FlagsProvider] {
+        var alteredProviders = [FlagsProvider]()
         for provider in providersWithTypes(providers) {
             do {
                 if try provider.setValue(value, forFlag: keyPath) {
@@ -146,8 +146,8 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
     /// are specified no filter is applied and the list is complete.
     ///
     /// - Parameter types: types to filter.
-    /// - Returns: [FlagProvider]
-    private func providersWithTypes(_ types: [FlagProvider.Type]?) -> [FlagProvider] {
+    /// - Returns: [FlagsProvider]
+    private func providersWithTypes(_ types: [FlagsProvider.Type]?) -> [FlagsProvider] {
         guard let filteredByTypes = types, filteredByTypes.isEmpty == false else {
             return allowedProviders() // no filter applied, return allowed providers.
         }
@@ -160,8 +160,8 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
     
     /// Allowed providers from the list of all providers of the parent `FlagsLoader`.
     ///
-    /// - Returns: [FlagProvider]
-    private func allowedProviders() -> [FlagProvider] {
+    /// - Returns: [FlagsProvider]
+    private func allowedProviders() -> [FlagsProvider] {
         loader.instance?.providers?.filter({
             isProviderAllowed($0)
         }) ?? []
@@ -171,7 +171,7 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
     ///
     /// - Parameter provider: provider to check.
     /// - Returns: `true` if it's allowed, `false` otherwise.
-    private func isProviderAllowed(_ provider: FlagProvider) -> Bool {
+    private func isProviderAllowed(_ provider: FlagsProvider) -> Bool {
         guard let excludedProviders = self.excludedProviders else { return true }
         
         return excludedProviders.first { allowedType in

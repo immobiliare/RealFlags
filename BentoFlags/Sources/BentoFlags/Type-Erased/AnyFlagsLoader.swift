@@ -15,7 +15,7 @@ import Foundation
 public protocol AnyFlagsLoader {
     
     /// Providers of the flag.
-    var providers: [FlagProvider]? { get }
+    var providers: [FlagsProvider]? { get }
     
     /// Type of collection group loaded by loader instance.
     var collectionType: String { get }

@@ -15,7 +15,7 @@ import Foundation
 /// LocalProvider is a local source for feature flags. You can use this object for persistent local data
 /// or ephemeral storage.
 /// Values are stored as `Data` and all primitives and `Codable` conformant objects are supported.
-public class LocalProvider: FlagProvider, Identifiable {
+public class LocalProvider: FlagsProvider, Identifiable {
     
     // MARK: - Public Properties
     
@@ -66,7 +66,7 @@ public class LocalProvider: FlagProvider, Identifiable {
         self.name = "Local Provider"
     }
     
-    // MARK: - FlagProvider Conformance
+    // MARK: - FlagsProvider Conformance
     
     public func valueForFlag<Value>(key: FlagKeyPath) -> Value? where Value : FlagProtocol {
         guard let rawObject: Any = BentoDict.getValueInDictionary(storage, forKeyPath: key),

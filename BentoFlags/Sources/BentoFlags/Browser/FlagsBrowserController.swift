@@ -16,7 +16,7 @@ import UIKit
 
 public struct FlagInProvider {
     var flag: AnyFlag
-    var provider: FlagProvider
+    var provider: FlagsProvider
 }
 
 public class FlagsBrowserController: UIViewController {
@@ -92,7 +92,7 @@ public class FlagsBrowserController: UIViewController {
         tableView?.reloadData()
     }
     
-    private func reloadDataForFlagDetail(_ flag: AnyFlag, inProvider provider: FlagProvider) -> [FlagBrowserItem] {
+    private func reloadDataForFlagDetail(_ flag: AnyFlag, inProvider provider: FlagsProvider) -> [FlagBrowserItem] {
         let infoSection = FlagBrowserItem(title: "Info")
         
         infoSection.childs = [

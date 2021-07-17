@@ -25,7 +25,7 @@ public class FlagsLoader<Collection: FlagCollectionProtocol>: FlagsLoaderProtoco
     public private(set) var loadedCollection: Collection
     
     /// Providers where we'll get the data.
-    public var providers: [FlagProvider]?
+    public var providers: [FlagsProvider]?
     
     /// How to build automatically keys for each property of the group.
     public let keyConfiguration: KeyConfiguration
@@ -38,7 +38,7 @@ public class FlagsLoader<Collection: FlagCollectionProtocol>: FlagsLoaderProtoco
     ///   - providers: providers to use to fetch values. Providers are fetched in order.
     ///   - keysConfiguration: configuration 
     public init (_ collectionType: Collection.Type,
-                 providers: [FlagProvider]? = nil,
+                 providers: [FlagsProvider]? = nil,
                  keyConfiguration: KeyConfiguration = .init()) {
         self.loadedCollection = collectionType.init()
         self.providers = providers

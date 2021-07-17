@@ -20,7 +20,7 @@ public class FlagsManager {
     // MARK: - Public Properties
     
     /// Default providers for flags loader
-    public let providers: [FlagProvider]
+    public let providers: [FlagsProvider]
     
     /// Default key configuration.
     public let keyConfiguration: KeyConfiguration
@@ -36,7 +36,7 @@ public class FlagsManager {
     ///   - providers: providers to use. This value is used for each new loader created via this manager.
     ///                You can still get values only for certain provider only with the custom methods in `FeatureFlags` instance.
     ///   - keyConfiguration: key configuration.
-    public init(providers: [FlagProvider], keyConfiguration: KeyConfiguration = .init()) {
+    public init(providers: [FlagsProvider], keyConfiguration: KeyConfiguration = .init()) {
         self.providers = providers
         self.keyConfiguration = keyConfiguration
     }

@@ -18,7 +18,7 @@ import Foundation
 public protocol FlagsLoaderProtocol: AnyObject {
     
     /// Ordered list of providers for data.
-    var providers: [FlagProvider]? { get }
+    var providers: [FlagsProvider]? { get }
     
     /// Defines how the automatic keypath for property is produced.
     var keyConfiguration: KeyConfiguration { get }

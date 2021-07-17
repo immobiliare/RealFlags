@@ -14,11 +14,11 @@
 import Combine
 #endif
 
-// MARK: - FlagProvider
+// MARK: - FlagsProvider
 
 /// This protocol defines a provider for feature flag values; you can implement your own sources both local or remote ones.
 /// Take a look to BentoFlag's built-in provider sources to get an insight of what you can accomplish.
-public protocol FlagProvider {
+public protocol FlagsProvider {
     
     /// Visible name of the flag's source.
     /// It will be used when you need to show the source in some UI.
@@ -57,13 +57,13 @@ public protocol FlagProvider {
     
 }
 
-// MARK: - FlagProvider (Default Publisher Behaviour)
+// MARK: - FlagsProvider (Default Publisher Behaviour)
 
 #if !os(Linux)
 
 /// Make support for real-time flag updates optional by providing a default nil implementation
 ///
-public extension FlagProvider {
+public extension FlagsProvider {
     
     func didUpdateValuesForKeys(_ keys: Set<String>?) -> AnyPublisher<Set<String>, Never>? {
         nil
