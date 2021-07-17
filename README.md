@@ -1,8 +1,8 @@
 # IndomioFlags
 
-IndomioFlags makes it easy to configure feature flags in your codebase.  
-It's designed for Swift and  provides a simple and elegant abstraction layer over multiple providers you can query with your own priority.  
-It also comes with an handy UI tool to browse and alter values directly at runtime!
+IndomioFlags makes it **easy to configure feature flags** in your codebase.  
+It's designed for Swift and **provides a simple and elegant abstraction layer** over multiple providers you can query with your own priority.  
+It also comes with an **handy UI tool to browse and alter values directly at runtime!**
 
 ## 🎸 Features Highlights
 
@@ -38,17 +38,19 @@ Each feature flags property is identified by the `@Flag` annotation.
 It's time load values for this collection; using a new `FlagsLoader` you will be able to load and query collection's values from one or more data provider:
 
 ```swift
-let local = LocalProvider(localURL: fileURL)
-let fb = FirebaseRemoteProvider()
+// Allocate your data provider
+let localProvider = LocalProvider(localURL: fileURL)
+let fbProvider = FirebaseRemoteProvider()
 
-let userFlagsLoader = FlagsLoader(UserFlags.self, providers: [fb, local])
+let userFlagsLoader = FlagsLoader(UserFlags.self, 
+                                  providers: [fbProvider, localProvider])
 ```
 
 Now you can query values from `userFlagsLoader` by using the `UserFlags` structure (it suppports autocomplete and type-safe value thanks to `@dynamicMemberLookup`!).  
 Let me show it:
 
 ```swift
-if userFlagsLoader.showSocialLogin {
+if userFlagsLoader.showSocialLogin { // query properties as type-safe with autocomplete!
     // do some stuff
 }
 ```
@@ -56,7 +58,7 @@ if userFlagsLoader.showSocialLogin {
 Values are obtained respecting the order you have specified, in this case from Firebase Remote Config service then, when no value is found, into the local repository.  
 If no values are available the default value specified in `@Flags` annotation is returned.
 
-This is just an overview of the library; if you want to know more follow the documentation below.
+This is just an overview of the library; if you want to know more follow the [documentation below](#documentation).
 
 ## 🎛 FlagsBrowser UI
 
@@ -65,6 +67,8 @@ IndomioFlags also comes with an handy tool you can use to browse and alter featu
 [Checkout the doc for more infos!](./documentation/advanced_usage.md#3.5)
 
 [gif]
+
+<a name="#documentation"/>
 
 ## 🧑‍🏫 Documentation
 
