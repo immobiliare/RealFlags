@@ -41,8 +41,9 @@ It's time load values for this collection; using a new `FlagsLoader` you will be
 let localProvider = LocalProvider(localURL: fileURL)
 let fbProvider = FirebaseRemoteProvider()
 
-let userFlagsLoader = FlagsLoader(UserFlags.self, // load ff structures
-                                  providers: [fbProvider, localProvider]) // read from providers
+// Loader is the point for query values
+let userFlagsLoader = FlagsLoader(UserFlags.self, // load flags definition
+                                  providers: [fbProvider, localProvider]) // set providers
 ```
 
 Now you can query values from `userFlagsLoader` by using the `UserFlags` structure (it suppports autocomplete and type-safe value thanks to `@dynamicMemberLookup`!).  
