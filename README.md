@@ -60,13 +60,13 @@ If no values are available the default value specified in `@Flags` annotation is
 
 This is just an overview of the library; if you want to know more follow the [documentation below](#documentation).
 
-## 🎛 Flags Browser UI
+## 🎛 Flags Browser
 
 IndomioFlags also comes with an handy tool you can use to browse and alter feature flags values directly in your client! It can be useful for testing purpose or allow product owners to enable/disable and verify features of the app.
 
-[Checkout the doc for more infos!](./documentation/advanced_usage.md#3.5)
-
 ![](./documentation/assets/flags_browser_intro.gif)
+
+[Checkout the doc for more infos!](./documentation/advanced_usage.md#3.5)
 
 <a name="#documentation"/>
 

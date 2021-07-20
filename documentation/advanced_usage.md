@@ -193,6 +193,8 @@ func showFlagsBrowser() {
 
 And you're done! You will get a cool UI with detailed description of each flags along its types and values for each data provider which allows developers and product owners to check and alter the state of the app!
 
+![](./assets/flags_browser_video.mp4)
+
 The following properties of `@Flag` properties are used by the Flags Browser to render the UI:
 
 - `name`: provide the readable name of the property. If not specified the signature of the property is used automatically.
