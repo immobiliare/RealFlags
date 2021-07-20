@@ -39,7 +39,8 @@ public class FlagBrowserItem {
     public private(set) var title: String?
     public private(set) var subtitle: String?
     public private(set) var value: String?
-    
+    public private(set) var icon: UIImage?
+
     public var childs = [FlagBrowserItem]()
     public private(set) var accessoryType: UITableViewCell.AccessoryType = .none
     public var isSelectable = false
@@ -54,6 +55,7 @@ public class FlagBrowserItem {
     public init(title: String? = nil,
                 subtitle: String? = nil,
                 value: String? = nil,
+                icon: UIImage? = nil,
                 accessoryType: UITableViewCell.AccessoryType = .none,
                 selectable: Bool = false,
                 disabled: Bool = false,
@@ -69,6 +71,7 @@ public class FlagBrowserItem {
         self.cellType = cellType
         self.actionType = actionType
         self.isDisabled = disabled
+        self.icon = icon
     }
     
     public init(loader: AnyFlagsLoader) {
@@ -76,15 +79,15 @@ public class FlagBrowserItem {
         self.representedObj = loader
         
         childs.append(contentsOf: [
-            FlagBrowserItem(title: "Group Type",
+            FlagBrowserItem(title: "Group Name",
                             value: loader.collectionType,
                             selectable: false),
             FlagBrowserItem(title: "Data Providers",
                             value: loader.providers?.map({ $0.name }).joined(separator: "\n"),
                             accessoryType: .disclosureIndicator,
                             selectable: true),
-            FlagBrowserItem(title: "Browse",
-                            value: "\(loader.featureFlags.count)",
+            FlagBrowserItem(title: "Browse Data",
+                            value: "\(loader.hierarcyFeatureFlags.count) elements",
                             accessoryType: .disclosureIndicator,
                             selectable: true,
                             representedObj: loader)

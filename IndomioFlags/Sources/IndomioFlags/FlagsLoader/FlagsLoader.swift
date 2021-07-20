@@ -67,6 +67,14 @@ public class FlagsLoader<Collection: FlagCollectionProtocol>: FlagsLoaderProtoco
             .map { $0.value }
             .featureFlags()
     }()
+    
+    public lazy var hierarcyFeatureFlags: [AnyFlagOrCollection] = {
+        return Mirror(reflecting: loadedCollection)
+            .children
+            .lazy
+            .map { $0.value }
+            .hierarchyFeatureFlags()
+    }()
 
     // MARK: - dynamicMemberLookup Support
     

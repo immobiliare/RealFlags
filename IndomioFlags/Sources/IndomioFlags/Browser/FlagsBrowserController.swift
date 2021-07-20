@@ -24,6 +24,7 @@ public class FlagsBrowserController: UIViewController {
     public enum DataType {
         case flag(AnyFlag)
         case flags(AnyFlagsLoader)
+        case flagsInCollection(AnyFlagCollection)
         case loaders([AnyFlagsLoader])
         case flagData(FlagInProvider)
     }
@@ -51,7 +52,7 @@ public class FlagsBrowserController: UIViewController {
         let navigation = UINavigationController(rootViewController: controller)
         return navigation
     }
-
+    
     // MARK: - View Lifecycle
     
     public override func viewDidLoad() {
@@ -84,6 +85,9 @@ public class FlagsBrowserController: UIViewController {
             
         case .flagData(let flagInProvider):
             self.items = reloadDataForFlagDetail(flagInProvider.flag, inProvider: flagInProvider.provider)
+            
+        case .flagsInCollection(let collection):
+            self.items = reloadDataForFlagCollection(collection)
             
         case .none:
             break
@@ -190,15 +194,15 @@ public class FlagsBrowserController: UIViewController {
         loaders.map { FlagBrowserItem(loader: $0) }
     }
     
+    private func reloadDataForFlagCollection(_ flag: AnyFlagCollection) -> [FlagBrowserItem] {
+        let section = FlagBrowserItem(title: "\(flag.hierarchyFeatureFlags().count) Feature Flags")
+        section.childs = flagsInList(flag.hierarchyFeatureFlags())
+        return [section]
+    }
+    
     private func reloadDataForLoader(_ loader: AnyFlagsLoader) -> [FlagBrowserItem] {
-        let section = FlagBrowserItem(title: "\(loader.featureFlags.count) Feature Flags")
-        section.childs = loader.featureFlags.map { flag in
-            FlagBrowserItem(title: flag.name,
-                            subtitle: flag.description,
-                            value: flag.getValueDescriptionForFlag(from: nil),
-                            accessoryType: .disclosureIndicator,
-                            selectable: true, representedObj: flag)
-        }
+        let section = FlagBrowserItem(title: "\(loader.hierarcyFeatureFlags.count) Feature Flags")
+        section.childs = flagsInList(loader.hierarcyFeatureFlags)
         return [section]
     }
     
@@ -236,8 +240,33 @@ public class FlagsBrowserController: UIViewController {
             return item
         })
         sections.append(providersSection)
-
+        
         return sections
+    }
+    
+    private func flagsInList(_ list: [AnyFlagOrCollection]) -> [FlagBrowserItem] {
+        list.compactMap { flag -> FlagBrowserItem? in
+            switch flag {
+            case let flag as AnyFlag:
+                return FlagBrowserItem(title: flag.name,
+                                       subtitle: flag.description,
+                                       value: flag.getValueDescriptionForFlag(from: nil),
+                                       icon: flag.icon,
+                                       accessoryType: .disclosureIndicator,
+                                       selectable: true, representedObj: flag)
+                
+            case let collection as AnyFlagCollection:
+                return FlagBrowserItem(title: collection.name,
+                                       subtitle: collection.description,
+                                       icon: UIImage(named: "datatype_list", in: .module, with: nil),
+                                       accessoryType: .disclosureIndicator,
+                                       selectable: true,
+                                       representedObj: collection)
+                
+            default:
+                return nil
+            }
+        }
     }
     
     private func didSelectItem(_ item: FlagBrowserItem, cell: UITableViewCell?) {
@@ -253,8 +282,11 @@ public class FlagsBrowserController: UIViewController {
         case let flag as AnyFlag:
             createAndPushBrowserController(withData: .flag(flag), title: flag.name)
             
+        case let collection as AnyFlagCollection:
+            createAndPushBrowserController(withData: .flagsInCollection(collection), title: collection.name)
+            
         case let flagInProvider as FlagInProvider:
-            createAndPushBrowserController(withData: .flagData(flagInProvider), title: "\(flagInProvider.provider.name)'s Data")
+            createAndPushBrowserController(withData: .flagData(flagInProvider), title: flagInProvider.provider.name)
             
         default:
             didSelectAction(item.actionType, cell: cell)
@@ -283,7 +315,7 @@ public class FlagsBrowserController: UIViewController {
                 
             case .setStringValue:
                 guard case .flagData(let flagInProvider) = data else { return }
-
+                
                 if let newValue = (cell as? FlagBrowserDataCell)?.valueField.text, newValue.isEmpty == false {
                     try flagInProvider.provider.setValue(newValue, forFlag: flagInProvider.flag.keyPath)
                     goBackInNavigation()
@@ -291,7 +323,7 @@ public class FlagsBrowserController: UIViewController {
                 
             case .setNumericValue(let valueType):
                 guard case .flagData(let flagInProvider) = data else { return }
-
+                
                 let alert = UIAlertController(title: "Set Numeric Value", message: nil, preferredStyle: .alert)
                 alert.addTextField { field in
                     field.keyboardType = .numbersAndPunctuation
@@ -326,9 +358,9 @@ public class FlagsBrowserController: UIViewController {
                 
             case .setJSONValue:
                 guard case .flagData(let flagInProvider) = data else { return }
-
+                
                 if let newValue = (cell as? FlagBrowserDataCell)?.valueField.text, newValue.isEmpty == false,
-                    let jsonData = JSONData(jsonString: newValue) {
+                   let jsonData = JSONData(jsonString: newValue) {
                     try flagInProvider.provider.setValue(jsonData, forFlag: flagInProvider.flag.keyPath)
                     goBackInNavigation()
                 }
@@ -385,7 +417,7 @@ extension FlagsBrowserController: UITableViewDataSource, UITableViewDelegate {
             let cell = FlagsBrowserDefaultCell.dequeue(from: tableView, for: indexPath)
             _ = cell.contentView
             
-            cell.set(title: item.title, subtitle: item.subtitle, value: item.value, image: nil)
+            cell.set(title: item.title, subtitle: item.subtitle, value: item.value, image: item.icon)
             cell.accessoryType = item.accessoryType
             cell.isDisabled = item.isDisabled
             return cell
@@ -404,7 +436,6 @@ extension FlagsBrowserController: UITableViewDataSource, UITableViewDelegate {
     
     public func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
         let item = items[indexPath.section].childs[indexPath.row]
-        print("selectgable \(item.isSelectable)")
         return item.isSelectable
     }
     
@@ -425,6 +456,29 @@ extension AnyFlag {
         }
         
         return String(describing: val)
+    }
+ 
+    var icon: UIImage? {
+        switch dataType {
+        case is String.Type:
+            return UIImage(named: "datatype_string", in: .module, with: .none)
+            
+        case is Bool.Type:
+            return UIImage(named: "datatype_bool", in: .module, with: .none)
+
+        case is Int.Type, is Int8.Type, is Int16.Type, is Int32.Type, is Int64.Type:
+            return UIImage(named: "datatype_number", in: .module, with: .none)
+            
+        case is Double.Type:
+            return UIImage(named: "datatype_number", in: .module, with: .none)
+            
+        case is JSONData.Type:
+            return UIImage(named: "datatype_json", in: .module, with: .none)
+            
+        default:
+            return nil
+            
+        }
     }
     
 }

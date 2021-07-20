@@ -12,7 +12,13 @@
 
 import Foundation
 
-public protocol AnyFlag {
+public protocol AnyFlagOrCollection {
+    
+    func hierarchyFeatureFlags() -> [AnyFlagOrCollection]
+    
+}
+
+public protocol AnyFlag: AnyFlagOrCollection {
     
     /// Allowed provider.
     var excludedProviders: [FlagsProvider.Type]? { get }
@@ -60,6 +66,10 @@ public protocol AnyFlag {
 // MARK: - AnyFlag (Flag Conformance)
 
 extension Flag: AnyFlag {
+    
+    public func hierarchyFeatureFlags() -> [AnyFlagOrCollection] {
+        []
+    }
     
     public var dataType: Any.Type {
         

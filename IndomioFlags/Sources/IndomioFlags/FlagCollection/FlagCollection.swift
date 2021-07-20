@@ -37,7 +37,7 @@ public struct FlagCollection<Group: FlagCollectionProtocol>: FeatureFlagConfigur
     /// The loader used to retrive the fetched value for property flags.
     /// This value is assigned when the instance of the Flag is created and it set automatically
     /// by the `configureWithLoader()` function.
-    private var loader = LoaderBox()
+    internal private(set) var loader = LoaderBox()
     
     /// Fixed key used to override the default path composing mechanism.
     private var fixedKey: String?
@@ -70,7 +70,7 @@ public struct FlagCollection<Group: FlagCollectionProtocol>: FeatureFlagConfigur
         self.loader.instance = loader
         self.loader.propertyPath = keyPath
         self.loader.propertyName = propertyName
-        
+                
         let keyPath = self.loader.keyPathForProperty(withFixedKey: fixedKey)
         let properties = Mirror(reflecting: wrappedValue).children.lazy.featureFlagsConfigurableProperties()
         for property in properties {

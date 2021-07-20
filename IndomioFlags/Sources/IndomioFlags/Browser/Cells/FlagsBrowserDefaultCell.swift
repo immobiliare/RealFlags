@@ -20,6 +20,7 @@ public class FlagsBrowserDefaultCell: UITableViewCell, Reusable, NibType {
     @IBOutlet public var titlelabel: UILabel!
     @IBOutlet public var valueLabel: UILabel!
     @IBOutlet public var iconView: UIImageView!
+    @IBOutlet public var iconContainerView: UIView!
     @IBOutlet public var stackView: UIStackView!
     @IBOutlet public var labelsStackView: UIStackView!
     
@@ -28,7 +29,6 @@ public class FlagsBrowserDefaultCell: UITableViewCell, Reusable, NibType {
             titlelabel.textColor = (isDisabled ? .lightGray : .black)
             valueLabel.textColor = (isDisabled ? .red : .tintColor)
             subtitleLabel.textColor = (isDisabled ? .lightGray : .darkGray)
-            print(isDisabled)
         }
     }
 
@@ -40,7 +40,7 @@ public class FlagsBrowserDefaultCell: UITableViewCell, Reusable, NibType {
 
     public func set(title: String? = nil, subtitle: String? = nil, value: String? = nil, image: UIImage? = nil) {
         iconView.image = image
-        iconView.isHidden = (image == nil)
+        iconContainerView.isHidden = (image == nil)
         
         titlelabel.text = title
         subtitleLabel.text = subtitle

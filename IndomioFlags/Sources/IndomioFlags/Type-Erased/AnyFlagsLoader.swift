@@ -23,6 +23,9 @@ public protocol AnyFlagsLoader {
     /// List of feature flags of the loader.
     var featureFlags: [AnyFlag] { get }
     
+    /// Hierarchical list of flags of the loader.
+    var hierarcyFeatureFlags: [AnyFlagOrCollection] { get }
+
 }
 
 extension FlagsLoader: AnyFlagsLoader {
