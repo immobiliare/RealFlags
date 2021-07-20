@@ -18,16 +18,13 @@ public class FlagBrowserDataCell: UITableViewCell, Reusable, NibType, UITextView
     
     @IBOutlet public var valueField: UITextView!
     @IBOutlet public var titleLabel: UILabel!
-    @IBOutlet public var saveButton: UIButton!
     
     public weak var parentTableView: UITableView?
-    public var onTapSaveStringData: ((String) -> Void)?
     
     public var isDisabled: Bool = false {
         didSet {
             valueField.textColor = (isDisabled ? .lightGray : .black)
             titleLabel.textColor = (isDisabled ? .lightGray : .black)
-            saveButton.isHidden = isDisabled
         }
     }
     
@@ -69,10 +66,6 @@ public class FlagBrowserDataCell: UITableViewCell, Reusable, NibType, UITextView
         tableView.endUpdates()
         
         UIView.setAnimationsEnabled(true)
-    }
-    
-    @IBAction public func didTapSave(_ sender: UIButton) {
-        onTapSaveStringData?(valueField.text)
     }
     
 }

@@ -108,16 +108,24 @@ public class FlagsBrowserController: UIViewController {
         let dataSection = FlagBrowserItem(title: "Current Value")
         let value = flag.getValueForFlag(from: type(of: provider))
         let isWritableProvider = provider.isWritable
-        var isWritableObject = (flag.isUILocked == false)
+        var isWritableObject = (flag.metadata.isLocked == false)
         
         // Current value change options
         switch flag.dataType {
         case is String.Type:
-            dataSection.childs.append(
+            dataSection.childs.append(contentsOf: [
                 FlagBrowserItem(value: (value as? String) ?? "",
+                                accessoryType: .none,
                                 disabled: !isWritableProvider,
-                                cellType: .entryTextField)
-            )
+                                cellType: .entryTextField),
+                FlagBrowserItem(title: "Save Changes",
+                                subtitle: "Save changes to the field above",
+                                accessoryType: .disclosureIndicator,
+                                selectable: isWritableProvider,
+                                disabled: !isWritableProvider,
+                                cellType: .default,
+                                actionType: .setStringValue)
+            ])
         case is Bool.Type:
             dataSection.childs.append(
                 FlagBrowserItem(title: "True",
@@ -156,12 +164,19 @@ public class FlagsBrowserController: UIViewController {
             )
             
         case is JSONData.Type:
-            dataSection.childs.append(
+            dataSection.childs.append(contentsOf: [
                 FlagBrowserItem(value: (value as? String) ?? "",
                                 disabled: !isWritableProvider,
                                 cellType: .entryTextField,
+                                actionType: .setJSONValue),
+                FlagBrowserItem(title: "Save Changes",
+                                subtitle: "Save changes to the field above",
+                                accessoryType: .disclosureIndicator,
+                                selectable: isWritableProvider,
+                                disabled: !isWritableProvider,
+                                cellType: .default,
                                 actionType: .setJSONValue)
-            )
+            ])
             
         default:
             // Cannot edit these objects (Conforms to codable) directly via IDE
@@ -171,7 +186,7 @@ public class FlagsBrowserController: UIViewController {
         if isWritableObject {
             // Clear current value
             dataSection.childs.append(
-                FlagBrowserItem(title: "No Value",
+                FlagBrowserItem(title: "Nil (No Value)",
                                 subtitle: "Tap to clear current value (if any)",
                                 accessoryType: (value == nil ? .checkmark : .none),
                                 selectable: isWritableProvider,
@@ -212,17 +227,19 @@ public class FlagsBrowserController: UIViewController {
         // MAIN INFO
         let mainSection = FlagBrowserItem(title: "INFORMATIONS")
         mainSection.childs = [
-            FlagBrowserItem(title: "Key", subtitle: flag.keyPath.fullPath, value: flag.name),
-            FlagBrowserItem(title: "Type", value: flag.readableDataType),
-            FlagBrowserItem(title: "Default Fallback", value: flag.readableDefaultFallbackValue),
+            FlagBrowserItem(title: "KeyPath", subtitle: flag.keyPath.fullPath, value: flag.name),
+            FlagBrowserItem(title: "Data Type", value: flag.readableDataType),
+            FlagBrowserItem(title: "Default Value", value: flag.readableDefaultFallbackValue),
             FlagBrowserItem(title: "Description", subtitle: flag.description)
         ]
         sections.append(mainSection)
         
         // CURRENT VALUE
+        let resultDescription = flag.getValueDescriptionForFlag(from: nil)
         let currentValueSection = FlagBrowserItem(title: "CURRENT VALUE")
         currentValueSection.childs = [
-            FlagBrowserItem(title: flag.getValueDescriptionForFlag(from: nil))
+            FlagBrowserItem(title: "Value", value: resultDescription.value),
+            FlagBrowserItem(title: "From", value: resultDescription.sourceProvider?.name ?? "(Default Value)")
         ]
         sections.append(currentValueSection)
         
@@ -232,7 +249,7 @@ public class FlagsBrowserController: UIViewController {
             let isDisabled = flag.excludedProviders?.contains(where: { $0 == type(of: provider) }) ?? false
             let item = FlagBrowserItem(title: provider.name,
                                        subtitle: provider.shortDescription,
-                                       value: flag.getValueDescriptionForFlag(from: type(of: provider)).trunc(length: 20),
+                                       value: flag.getValueDescriptionForFlag(from: type(of: provider)).value.trunc(length: 20),
                                        accessoryType: .disclosureIndicator)
             item.isDisabled = isDisabled
             item.isSelectable = !isDisabled
@@ -246,11 +263,15 @@ public class FlagsBrowserController: UIViewController {
     
     private func flagsInList(_ list: [AnyFlagOrCollection]) -> [FlagBrowserItem] {
         list.compactMap { flag -> FlagBrowserItem? in
+            if flag.metadata.isInternal {
+                return nil // hidden to the browser
+            }
+            
             switch flag {
             case let flag as AnyFlag:
                 return FlagBrowserItem(title: flag.name,
                                        subtitle: flag.description,
-                                       value: flag.getValueDescriptionForFlag(from: nil),
+                                       value: flag.getValueDescriptionForFlag(from: nil).value,
                                        icon: flag.icon,
                                        accessoryType: .disclosureIndicator,
                                        selectable: true, representedObj: flag)
@@ -314,9 +335,12 @@ public class FlagsBrowserController: UIViewController {
                 goBackInNavigation()
                 
             case .setStringValue:
-                guard case .flagData(let flagInProvider) = data else { return }
+                guard case .flagData(let flagInProvider) = data,
+                      let entryCell = firstEntryFieldCell() else {
+                    return
+                }
                 
-                if let newValue = (cell as? FlagBrowserDataCell)?.valueField.text, newValue.isEmpty == false {
+                if let newValue = entryCell.valueField.text, newValue.isEmpty == false {
                     try flagInProvider.provider.setValue(newValue, forFlag: flagInProvider.flag.keyPath)
                     goBackInNavigation()
                 }
@@ -357,9 +381,12 @@ public class FlagsBrowserController: UIViewController {
                 present(alert, animated: true, completion: nil)
                 
             case .setJSONValue:
-                guard case .flagData(let flagInProvider) = data else { return }
-                
-                if let newValue = (cell as? FlagBrowserDataCell)?.valueField.text, newValue.isEmpty == false,
+                guard case .flagData(let flagInProvider) = data,
+                      let entryCell = firstEntryFieldCell() else {
+                    return
+                }
+
+                if let newValue = entryCell.valueField.text, newValue.isEmpty == false,
                    let jsonData = JSONData(jsonString: newValue) {
                     try flagInProvider.provider.setValue(jsonData, forFlag: flagInProvider.flag.keyPath)
                     goBackInNavigation()
@@ -368,6 +395,10 @@ public class FlagsBrowserController: UIViewController {
         } catch {
             
         }
+    }
+    
+    private func firstEntryFieldCell() -> FlagBrowserDataCell? {
+        tableView?.visibleCells.first(where: { $0 as? FlagBrowserDataCell != nil }) as? FlagBrowserDataCell
     }
     
     private func showErrorMessage(_ title: String, message: String?) {
@@ -425,10 +456,8 @@ extension FlagsBrowserController: UITableViewDataSource, UITableViewDelegate {
         case .entryTextField:
             let cell = FlagBrowserDataCell.dequeue(from: tableView, for: indexPath)
             cell.parentTableView = tableView
-            cell.onTapSaveStringData = { [weak self] _ in
-                self?.didSelectAction(item.actionType, cell: cell)
-            }
             cell.set(title: "Data", value: item.value ?? "")
+            cell.accessoryType = item.accessoryType
             cell.isDisabled = item.isDisabled
             return cell
         }
@@ -459,6 +488,11 @@ extension AnyFlag {
     }
  
     var icon: UIImage? {
+        if let customIcon = metadata.uiIcon {
+            return customIcon
+        }
+        
+        // Default data type icons
         switch dataType {
         case is String.Type:
             return UIImage(named: "datatype_string", in: .module, with: .none)

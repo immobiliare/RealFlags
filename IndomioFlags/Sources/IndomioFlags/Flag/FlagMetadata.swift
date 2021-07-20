@@ -10,7 +10,7 @@
 //  Licensed under MIT License.
 //
 
-import Foundation
+import UIKit
 
 /// This represent the metadata information associated with a flag.
 /// Typically these values are read from the UI interface or can be used as documented reference inside the code.
@@ -18,6 +18,15 @@ public struct FlagMetadata {
     
     /// Name of the flag/group.
     public var name: String?
+    
+    /// Custom icon assigned in Flags Browser.
+    /// If not value is set the default data type icon is used instead.
+    public var uiIcon: UIImage?
+    
+    /// When set to `true` the flag can't be altered by using the Flags Browser.
+    /// By default is set to `false`.
+    /// NOTE: you can still alter it via code.
+    public var isLocked = false
     
     /// A short description of the flag. You should really provider a context in order to avoid confusion, this
     /// this the reason this is the only property which is not set to optional.

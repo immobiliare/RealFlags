@@ -10,7 +10,7 @@
 //  Licensed under MIT License.
 //
 
-import Foundation
+import UIKit
 
 /// This a wrapper which represent a single Feature Flag.
 /// The type that you wrap with `@Flag` must conform to `FlagProtocol`.
@@ -21,11 +21,6 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
     
     /// Unique identifier of the feature flag.
     public var id = UUID()
-    
-    /// When set to `true` the flag can't be altered by using the Flags Browser.
-    /// By default is set to `false`.
-    /// NOTE: you can still alter it via code.
-    public var isUILocked = false
 
     /// The default value for this flag; this value is used when no provider can obtain the
     /// value you are requesting. Consider it as a fallback.
@@ -34,7 +29,7 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
     /// The value associated with flag; if specified it will be get by reading the value of the provider, otherwise
     /// the `defaultValue` is used instead.
     public var wrappedValue: Value {
-        flagValue() ?? defaultValue
+        flagValue().value ?? defaultValue
     }
     
     /// A reference to the `Flag` itself is available as a projected value
@@ -105,9 +100,9 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
     ///
     /// - Parameter providerType: provider type, if `nil` the providers list with `allowedProviders` is read.
     /// - Returns: Value
-    public func flagValue(from providerType: FlagsProvider.Type? = nil, fallback: Bool = true) -> Value? {
+    public func flagValue(from providerType: FlagsProvider.Type? = nil, fallback: Bool = true) -> (value: Value?, source: FlagsProvider?) {
         guard loader.instance != nil else {
-            return defaultValue // no loader has been set, we want to get the fallback result.
+            return (defaultValue, nil) // no loader has been set, we want to get the fallback result.
         }
         
         let providersToQuery = providersWithTypes([providerType].compactMap({ $0}))
@@ -115,11 +110,11 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
         for provider in providersToQuery where isProviderAllowed(provider) {
             if let value: Value = provider.valueForFlag(key: keyPath) {
                 // first valid result for provider is taken and returned
-                return value
+                return (value, provider)
             }
         }
         
-        return nil
+        return (nil, nil)
     }
     
     /// Allows to change the value of feature flag by overwriting it to all or certain types

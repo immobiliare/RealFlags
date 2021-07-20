@@ -200,3 +200,10 @@ The following properties of `@Flag` properties are used by the Flags Browser to 
 - `keyPath`: provide the full keypath of the property which is queried to any set data providers. If not specified it will be evaluated automatically ([see here](./documentation/introduction.md#1.1)).
 - `isUILocked`: set to `true` in order to prevent altering the property from the Flags Browser. By default is `false`.
 - `defaultValue`: show the value of fallback when no value can be obtained to any data provider.
+- `metadata`: contains useful settings for flag (see below)
+
+A `Flag` instance also include a `FlagMetadata` object (via `.metadata`) which exposes several additional properties:
+
+- `uiIcon`: an optional icon to show in Flags Browser. By default you can keep it `nil` and the default datatype icon is used (default is `nil`).
+- `isLocked`: when `true` you cannot change the value of the flag via Flags Browser (default is `false`).
+- `isInternal`: when `true` value is not visible in Flags Browser (default is `false`)

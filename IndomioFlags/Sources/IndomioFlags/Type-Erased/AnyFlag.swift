@@ -12,12 +12,6 @@
 
 import Foundation
 
-public protocol AnyFlagOrCollection {
-    
-    func hierarchyFeatureFlags() -> [AnyFlagOrCollection]
-    
-}
-
 public protocol AnyFlag: AnyFlagOrCollection {
     
     /// Allowed provider.
@@ -37,8 +31,12 @@ public protocol AnyFlag: AnyFlagOrCollection {
     
     /// Description of data type represented.
     var readableDataType: String { get }
-
+    
+    /// Data type for flag.
     var dataType: Any.Type { get }
+    
+    /// Metadata for flag.
+    var metadata: FlagMetadata { get }
 
     /// Associated providers.
     var providers: [FlagsProvider] { get }
@@ -54,7 +52,7 @@ public protocol AnyFlag: AnyFlagOrCollection {
     /// Get a readable description of the value.
     ///
     /// - Parameter providerType: you can specify a particular provider to query; otherwise standard's flag behaviour is applied.
-    func getValueDescriptionForFlag(from providerType: FlagsProvider.Type?) -> String
+    func getValueDescriptionForFlag(from providerType: FlagsProvider.Type?) -> (value: String, sourceProvider: FlagsProvider?)
     
     /// Save a value to a provider (if supported).
     ///
@@ -67,6 +65,10 @@ public protocol AnyFlag: AnyFlagOrCollection {
 
 extension Flag: AnyFlag {
     
+    public var isUILocked: Bool {
+        metadata.isLocked
+    }
+        
     public func hierarchyFeatureFlags() -> [AnyFlagOrCollection] {
         []
     }
@@ -99,15 +101,17 @@ extension Flag: AnyFlag {
     }
     
     public func getValueForFlag(from providerType: FlagsProvider.Type? = nil) -> Any? {
-        flagValue(from: providerType)
+        flagValue(from: providerType).value
     }
     
-    public func getValueDescriptionForFlag(from providerType: FlagsProvider.Type? = nil) -> String {
-        guard let value = getValueForFlag(from: providerType) else {
-            return readableDefaultFallbackValue
+    public func getValueDescriptionForFlag(from providerType: FlagsProvider.Type? = nil) -> (value: String, sourceProvider: FlagsProvider?) {
+        
+        let result = flagValue(from: providerType)
+        guard let value = result.value else {
+            return (readableDefaultFallbackValue, nil)
         }
         
-        return String(describing: value)
+        return (String(describing: value), result.source)
     }
     
     public var name: String {

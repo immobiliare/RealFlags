@@ -18,7 +18,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="oIJ-L2-Fi3">
-                        <rect key="frame" x="10" y="40" width="359.5" height="173"/>
+                        <rect key="frame" x="10" y="40" width="359.5" height="213"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="gwT-IH-A8p"/>
@@ -37,31 +37,18 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aEw-C1-tNm">
-                        <rect key="frame" x="249.5" y="228" width="120" height="30"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="120" id="WJx-7N-Xtz"/>
-                        </constraints>
-                        <state key="normal" title="SAVE DATA"/>
-                        <connections>
-                            <action selector="didTapSave:" destination="Gjm-MZ-plg" eventType="touchUpInside" id="cA7-5C-Gfm"/>
-                        </connections>
-                    </button>
                 </subviews>
                 <constraints>
                     <constraint firstItem="8wI-gL-qr5" firstAttribute="leading" secondItem="SLO-bw-yYd" secondAttribute="leading" constant="15" id="4MB-Kl-txn"/>
                     <constraint firstItem="8wI-gL-qr5" firstAttribute="top" secondItem="SLO-bw-yYd" secondAttribute="top" constant="15" id="6rb-Du-Aa4"/>
                     <constraint firstItem="oIJ-L2-Fi3" firstAttribute="top" secondItem="8wI-gL-qr5" secondAttribute="bottom" constant="5" id="9dN-oG-8OT"/>
-                    <constraint firstAttribute="bottom" secondItem="oIJ-L2-Fi3" secondAttribute="bottom" constant="55" id="DgR-lw-zXB"/>
-                    <constraint firstItem="aEw-C1-tNm" firstAttribute="top" secondItem="oIJ-L2-Fi3" secondAttribute="bottom" constant="15" id="K8o-C9-epH"/>
+                    <constraint firstAttribute="bottom" secondItem="oIJ-L2-Fi3" secondAttribute="bottom" constant="15" id="DgR-lw-zXB"/>
                     <constraint firstItem="oIJ-L2-Fi3" firstAttribute="leading" secondItem="SLO-bw-yYd" secondAttribute="leading" constant="10" id="Mb6-Lt-sus"/>
-                    <constraint firstAttribute="trailing" secondItem="aEw-C1-tNm" secondAttribute="trailing" constant="15" id="THR-CR-0bZ"/>
                     <constraint firstAttribute="trailing" secondItem="8wI-gL-qr5" secondAttribute="trailing" constant="15" id="eQm-Ek-nJz"/>
                     <constraint firstAttribute="trailing" secondItem="oIJ-L2-Fi3" secondAttribute="trailing" constant="15" id="nOl-bX-jUA"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
-                <outlet property="saveButton" destination="aEw-C1-tNm" id="Y5b-rl-NXp"/>
                 <outlet property="titleLabel" destination="8wI-gL-qr5" id="jJU-7n-pFk"/>
                 <outlet property="valueField" destination="oIJ-L2-Fi3" id="12w-5x-MfR"/>
             </connections>
