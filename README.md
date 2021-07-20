@@ -66,7 +66,7 @@ IndomioFlags also comes with an handy tool you can use to browse and alter featu
 
 [Checkout the doc for more infos!](./documentation/advanced_usage.md#3.5)
 
-[gif]
+![](./documentation/assets/flags_browser_intro.gif)
 
 <a name="#documentation"/>
 

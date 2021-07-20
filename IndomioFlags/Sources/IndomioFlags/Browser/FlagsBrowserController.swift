@@ -14,18 +14,15 @@ import UIKit
 
 // MARK: - FlagsBrowserController
 
-public struct FlagInProvider {
-    var flag: AnyFlag
-    var provider: FlagsProvider
-}
-
 public class FlagsBrowserController: UIViewController {
     
+    // MARK: - DataType
+
     public enum DataType {
-        case flag(AnyFlag)
+        case loaders([AnyFlagsLoader])
         case flags(AnyFlagsLoader)
         case flagsInCollection(AnyFlagCollection)
-        case loaders([AnyFlagsLoader])
+        case flag(AnyFlag)
         case flagData(FlagInProvider)
     }
     
@@ -34,6 +31,9 @@ public class FlagsBrowserController: UIViewController {
     /// Loaded loaders.
     public private(set) var data: DataType!
     public private(set) var items = [FlagBrowserItem]()
+    
+    /// Section footer's title
+    private var sectionFooters = [Int: String]()
     
     /// Tableview of the content.
     @IBOutlet public var tableView: UITableView?
@@ -107,8 +107,10 @@ public class FlagsBrowserController: UIViewController {
         
         let dataSection = FlagBrowserItem(title: "Current Value")
         let value = flag.getValueForFlag(from: type(of: provider))
+        
         let isWritableProvider = provider.isWritable
         var isWritableObject = (flag.metadata.isLocked == false)
+        let valueIsEditable = (isWritableProvider && isWritableObject)
         
         // Current value change options
         switch flag.dataType {
@@ -121,8 +123,8 @@ public class FlagsBrowserController: UIViewController {
                 FlagBrowserItem(title: "Save Changes",
                                 subtitle: "Save changes to the field above",
                                 accessoryType: .disclosureIndicator,
-                                selectable: isWritableProvider,
-                                disabled: !isWritableProvider,
+                                selectable: valueIsEditable,
+                                disabled: !valueIsEditable,
                                 cellType: .default,
                                 actionType: .setStringValue)
             ])
@@ -130,15 +132,15 @@ public class FlagsBrowserController: UIViewController {
             dataSection.childs.append(
                 FlagBrowserItem(title: "True",
                                 accessoryType: ((value as? Bool) == true ? .checkmark : .none),
-                                selectable: isWritableProvider,
-                                disabled: !isWritableProvider,
+                                selectable: valueIsEditable,
+                                disabled: !valueIsEditable,
                                 actionType: .setBoolValue(true))
             )
             dataSection.childs.append(
                 FlagBrowserItem(title: "False",
                                 accessoryType: ((value as? Bool) == false ? .checkmark : .none),
-                                selectable: isWritableProvider,
-                                disabled: !isWritableProvider,
+                                selectable: valueIsEditable,
+                                disabled: !valueIsEditable,
                                 actionType: .setBoolValue(false))
             )
         case is Int.Type, is Int8.Type, is Int16.Type, is Int32.Type, is Int64.Type:
@@ -147,8 +149,8 @@ public class FlagsBrowserController: UIViewController {
                                 subtitle: "Tap to modify the value",
                                 value: String(describing: value!),
                                 accessoryType: (value != nil ? .checkmark : .none),
-                                selectable: isWritableProvider,
-                                disabled: !isWritableProvider,
+                                selectable: valueIsEditable,
+                                disabled: !valueIsEditable,
                                 actionType: .setNumericValue(.int))
             )
             
@@ -158,8 +160,8 @@ public class FlagsBrowserController: UIViewController {
                                 subtitle: "Tap to modify the value",
                                 value: String(describing: value!),
                                 accessoryType: (value != nil ? .checkmark : .none),
-                                selectable: isWritableProvider,
-                                disabled: !isWritableProvider,
+                                selectable: valueIsEditable,
+                                disabled: !valueIsEditable,
                                 actionType: .setNumericValue(.double))
             )
             
@@ -172,8 +174,8 @@ public class FlagsBrowserController: UIViewController {
                 FlagBrowserItem(title: "Save Changes",
                                 subtitle: "Save changes to the field above",
                                 accessoryType: .disclosureIndicator,
-                                selectable: isWritableProvider,
-                                disabled: !isWritableProvider,
+                                selectable: valueIsEditable,
+                                disabled: !valueIsEditable,
                                 cellType: .default,
                                 actionType: .setJSONValue)
             ])
@@ -183,7 +185,7 @@ public class FlagsBrowserController: UIViewController {
             isWritableObject = false
         }
         
-        if isWritableObject {
+        if isWritableObject && isWritableProvider {
             // Clear current value
             dataSection.childs.append(
                 FlagBrowserItem(title: "Nil (No Value)",
@@ -194,12 +196,12 @@ public class FlagsBrowserController: UIViewController {
                                 actionType: .clearValue)
             )
         } else {
-            dataSection.childs.append(
-                FlagBrowserItem(title: "Cannot Edit Value",
-                                subtitle: "Value is not editable via IDE, continue via code",
-                                selectable: false,
-                                disabled: true)
-            )
+            if isWritableProvider == false {
+                sectionFooters[1] = "This data provider is ready only and does not support value set."
+            }
+            if isWritableObject == false {
+                sectionFooters[1] = "This property is locked and cannot be edited via user interface."
+            }
         }
         
         return [infoSection, dataSection]
@@ -238,8 +240,8 @@ public class FlagsBrowserController: UIViewController {
         let resultDescription = flag.getValueDescriptionForFlag(from: nil)
         let currentValueSection = FlagBrowserItem(title: "CURRENT VALUE")
         currentValueSection.childs = [
-            FlagBrowserItem(title: "Value", value: resultDescription.value),
-            FlagBrowserItem(title: "From", value: resultDescription.sourceProvider?.name ?? "(Default Value)")
+            FlagBrowserItem(title: "Current Value", value: resultDescription.value),
+            FlagBrowserItem(title: "Provider Source", value: resultDescription.sourceProvider?.name ?? "(Default Value)")
         ]
         sections.append(currentValueSection)
         
@@ -298,16 +300,22 @@ public class FlagsBrowserController: UIViewController {
         
         switch value {
         case let loader as AnyFlagsLoader:
-            createAndPushBrowserController(withData: .flags(loader), title: loader.collectionType)
+            createAndPushBrowserController(withData: .flags(loader),
+                                           title: loader.collectionType)
             
         case let flag as AnyFlag:
-            createAndPushBrowserController(withData: .flag(flag), title: flag.name)
+            let isLocked = (flag.isUILocked)
+            createAndPushBrowserController(withData: .flag(flag),
+                                           title: "\(flag.name) \(isLocked ? " 🔒" : "")")
             
         case let collection as AnyFlagCollection:
-            createAndPushBrowserController(withData: .flagsInCollection(collection), title: collection.name)
+            createAndPushBrowserController(withData: .flagsInCollection(collection),
+                                           title: collection.name)
             
         case let flagInProvider as FlagInProvider:
-            createAndPushBrowserController(withData: .flagData(flagInProvider), title: flagInProvider.provider.name)
+            let isLocked = (!flagInProvider.provider.isWritable || flagInProvider.flag.isUILocked)
+            createAndPushBrowserController(withData: .flagData(flagInProvider),
+                                           title: "\(flagInProvider.provider.name) \(isLocked ? " 🔒" : "")")
             
         default:
             didSelectAction(item.actionType, cell: cell)
@@ -450,6 +458,7 @@ extension FlagsBrowserController: UITableViewDataSource, UITableViewDelegate {
             
             cell.set(title: item.title, subtitle: item.subtitle, value: item.value, image: item.icon)
             cell.accessoryType = item.accessoryType
+            cell.accessoryView = item.accessoryType != .none ? nil : UIView(frame: .init(x: 0, y: 0, width: 10, height: 0))
             cell.isDisabled = item.isDisabled
             return cell
             
@@ -461,6 +470,10 @@ extension FlagsBrowserController: UITableViewDataSource, UITableViewDelegate {
             cell.isDisabled = item.isDisabled
             return cell
         }
+    }
+    
+    public func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        sectionFooters[section]
     }
     
     public func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
@@ -476,6 +489,8 @@ extension FlagsBrowserController: UITableViewDataSource, UITableViewDelegate {
     }
     
 }
+
+// MARK: - AnyFlag Extension
 
 extension AnyFlag {
     
@@ -513,6 +528,19 @@ extension AnyFlag {
             return nil
             
         }
+    }
+    
+}
+
+// MARK: - FlagInProvider
+
+public struct FlagInProvider {
+    var flag: AnyFlag
+    var provider: FlagsProvider
+    
+    internal init(flag: AnyFlag, provider: FlagsProvider) {
+        self.flag = flag
+        self.provider = provider
     }
     
 }

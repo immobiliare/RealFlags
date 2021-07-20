@@ -38,10 +38,12 @@ public struct FlagMetadata {
     
     // MARK: - Initialization
     
-    init(name: String? = nil, description: String, isInternal: Bool = false) {
+    public init(name: String? = nil, description: String, isInternal: Bool = false, uiIcon: UIImage? = nil, isLocked: Bool = false) {
         self.name = name
         self.description = description
         self.isInternal = isInternal
+        self.uiIcon = uiIcon
+        self.isLocked = isLocked
     }
     
 }
