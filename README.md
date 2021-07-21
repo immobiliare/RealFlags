@@ -13,7 +13,6 @@
 <a href="https://github.com/malcommac/IndomioFlags/blob/master/LICENSE"><img alt="Lincense" src="http://img.shields.io/badge/License-Apache%202.0-black.svg"/></a>
 </p>
 
-
 <p align="center">
 Made with ❤️ by <a href="https://github.com/orgs/immobiliare">ImmobiliareLabs</a> and <a href="https://github.com/.../graphs/contributors">Contributors</a>
 <br clear="all">
@@ -23,7 +22,33 @@ IndomioFlags makes it **easy to configure feature flags** in your codebase.
 It's designed for Swift and **provides a simple and elegant abstraction layer** over multiple providers you can query with your own priority.  
 It also comes with an **handy UI tool to browse and alter values directly at runtime!**
 
-## 🎸 Features Highlights
+<br/>
+<p align="center">
+<b><a href="#features">Features</a></b>
+|
+<b><a href="#whatyouget">What You Get</a></b>
+|
+<b><a href="#flagsbrowser">Flags Browser & Editor</a></b>
+|
+<b><a href="#tests">Tests</a></b>
+|
+<b><a href="#documentation">Documentation</a></b>
+|
+<b><a href="#requirements">Requirements</a></b>
+|
+<b><a href="#installation">Installation</a></b>
+|
+<b><a href="#powered">Powered Apps</a></b>
+|
+<b><a href="#support">Support & Contribute</a></b>
+|
+<b><a href="#license">License</a></b>
+</p>
+<br/>
+
+<a name="#features"/>
+
+## Features Highlights
 
 - 💡 **Simple & Elegant**: Effectively describe and organize your own flags with a type-safe structure. It will abstract your implementation and consistently reduce the amount of code to manage your feature flags
 - 💡 **Extensible**: You can use one of the default data providers or create your own. We support Firebase Remote and Local configurations too
@@ -31,7 +56,9 @@ It also comes with an **handy UI tool to browse and alter values directly at run
 - 💡 **Configurable**: Enable, disable and customize features at runtime
 - 💡 **Integrated UI Tool**: the handy UI Tool allows you to customize and read flags at glance
 
-## 🤟 What You Get
+<a name="#whatyouget"/>
+
+## What You Get
 
 Our goal making IndomioFlags is to provide a type-safe abstract way to describe and query for feature flags.
 
@@ -79,7 +106,9 @@ If no values are available the default value specified in `@Flags` annotation is
 
 This is just an overview of the library; if you want to know more follow the [documentation below](#documentation).
 
-## 🎛 Flags Browser & Editor
+<a name="#flagsbrowser"/>
+
+## Flags Browser & Editor
 
 IndomioFlags also comes with an handy tool you can use to browse and edit feature flags values directly in your client! It can be useful for testing purpose or allow product owners to enable/disable and verify features of the app.
 
@@ -95,7 +124,7 @@ IndomioFlags includes an extensive collection of unit tests: you can found it in
 
 <a name="#documentation"/>
 
-## 🧑‍🏫 Documentation
+## Documentation
 
 The following documentation describe detailed usage of the library.
 
@@ -170,7 +199,7 @@ pod 'IndomioFlags'
 ```
 <a name="#powered"/>
 
-## Powered by IndomioFlags
+## Powered Apps
 
 IndomioFlags was created by the amazing mobile team at ImmobiliareLabs, the Tech dept at Immobiliare.it, the first real estate site in Italy.  
 We are currently using IndomioFlags in all of our products.
