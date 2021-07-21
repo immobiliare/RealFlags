@@ -1,4 +1,6 @@
-# IndomioFlags
+<p align="center">
+<img src="./documentation/assets/IndomioFlags.png" alt="Indomio" width="500"/>
+</p>
 
 IndomioFlags makes it **easy to configure feature flags** in your codebase.  
 It's designed for Swift and **provides a simple and elegant abstraction layer** over multiple providers you can query with your own priority.  
@@ -166,7 +168,7 @@ We are currently using IndomioFlags in all of our products.
 
 **If you are using IndomioFlags in your app [drop us a message](), we'll add below**.
 
-<img src="./documentation/assets/IndomioLogo.png" alt="Indomio" width="273"/>
+<a href="https://apps.apple.com/us/app/immobiiiare-it-indomio/id335948517"><img src="./documentation/assets/IndomioLogo.png" alt="Indomio" width="273"/></a>
 
 <a name="#license"/>
 
