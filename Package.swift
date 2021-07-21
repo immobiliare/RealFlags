@@ -7,7 +7,6 @@ let package = Package(
     name: "IndomioFlags",
     platforms: [
         .iOS(.v13),
-        .macOS(.v10_15),
         .tvOS(.v13),
         .watchOS(.v6)
     ],

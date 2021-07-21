@@ -6,7 +6,7 @@
 //  Email: mobile@immobiliare.it
 //  Web: http://labs.immobiliare.it
 //
-//  Copyright ©2021 Daniele Margutti. All rights reserved.
+//  Copyright ©2021 Immobiliare.it SpA. All rights reserved.
 //  Licensed under MIT License.
 //
 
@@ -38,8 +38,7 @@ public struct FlagMetadata {
     
     // MARK: - Initialization
     
-    public init(name: String? = nil, description: String, isInternal: Bool = false, uiIcon: UIImage? = nil, isLocked: Bool = false) {
-        self.name = name
+    public init(description: String, isInternal: Bool = false, uiIcon: UIImage? = nil, isLocked: Bool = false) {
         self.description = description
         self.isInternal = isInternal
         self.uiIcon = uiIcon
@@ -55,7 +54,7 @@ public struct FlagMetadata {
 extension FlagMetadata: ExpressibleByStringLiteral {
     
     public init(stringLiteral value: String) {
-        self.init(name: nil, description: value, isInternal: false)
+        self.init(description: value, isInternal: false)
     }
     
 }

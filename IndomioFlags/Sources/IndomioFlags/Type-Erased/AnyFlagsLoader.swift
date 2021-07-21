@@ -6,7 +6,7 @@
 //  Email: mobile@immobiliare.it
 //  Web: http://labs.immobiliare.it
 //
-//  Copyright ©2021 Daniele Margutti. All rights reserved.
+//  Copyright ©2021 Immobiliare.it SpA. All rights reserved.
 //  Licensed under MIT License.
 //
 

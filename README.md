@@ -8,7 +8,7 @@
 <!--- <a href="https://cocoapods.org/pods/IndomioFlags"><img alt="CocoaPods" src="https://img.shields.io/cocoapods/v/IndomioFlags.svg"/></a> -->
 <a href="https://swift.org/package-manager"><img alt="Swift Package Manager" src="https://img.shields.io/badge/SwiftPM-compatible-yellowgreen.svg"/></a>
 </br>
-<a href="https://developer.apple.com/"><img alt="Platform" src="https://img.shields.io/badge/platform-iOS%20%7C%20macOS%20%7C%20tvOS%20%7C%20watchOS%20%7C%20Linux-green.svg"/></a>
+<a href="https://developer.apple.com/"><img alt="Platform" src="https://img.shields.io/badge/platform-iOS%20%7C%20tvOS%20%7C%20watchOS%20%7C%20Linux-green.svg"/></a>
 <a href="https://github.com/malcommac/IndomioFlags/blob/master/LICENSE"><img alt="Lincense" src="http://img.shields.io/badge/License-Apache%202.0-black.svg"/></a>
 </p>
 
@@ -144,7 +144,7 @@ The following documentation describe detailed usage of the library.
 
 IndomioFlags can be installed in any platform which supports Swift 5.4+ including Windows and Linux. On Apple platform the following configuration is required:
 
-- iOS 12+, macOS 11.4+, watchOS 7+, tvOS 9+
+- iOS 12+, watchOS 7+, tvOS 9+
 - Xcode 12.5+
 - Swift 5.4+
 
