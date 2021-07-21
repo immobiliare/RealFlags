@@ -1,5 +1,5 @@
 <p align="center">
-<img src="./documentation/assets/IndomioFlags.png" alt="Indomio" width="450"/>
+<img src="./documentation/assets/indomioflags_logo.png" alt="Indomio" width="450"/>
 </p>
 
 IndomioFlags makes it **easy to configure feature flags** in your codebase.  
@@ -160,7 +160,7 @@ We are currently using IndomioFlags in all of our products.
 
 **If you are using IndomioFlags in your app [drop us a message](mailto://mobile@immobiliare.it), we'll add below**.
 
-<a href="https://apps.apple.com/us/app/immobiiiare-it-indomio/id335948517"><img src="./documentation/assets/IndomioLogo.png" alt="Indomio" width="273"/></a>
+<a href="https://apps.apple.com/us/app/immobiiiare-it-indomio/id335948517"><img src="./documentation/assets/powered_by_indomioflags_apps.png" alt="Indomio" width="270"/></a>
 
 <a name="#support"/>
 
