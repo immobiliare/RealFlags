@@ -2,17 +2,34 @@
 <img src="./documentation/assets/indomioflags_logo.png" alt="Indomio" width="450"/>
 </p>
 
+<p align="center">
+<a href="https://developer.apple.com/swift"><img alt="Swift5" src="https://img.shields.io/badge/language-Swift5-orange.svg"/></a>
+<a href="https://github.com/malcommac/IndomioFlags/releases/latest"><img alt="Release" src="https://img.shields.io/github/release/malcommac/IndomiofLAGS.svg"/></a>
+<a href="https://cocoapods.org/pods/IndomioFlags"><img alt="CocoaPods" src="https://img.shields.io/cocoapods/v/IndomioFlags.svg"/></a>
+<a href="https://swift.org/package-manager"><img alt="Swift Package Manager" src="https://img.shields.io/badge/SwiftPM-compatible-yellowgreen.svg"/></a>
+</br>
+<a href="https://github.com/malcommac/IndomioFlags/actions"><img alt="CI Status" src="https://github.com/malcommac/IndomioFlags/workflows/GitHub%20Actions/badge.svg"/></a>
+<a href="https://developer.apple.com/"><img alt="Platform" src="https://img.shields.io/badge/platform-iOS%20%7C%20macOS%20%7C%20tvOS%20%7C%20watchOS%20%7C%20Linux-green.svg"/></a>
+<a href="https://github.com/malcommac/IndomioFlags/blob/master/LICENSE"><img alt="Lincense" src="http://img.shields.io/badge/License-Apache%202.0-black.svg"/></a>
+</p>
+
+
+<p align="center">
+Made with ❤️ by <a href="https://github.com/orgs/immobiliare">ImmobiliareLabs</a> and <a href="https://github.com/.../graphs/contributors">Contributors</a>
+<br clear="all">
+</p>
+
 IndomioFlags makes it **easy to configure feature flags** in your codebase.  
 It's designed for Swift and **provides a simple and elegant abstraction layer** over multiple providers you can query with your own priority.  
 It also comes with an **handy UI tool to browse and alter values directly at runtime!**
 
 ## 🎸 Features Highlights
 
-- **Simple & Elegant**: Effectively describe and organize your own flags with a type-safe structure. It will abstract your implementation and consistently reduce the amount of code to manage your feature flags
-- **Extensible**: You can use one of the default data providers or create your own. We support Firebase Remote and Local configurations too
-- **Complete**: Feature Flags supports all primitive datatypes and complex objects: `Int` (and any numeric variant), `String`, `Bool`, `Data`, `Date`, `URL`, `Dictionary`, `Array` (values must conform to `FlagProtocol`), Optional Values and virtually any object conforms to `Codable` protocol!
-- **Configurable**: Enable, disable and customize features at runtime
-- **Integrated UI Tool**: the handy UI Tool allows you to customize and read flags at glance
+- 💡 **Simple & Elegant**: Effectively describe and organize your own flags with a type-safe structure. It will abstract your implementation and consistently reduce the amount of code to manage your feature flags
+- 💡 **Extensible**: You can use one of the default data providers or create your own. We support Firebase Remote and Local configurations too
+- 💡 **Complete**: Feature Flags supports all primitive datatypes and complex objects: `Int` (and any numeric variant), `String`, `Bool`, `Data`, `Date`, `URL`, `Dictionary`, `Array` (values must conform to `FlagProtocol`), Optional Values and virtually any object conforms to `Codable` protocol!
+- 💡 **Configurable**: Enable, disable and customize features at runtime
+- 💡 **Integrated UI Tool**: the handy UI Tool allows you to customize and read flags at glance
 
 ## 🤟 What You Get
 
