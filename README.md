@@ -144,6 +144,12 @@ IndomioFlags can be installed with CocoaPods by adding pod 'IndomioFlags' to you
 pod 'IndomioFlags'
 ```
 
+<a name="#tests"/>
+
+## Tests
+
+IndomioFlags includes an extensive set of unit tests: you can found it into the `Tests` directory.
+
 <a name="#support"/>
 
 ## Support & Contribute
@@ -158,7 +164,9 @@ If you have any questions on how to use IndomioFlags, bugs and enhancement pleas
 IndomioFlags was created by the amazing mobile team at ImmobiliareLabs, the Tech dept at Immobiliare.it, the first real estate site in Italy.  
 We are currently using IndomioFlags in all of our products.
 
-**If you are using IndomioFlags in your app [drop us a message](), we'll add it in this collection**.
+**If you are using IndomioFlags in your app [drop us a message](), we'll add below**.
+
+|[](./documentation/assets/IndomioLogo.png)
 
 <a name="#license"/>
 
