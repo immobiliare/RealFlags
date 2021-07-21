@@ -70,6 +70,12 @@ IndomioFlags also comes with an handy tool you can use to browse and edit featur
 
 ![](./documentation/assets/flags_browser_intro.gif)
 
+<a name="#tests"/>
+
+## Tests
+
+IndomioFlags includes an extensive collection of unit tests: you can found it into the `Tests` directory.
+
 <a name="#documentation"/>
 
 ## 🧑‍🏫 Documentation
@@ -145,12 +151,16 @@ IndomioFlags can be installed with CocoaPods by adding pod 'IndomioFlags' to you
 ```ruby
 pod 'IndomioFlags'
 ```
+<a name="#powered"/>
 
-<a name="#tests"/>
+## Powered by IndomioFlags
 
-## Tests
+IndomioFlags was created by the amazing mobile team at ImmobiliareLabs, the Tech dept at Immobiliare.it, the first real estate site in Italy.  
+We are currently using IndomioFlags in all of our products.
 
-IndomioFlags includes an extensive set of unit tests: you can found it into the `Tests` directory.
+**If you are using IndomioFlags in your app [drop us a message](mailto://mobile@immobiliare.it), we'll add below**.
+
+<a href="https://apps.apple.com/us/app/immobiiiare-it-indomio/id335948517"><img src="./documentation/assets/IndomioLogo.png" alt="Indomio" width="273"/></a>
 
 <a name="#support"/>
 
@@ -159,19 +169,9 @@ IndomioFlags includes an extensive set of unit tests: you can found it into the 
 We'd love for you to contribute to IndomioFlags!  
 If you have any questions on how to use IndomioFlags, bugs and enhancement please feel free to reach out by opening a [GitHub Issue](https://github.com/.../issues).
 
-<a name="#powered"/>
-
-## Powered by IndomioFlags
-
-IndomioFlags was created by the amazing mobile team at ImmobiliareLabs, the Tech dept at Immobiliare.it, the first real estate site in Italy.  
-We are currently using IndomioFlags in all of our products.
-
-**If you are using IndomioFlags in your app [drop us a message](), we'll add below**.
-
-<a href="https://apps.apple.com/us/app/immobiiiare-it-indomio/id335948517"><img src="./documentation/assets/IndomioLogo.png" alt="Indomio" width="273"/></a>
-
 <a name="#license"/>
 
 ## License
 
-IndomioFlags is licensed under the Apache 2.0 license. See the LICENSE file for more information.
+IndomioFlags is licensed under the Apache 2.0 license.  
+See the [LICENSE](./LICENSE) file for more information.
