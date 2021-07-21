@@ -166,7 +166,7 @@ We are currently using IndomioFlags in all of our products.
 
 **If you are using IndomioFlags in your app [drop us a message](), we'll add below**.
 
-|[](./documentation/assets/IndomioLogo.png)
+![](./documentation/assets/IndomioLogo.png)
 
 <a name="#license"/>
 
