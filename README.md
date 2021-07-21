@@ -1,5 +1,5 @@
 <p align="center">
-<img src="./documentation/assets/IndomioFlags.png" alt="Indomio" width="500"/>
+<img src="./documentation/assets/IndomioFlags.png" alt="Indomio" width="450"/>
 </p>
 
 IndomioFlags makes it **easy to configure feature flags** in your codebase.  
