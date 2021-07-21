@@ -137,15 +137,7 @@ The following documentation describe detailed usage of the library.
     - [3.3 - Firebase Remote Config with `FirebaseRemoteProvider`](./documentation/advanced_usage.md#3.3)  
     - [3.4 - Modify a feature flag at runtime](./documentation/advanced_usage.md#3.4)  
     - [3.5 - Flags Browser & Editor](./documentation/advanced_usage.md#3.5)
-
-Other sections:
-
-- [Requirements](#requirements)
-- [Installation](#installation)
-- [Support & Contribute](#support)
-- [Powered by IndomioFlags](#powered)
-- [License](#license)
-
+    
 <a name="#requirements"/>
 
 ## Requirements
