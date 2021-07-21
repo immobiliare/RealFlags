@@ -64,9 +64,9 @@ This is just an overview of the library; if you want to know more follow the [do
 
 IndomioFlags also comes with an handy tool you can use to browse and edit feature flags values directly in your client! It can be useful for testing purpose or allow product owners to enable/disable and verify features of the app.
 
-<div style="text-align:center"><img src="./documentation/assets/flags_browser_intro.gif/></div>
-
 [Checkout the doc for more infos!](./documentation/advanced_usage.md#3.5)
+
+![](./documentation/assets/flags_browser_intro.gif)
 
 <a name="#documentation"/>
 
@@ -88,7 +88,7 @@ The following documentation describe detailed usage of the library.
     - [3.2 - Use and Creation of Data Providers](./documentation/advanced_usage.md#3.2)  
     - [3.3 - Firebase Remote Config with `FirebaseRemoteProvider`](./documentation/advanced_usage.md#3.3)  
     - [3.4 - Modify a feature flag at runtime](./documentation/advanced_usage.md#3.4)  
-    - [3.5 - Flags Browser UI](./documentation/advanced_usage.md#3.5)
+    - [3.5 - Flags Browser & Editor](./documentation/advanced_usage.md#3.5)
 
 Other sections:
 
