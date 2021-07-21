@@ -4,18 +4,13 @@
 
 <p align="center">
 <a href="https://developer.apple.com/swift"><img alt="Swift5" src="https://img.shields.io/badge/language-Swift5-orange.svg"/></a>
-<a href="https://github.com/malcommac/IndomioFlags/releases/latest"><img alt="Release" src="https://img.shields.io/github/release/malcommac/IndomiofLAGS.svg"/></a>
+<a href="https://github.com/malcommac/IndomioFlags/releases/latest"><img alt="Release" src="https://img.shields.io/github/release/malcommac/IndomioFlags.svg"/></a>
 <a href="https://cocoapods.org/pods/IndomioFlags"><img alt="CocoaPods" src="https://img.shields.io/cocoapods/v/IndomioFlags.svg"/></a>
 <a href="https://swift.org/package-manager"><img alt="Swift Package Manager" src="https://img.shields.io/badge/SwiftPM-compatible-yellowgreen.svg"/></a>
 </br>
 <a href="https://github.com/malcommac/IndomioFlags/actions"><img alt="CI Status" src="https://github.com/malcommac/IndomioFlags/workflows/GitHub%20Actions/badge.svg"/></a>
 <a href="https://developer.apple.com/"><img alt="Platform" src="https://img.shields.io/badge/platform-iOS%20%7C%20macOS%20%7C%20tvOS%20%7C%20watchOS%20%7C%20Linux-green.svg"/></a>
 <a href="https://github.com/malcommac/IndomioFlags/blob/master/LICENSE"><img alt="Lincense" src="http://img.shields.io/badge/License-Apache%202.0-black.svg"/></a>
-</p>
-
-<p align="center">
-Made with ❤️ by <a href="https://github.com/orgs/immobiliare">ImmobiliareLabs</a> and <a href="https://github.com/.../graphs/contributors">Contributors</a>
-<br clear="all">
 </p>
 
 IndomioFlags makes it **easy to configure feature flags** in your codebase.  
@@ -211,6 +206,11 @@ We are currently using IndomioFlags in all of our products.
 <a name="#support"/>
 
 ## Support & Contribute
+
+<p align="center">
+Made with ❤️ by <a href="https://github.com/orgs/immobiliare">ImmobiliareLabs</a> and <a href="https://github.com/.../graphs/contributors">Contributors</a>
+<br clear="all">
+</p>
 
 We'd love for you to contribute to IndomioFlags!  
 If you have any questions on how to use IndomioFlags, bugs and enhancement please feel free to reach out by opening a [GitHub Issue](https://github.com/.../issues).
