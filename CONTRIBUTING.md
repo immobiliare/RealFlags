@@ -21,8 +21,8 @@ If you want to add a new feature, let's discuss about it first on issue.
 
 ```bash
 $ git clone https://github.com/malcommac/IndomioFlags.git
-$ cd DifferenceKit/
-$ open DifferenceKit
+$ cd IndomioFlags/
+$ open IndomioFlags
 ```
 
 ### Lint
