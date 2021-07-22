@@ -15,7 +15,6 @@ let package = Package(
         .library(name: "IndomioFlagsFirebase", targets: ["IndomioFlagsFirebase"])
     ],
     dependencies: [
-        // Dependencies declare other packages that this package depends on.
         .package(
             name: "Firebase",
             url: "https://github.com/firebase/firebase-ios-sdk.git",
