@@ -32,7 +32,8 @@ public struct FlagCollection<Group: FlagCollectionProtocol>: FeatureFlagConfigur
     
     /// Full keypath of the group.
     public var keyPath: FlagKeyPath {
-        let fullPath: [KeyPathAndConfig] = loader.propertyPath + [(fixedKey ?? loader.propertyName, loader.instance!.keyConfiguration)]
+        let currentKeyPath = (fixedKey ?? loader.propertyName, (fixedKey == nil ? loader.instance!.keyConfiguration : KeyConfiguration(keyTransform: .none)))
+        let fullPath: [KeyPathAndConfig] = loader.propertyPath + [currentKeyPath]
         return loader.generateKeyPath(fullPath)
     }
     

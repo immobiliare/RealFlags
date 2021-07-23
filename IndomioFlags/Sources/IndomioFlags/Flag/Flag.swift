@@ -42,7 +42,8 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
     /// of the feature flag. It's composed according to the `FlagLoader`'s configuration.
     /// If you need to override the behaviour by setting your own key pass `key` to init function.
     public var keyPath: FlagKeyPath {
-        let fullPath: [KeyPathAndConfig] = loader.propertyPath + [(fixedKey ?? loader.propertyName, loader.instance!.keyConfiguration)]
+        let currentKeyPath = (fixedKey ?? loader.propertyName, (fixedKey == nil ? loader.instance!.keyConfiguration : KeyConfiguration(keyTransform: .none)))
+        let fullPath: [KeyPathAndConfig] = loader.propertyPath + [currentKeyPath]
         return loader.generateKeyPath(fullPath)
     }
     

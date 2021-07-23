@@ -52,9 +52,11 @@ final class FlagTests: XCTestCase {
         
         XCTAssert(loader.$flagString.keyPath.fullPath == "custom_string")
         
+        print(loader.nested.$nestedIntFlagFixKey.keyPath.fullPath )
+        
         // Nested collection's flags
         XCTAssert(loader.nested.$nestedIntFlag.keyPath.fullPath == "nested/nested_int_flag")
-        XCTAssert(loader.nested.$nestedIntFlagFixKey.keyPath.fullPath == "fixed_property_key")
+        XCTAssert(loader.nested.$nestedIntFlagFixKey.keyPath.fullPath == "nested/fixed_property_key")
         XCTAssert(loader.nested.$nestedIntFlagFixKey.name == "nestedInt_customName")
         
         XCTAssert(loader.nested.$nestedArray.defaultValue == [2,3,5])

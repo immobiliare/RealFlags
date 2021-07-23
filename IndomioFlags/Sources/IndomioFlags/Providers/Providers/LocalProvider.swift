@@ -37,7 +37,7 @@ public class LocalProvider: FlagsProvider, Identifiable {
     // MARK: - Internal Properties
     
     /// Storage data.
-    private var storage: [String: Any]
+    internal var storage: [String: Any]
     
     // MARK: - Initialization
     
