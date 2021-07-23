@@ -106,7 +106,7 @@ public struct KeyConfiguration {
     /// Path separator, by default is `/`
     public let pathSeparator: String
     
-    public init(prefix: String? = nil, pathSeparator: String = "/", keyTransform: String.Transform = .snakeCase) {
+    public init(prefix: String? = nil, pathSeparator: String = FlagKeyPath.DefaultPathSeparator, keyTransform: String.Transform = .snakeCase) {
         self.globalPrefix = prefix
         self.keyTransform = keyTransform
         self.pathSeparator = pathSeparator

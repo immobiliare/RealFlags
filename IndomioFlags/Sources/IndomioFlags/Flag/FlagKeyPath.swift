@@ -14,6 +14,8 @@ import Foundation
 
 public struct FlagKeyPath: Equatable, Hashable {
     
+    public static let DefaultPathSeparator = "/"
+    
     // MARK: - Public Properties
     
     /// Components of the key to retrive.

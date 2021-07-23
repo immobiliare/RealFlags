@@ -115,7 +115,7 @@ extension Flag: AnyFlag {
     }
     
     public var name: String {
-        metadata.name ?? loader.propertyName ?? ""
+        metadata.name ?? loader.propertyName
     }
     
     public var description: String {

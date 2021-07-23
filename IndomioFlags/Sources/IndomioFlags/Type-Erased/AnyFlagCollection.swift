@@ -28,7 +28,7 @@ public protocol AnyFlagCollection: AnyFlagOrCollection {
 extension FlagCollection: AnyFlagCollection {
     
     public var name: String {
-        metadata.name ?? loader.propertyName ?? ""
+        metadata.name ?? loader.propertyName
     }
     
     public var description: String {

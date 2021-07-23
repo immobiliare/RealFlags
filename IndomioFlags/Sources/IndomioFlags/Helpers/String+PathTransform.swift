@@ -25,6 +25,7 @@ internal extension String {
         case .none: return self
         case .kebabCase: return toSnakeCase(separator: "-")
         case .snakeCase: return toSnakeCase()
+        case .custom(let v): return v
         }
     }
         
@@ -54,10 +55,16 @@ internal extension String {
 public extension String {
     
     /// Transform of the keys.
+    /// 
+    /// - `none`: no transform is applied.
+    /// - `kebabCase`: refers to the style of writing in which each space is replaced by a `-` character.
+    /// - `snakeCase`: refers to the style of writing in which each space is replaced by a `_` character.
+    /// - `custom`: define a fixed key to use as the key of the collection.
     enum Transform {
         case none
         case kebabCase
         case snakeCase
+        case custom(String)
     }
     
 }

@@ -24,12 +24,16 @@ public struct FlagCollection<Group: FlagCollectionProtocol>: FeatureFlagConfigur
     /// A metadata object which encapsulate all the additional informations about the group itself.
     public let metadata: FlagMetadata
     
+    /// How to compose the key for keypath to a nested property.
+    public let keyConfiguration: CollectionKeyPathConfiguration
+    
     /// How we should display this group in Vexillographer
     public let uiRepresentation: UIRepresentation
     
     /// Full keypath of the group.
     public var keyPath: FlagKeyPath {
-        loader.keyPathForProperty(withFixedKey: fixedKey)
+        let fullPath: [KeyPathAndConfig] = loader.propertyPath + [(fixedKey ?? loader.propertyName, loader.instance!.keyConfiguration)]
+        return loader.generateKeyPath(fullPath)
     }
     
     // MARK: - Private Properties
@@ -49,14 +53,18 @@ public struct FlagCollection<Group: FlagCollectionProtocol>: FeatureFlagConfigur
     /// - Parameters:
     ///   - name: name of the group. You can omit it, it's used only to describe the property.
     ///   - key: fixed key. It's used to compose the full path of the properties. Set a non `nil` value to override the automatic path calculation.
+    ///   - keyConfiguration: defines how this property contribute to the full path to a inner property. The default is `.default` which simply ineriths
+    ///                       settings from the parent's `FlagLoader`.
     ///   - description: description of the group; you are encouraged to setup it in order to document your feature flags.
     ///   - uiRepresentation: the ui control used to represent the control.
     public init(name: String? = nil,
                 key: String? = nil,
+                keyConfiguration: CollectionKeyPathConfiguration = .default,
                 description: FlagMetadata,
                 uiRepresentation: UIRepresentation = .asNavigation) {
         self.fixedKey = key
         self.wrappedValue = Group()
+        self.keyConfiguration = keyConfiguration
         self.uiRepresentation = uiRepresentation
 
         var newMetadata = description
@@ -66,15 +74,14 @@ public struct FlagCollection<Group: FlagCollectionProtocol>: FeatureFlagConfigur
     
     // MARK: - Internal Methods
     
-    public func configureWithLoader(_ loader: FlagsLoaderProtocol, propertyName: String, keyPath: [String]) {
+    public func configureWithLoader(_ loader: FlagsLoaderProtocol, propertyName: String, keyPath: [KeyPathAndConfig]) {
         self.loader.instance = loader
-        self.loader.propertyPath = keyPath
+        self.loader.propertyPath = keyPath + [(propertyName, keyConfiguration.keyConfiguration(loaderTransform: loader.keyConfiguration.keyTransform))]
         self.loader.propertyName = propertyName
                 
-        let keyPath = self.loader.keyPathForProperty(withFixedKey: fixedKey)
         let properties = Mirror(reflecting: wrappedValue).children.lazy.featureFlagsConfigurableProperties()
         for property in properties {
-            property.value.configureWithLoader(loader, propertyName: property.label, keyPath: keyPath.pathComponents)
+            property.value.configureWithLoader(loader, propertyName: property.label, keyPath: self.loader.propertyPath)
         }
     }
     
@@ -118,4 +125,39 @@ public extension FlagCollection {
         case asSection
     }
 
+}
+
+// MARK: - CollectionKeyPathConfiguration
+
+extension FlagCollection {
+    
+    /// Defines how a nested collection must contribute to the composition of the final path to an inner property.
+    /// - `default`: is the default mode which simply inherits the value from the parent's `FlagLoader` instance.
+    /// - `kebabCase`: refers to the style of writing in which each space is replaced by a `-` character.
+    /// - `snakeCase`: refers to the style of writing in which each space is replaced by a `_` character.
+    /// - `skip`: skip the contribution of the collection. It will be not part of the path.
+    /// - `custom`: define a fixed key to use as the key of the collection.
+    public enum CollectionKeyPathConfiguration {
+        case `default`
+        case kebabCase
+        case snakeCase
+        case skip
+        case custom(String)
+        
+        internal func keyConfiguration(loaderTransform transform: String.Transform) -> KeyConfiguration? {
+            switch self {
+            case .default:
+                return KeyConfiguration(keyTransform: transform)
+            case .kebabCase:
+                return KeyConfiguration(keyTransform: .kebabCase)
+            case .snakeCase:
+                return KeyConfiguration(keyTransform: .snakeCase)
+            case .skip:
+                return nil
+            case .custom(let v):
+                return KeyConfiguration(keyTransform: .custom(v))
+            }
+        }
+    }
+    
 }

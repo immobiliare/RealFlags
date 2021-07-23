@@ -42,7 +42,8 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
     /// of the feature flag. It's composed according to the `FlagLoader`'s configuration.
     /// If you need to override the behaviour by setting your own key pass `key` to init function.
     public var keyPath: FlagKeyPath {
-        loader.keyPathForProperty(withFixedKey: fixedKey)
+        let fullPath: [KeyPathAndConfig] = loader.propertyPath + [(fixedKey ?? loader.propertyName, loader.instance!.keyConfiguration)]
+        return loader.generateKeyPath(fullPath)
     }
     
     /// Metadata information associated with the flag.
@@ -184,7 +185,7 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
     /// - Parameters:
     ///   - loader: loader.
     ///   - keyPath: path.
-    public func configureWithLoader(_ loader: FlagsLoaderProtocol, propertyName: String, keyPath: [String]) {
+    public func configureWithLoader(_ loader: FlagsLoaderProtocol, propertyName: String, keyPath: [KeyPathAndConfig]) {
         self.loader.instance = loader
         self.loader.propertyName = propertyName
         self.loader.propertyPath = keyPath
@@ -223,26 +224,32 @@ internal class LoaderBox {
     weak var instance: FlagsLoaderProtocol?
     
     /// Used to store the name of the property when you have not set a fixed key in property.
-    var propertyName: String?
+    var propertyName: String = ""
     
     /// Path to the property.
-    var propertyPath: [String] = []
+    var propertyPath: [KeyPathAndConfig] = []
     
-    func keyPathForProperty(withFixedKey fixedKey: String?) -> FlagKeyPath {
-        if let fixedKey = fixedKey {
-            return FlagKeyPath(components: [fixedKey], separator: "/")
-        }
-        
-        let keyTransform = instance?.keyConfiguration.keyTransform ?? .none
-        let pathSeparator = instance?.keyConfiguration.pathSeparator ?? "/"
+    /// Generate a `FlagKeyPath` from a concatenate list of paths coming from the structure which encapsulate the property itself.
+    ///
+    /// - Parameter paths: paths.
+    /// - Returns: FlagKeyPath
+    internal func generateKeyPath(_ paths: [KeyPathAndConfig]) -> FlagKeyPath {
+        let defaultKeyTransform = instance?.keyConfiguration.keyTransform ?? .none
+        let defaultPathSeparator = instance?.keyConfiguration.pathSeparator ?? FlagKeyPath.DefaultPathSeparator
 
-        let propertyKey = propertyName ?? ""
-        var components = propertyPath.map( { $0.transform(keyTransform) }) + [propertyKey.transform(keyTransform)]
-        if let prefix = instance?.keyConfiguration.globalPrefix {
-            components.insert(prefix.transform(keyTransform), at: 0)
+        var pathComponents = paths.compactMap { key, keyConfiguration -> String? in
+            guard let keyConfiguration = keyConfiguration else {
+                return nil // must ignore the path component (.skip)
+            }
+            
+            return key.transform(keyConfiguration.keyTransform)
         }
         
-        return FlagKeyPath(components: components, separator: pathSeparator)
+        if let prefix = instance?.keyConfiguration.globalPrefix {
+            pathComponents.insert(prefix.transform(defaultKeyTransform), at: 0)
+        }
+        
+        return FlagKeyPath(components: pathComponents, separator: defaultPathSeparator)
     }
     
     init() {}
