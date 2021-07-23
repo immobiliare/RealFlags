@@ -131,6 +131,7 @@ The following documentation describe detailed usage of the library.
 - [2 - Organize Feature Flags](./documentation/organize_feature_flags.md)  
     - [2.1 - The `@FlagCollection` annotation](./documentation/organize_feature_flags.md#2.1)  
     - [2.2 - Nested Structures](./documentation/organize_feature_flags.md#2.2)  
+    - [2.3 - Configure `FlagCollection`'s contribution to properties keypath generation](./documentation/organize_feature_flags.md#2.3)  
 - [3 - Advanced Usage](./documentation/advanced_usage.md)  
     - [3.1 - Using `FlagsManager`](./documentation/advanced_usage.md#3.1)  
     - [3.2 - Use and Creation of Data Providers](./documentation/advanced_usage.md#3.2)  

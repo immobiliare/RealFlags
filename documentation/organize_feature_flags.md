@@ -99,3 +99,50 @@ if appFlags.userFlags.showSocialLogin {
     // ...
 }
 ```
+
+<a name="#2.3"/>
+
+## 2.3 Configure `FlagCollection`'s contribution to properties keypath generation
+
+Sometimes you may want to organize a collection of flags by creating nested structures which are transparent to the keypath generation to its inner properties.
+
+Consider the following example with a `FlagLoader` with the default key configuration:
+
+```swift
+private struct TestFlags: FlagCollectionProtocol {
+    @FlagCollection(description: "Group 1")
+    var firstGroup: FirstGroup
+
+    @Flag(default: false, description: "Top level test flag")
+    var topLevelFlag: Bool
+}
+
+private struct FirstGroup: FlagCollectionProtocol {
+    @Flag(default: false, description: "Second level test flag")
+    var secondLevelFlag: Bool
+}
+````
+
+You may want both `topLevelFlag` and `secondLevelFlag` contains the same keypath components.  
+By now you will get the following keypaths:
+- `topLevelFlag`: `top-level-flag`
+- `secondLevelFlag`: `first-group/second-level-flag`
+
+While you want to ignore `first-group` path component.
+
+In order to accomplish this requirement you need to specify a `keyConfiguration` to the `FirstGroup`:
+
+```swift
+@FlagCollection(keyConfiguration: .skip, description: "Group 1")
+var firstGroup: FirstGroup
+```
+
+`.skip` allows you to ignore the `firstGroup` property to the contribution of keypath.
+
+Allowed transformations are pretty similar to the `keyConfiguration` of the `@Flag` property wrapper. They are:
+
+- `default`: this is the default behaviour, it just uses the parent's `FlagLoader`'s `keyConfiguration` setting.
+- `kebabCase`:  refers to the style of writing in which each space is replaced by a `-` character. It uses the kebab case with the current property key (`first-group/...`)
+- `snakeCase`: refers to the style of writing in which each space is replaced by a `_` character. It uses the snake case with the current property key (`first_group/...`)
+- `skip`: ignore the current's collection contribution to keypath generation.
+- `custom(String)`: uses a fixed value to describe the current keypath component.

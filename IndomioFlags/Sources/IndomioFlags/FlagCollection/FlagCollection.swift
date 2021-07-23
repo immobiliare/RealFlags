@@ -144,6 +144,9 @@ extension FlagCollection {
         case skip
         case custom(String)
         
+        /// Transform a CollectionKeyPathConfiguration a KeyConfiguration.
+        /// - Parameter transform: transform.
+        /// - Returns: KeyConfiguration
         internal func keyConfiguration(loaderTransform transform: String.Transform) -> KeyConfiguration? {
             switch self {
             case .default:
