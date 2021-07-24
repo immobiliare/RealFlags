@@ -9,10 +9,14 @@ on:
 jobs:
   build:
     runs-on: macos-latest
+    strategy:
+      matrix:
+        os:
+          - macOS-latest
+        swift-compat-ver:
+          - '5.4'
     steps:
       - uses: actions/checkout@v2
-        with:
-            swift-version: "5.4"
       - name: Build
         run: swift build -v
       - name: Run tests
