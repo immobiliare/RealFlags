@@ -11,28 +11,9 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
+         with:
+            swift-version: "5.4"
       - name: Build
         run: swift build -v
       - name: Run tests
         run: swift test -v
-
-xcode:
-    name: Xcode ${{ matrix.xcode }} (${{ matrix.platform }})
-    needs: filter
-    runs-on: macos-latest
-    strategy:
-      matrix:
-        xcode: [12.5]
-        platform: ["watchos", "ios", "tvos"]
-      fail-fast: false
-    env:
-      DEVELOPER_DIR: "/Applications/Xcode_${{ matrix.xcode }}.app"
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          submodules: true
-        if: ${{ needs.filter.outputs.should_skip != 'true' }}
-      - run: rake test:${{ matrix.platform }}
-        if: ${{ needs.filter.outputs.should_skip != 'true' }}
-      - run: rake test:${{ matrix.platform }}_static
-        if: ${{ needs.filter.outputs.should_skip != 'true' && matrix.platform == 'macos' }}
