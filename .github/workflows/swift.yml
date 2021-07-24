@@ -19,7 +19,5 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-spm-
     - uses: actions/checkout@v2
-    - name: Build
-      run: swift build -v
-    - name: Run tests
-      run: swift test -v
+    - name: Build & Run Tests
+      run: xcodebuild -scheme IndomioFlags-Package test -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 12'
