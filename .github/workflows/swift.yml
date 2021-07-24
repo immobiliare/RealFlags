@@ -11,7 +11,7 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
-         with:
+        with:
             swift-version: "5.4"
       - name: Build
         run: swift build -v
