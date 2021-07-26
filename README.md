@@ -15,7 +15,6 @@ It also comes with an <b>handy UI tool to browse and alter values directly at ru
 <a href="https://swift.org/package-manager"><img alt="Swift Package Manager" src="https://img.shields.io/badge/SwiftPM-compatible-yellowgreen.svg"/></a>
 </br>
 <a href="https://developer.apple.com/"><img alt="Platform" src="https://img.shields.io/badge/platform-iOS%20%7C%20tvOS%20%7C%20watchOS%20%7C%20Linux-green.svg"/></a>
-<a href="https://github.com/malcommac/IndomioFlags/blob/master/LICENSE"><img alt="Lincense" src="http://img.shields.io/badge/License-Apache%202.0-black.svg"/></a>
 </p>
 
 <br/>
@@ -213,5 +212,5 @@ If you have any questions on how to use IndomioFlags, bugs and enhancement pleas
 
 ## License
 
-IndomioFlags is licensed under the Apache 2.0 license.  
+IndomioFlags is licensed under the MIT license.  
 See the [LICENSE](./LICENSE) file for more information.
