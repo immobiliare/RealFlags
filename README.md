@@ -1,5 +1,5 @@
 <p align="center">
-<img src="./documentation/assets/indomioflags_logo.png" alt="Indomio" width="550"/>
+<img src="./documentation/assets/indomioflags_logo.png" alt="IndomioFlags" width="800"/>
 </p>
 
 <p align="center">
