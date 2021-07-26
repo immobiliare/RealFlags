@@ -64,6 +64,7 @@ public extension Reusable {
 public extension Reusable where Self: UITableViewCell {
     
     static func dequeue(from tableView: UITableView, for indexPath: IndexPath) -> Self {
+        // swiftlint:disable force_cast
         tableView.dequeueReusableCell(withIdentifier: Self.reusableIdentifier, for: indexPath) as! Self
     }
     
@@ -72,6 +73,7 @@ public extension Reusable where Self: UITableViewCell {
 public extension Reusable where Self: UITableViewHeaderFooterView {
     
     static func dequeue(from tableView: UITableView) -> Self {
+        // swiftlint:disable force_cast
         tableView.dequeueReusableHeaderFooterView(withIdentifier: Self.reusableIdentifier) as! Self
     }
     

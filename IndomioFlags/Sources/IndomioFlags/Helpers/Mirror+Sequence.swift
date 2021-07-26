@@ -35,4 +35,3 @@ extension Sequence where Element == Mirror.Child {
     }
 
 }
-

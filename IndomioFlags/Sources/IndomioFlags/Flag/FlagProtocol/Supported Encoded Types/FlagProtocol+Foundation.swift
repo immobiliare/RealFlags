@@ -17,7 +17,9 @@ import Foundation
 extension Decodable where Self: FlagProtocol, Self: Encodable {
     
     public init?(encoded value: EncodedFlagValue) {
-        guard case .data(let data) = value else { return nil }
+        guard case .data(let data) = value else {
+            return nil
+        }
 
         do {
             let decoder = JSONDecoder()
@@ -87,7 +89,6 @@ extension Dictionary: FlagProtocol where Key == String, Value: FlagProtocol {
         }))
     }
 }
-
 
 // MARK: - Date
 

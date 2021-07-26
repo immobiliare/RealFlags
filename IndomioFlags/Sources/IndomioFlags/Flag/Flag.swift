@@ -42,7 +42,9 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
     /// of the feature flag. It's composed according to the `FlagLoader`'s configuration.
     /// If you need to override the behaviour by setting your own key pass `key` to init function.
     public var keyPath: FlagKeyPath {
-        let currentKeyPath = (fixedKey ?? loader.propertyName, (fixedKey == nil ? loader.instance!.keyConfiguration : KeyConfiguration(keyTransform: .none)))
+        // swiftlint:disable force_unwrapping
+        let currentKeyPath = (fixedKey ?? loader.propertyName,
+                              (fixedKey == nil ? loader.instance!.keyConfiguration : KeyConfiguration(keyTransform: .none)))
         let fullPath: [KeyPathAndConfig] = loader.propertyPath + [currentKeyPath]
         return loader.generateKeyPath(fullPath)
     }
@@ -79,7 +81,8 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
     ///   - allowedProviders: you can limit the providers where to get the value; if you specify a non `nil` array of types only instances
     ///                       of these types are queried to get value.
     ///   - description: description of the proprerty; you are encouraged to provide a short description of the feature flag.
-    public init(name: String? = nil, key: String? = nil,
+    public init(name: String? = nil,
+                key: String? = nil,
                 default defaultValue: Value,
                 excludedProviders: [FlagsProvider.Type]? = nil,
                 description: FlagMetadata) {
@@ -107,7 +110,7 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
             return (defaultValue, nil) // no loader has been set, we want to get the fallback result.
         }
         
-        let providersToQuery = providersWithTypes([providerType].compactMap({ $0}))
+        let providersToQuery = providersWithTypes([providerType].compactMap({ $0 }))
         let keyPath = self.keyPath
         for provider in providersToQuery where isProviderAllowed(provider) {
             if let value: Value = provider.valueForFlag(key: keyPath) {
@@ -174,11 +177,13 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
     /// - Parameter provider: provider to check.
     /// - Returns: `true` if it's allowed, `false` otherwise.
     private func isProviderAllowed(_ provider: FlagsProvider) -> Bool {
-        guard let excludedProviders = self.excludedProviders else { return true }
+        guard let excludedProviders = self.excludedProviders else {
+            return true
+        }
         
-        return excludedProviders.first { allowedType in
+        return excludedProviders.contains { allowedType in
             allowedType == type(of: provider)
-        } == nil
+        } == false
     }
     
     /// Configure the property with the given loader which created it.
@@ -198,7 +203,7 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
 
 extension Flag: Equatable where Value: Equatable {
     
-    public static func ==(lhs: Flag, rhs: Flag) -> Bool {
+    public static func == (lhs: Flag, rhs: Flag) -> Bool {
         return lhs.keyPath == rhs.keyPath && lhs.wrappedValue == rhs.wrappedValue
     }
     

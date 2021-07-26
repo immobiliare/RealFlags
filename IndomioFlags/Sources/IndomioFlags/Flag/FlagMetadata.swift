@@ -58,4 +58,3 @@ extension FlagMetadata: ExpressibleByStringLiteral {
     }
     
 }
-

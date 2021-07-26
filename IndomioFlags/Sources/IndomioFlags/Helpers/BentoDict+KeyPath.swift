@@ -24,12 +24,15 @@ public enum BentoDict {
         switch keyPath.count {
         case 1:
             if let value = value {
+                // swiftlint:disable force_unwrapping
                 dict[keyPath.first!] = value
             } else {
+                // swiftlint:disable force_unwrapping
                 dict.removeValue(forKey: keyPath.first!)
             }
             
         case (2..<Int.max):
+            // swiftlint:disable force_unwrapping
             let key = keyPath.first!
             var subDict = (dict[key] as? [String: Any]) ?? [:]
             setValueForDictionary(&subDict, value: value, keyPath: keyPath.dropFirst())
@@ -50,20 +53,25 @@ public enum BentoDict {
         switch keys.count {
         case 1:
             return dict[keys[0]!] as? V
+            
         case (2..<Int.max):
             var running = dict
             
             let exceptLastOne = keys.pathComponents[0 ..< (keys.count - 1)]
             for key in exceptLastOne{
-                if let r = running[key] as? [String: AnyObject]{
-                    running = r
-                }else{
+                guard let r = running[key] as? [String: AnyObject] else {
                     return nil
                 }
+                
+                running = r
             }
+            
+            // swiftlint:disable force_unwrapping
             return running[keys.last!] as? V
+            
         default:
             return nil
+            
         }
     }
     

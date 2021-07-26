@@ -41,7 +41,7 @@ extension UserDefaults: FlagsProvider {
     
     // MARK: - FlagsProvider Conformance
 
-    public func valueForFlag<Value>(key: FlagKeyPath) -> Value? where Value : FlagProtocol {
+    public func valueForFlag<Value>(key: FlagKeyPath) -> Value? where Value: FlagProtocol {
         guard
             let rawObject = object(forKey: key.fullPath), // attempt to retrive the object from userdefault's apis
             let encodedFlag = EncodedFlagValue(object: rawObject, classType: Value.self) else {
@@ -51,7 +51,7 @@ extension UserDefaults: FlagsProvider {
         return Value(encoded: encodedFlag)
     }
     
-    public func setValue<Value>(_ value: Value?, forFlag key: FlagKeyPath) throws -> Bool where Value : FlagProtocol {
+    public func setValue<Value>(_ value: Value?, forFlag key: FlagKeyPath) throws -> Bool where Value: FlagProtocol {
         guard let value = value else {
             // nil object means we want to remove the data from the source
             removeObject(forKey: key.fullPath)

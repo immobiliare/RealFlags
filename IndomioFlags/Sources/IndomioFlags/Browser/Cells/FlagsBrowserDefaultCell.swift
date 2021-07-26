@@ -58,10 +58,12 @@ public class FlagsBrowserDefaultCell: UITableViewCell, Reusable, NibType {
     
 }
 
+// MARK: - UIColor Extension
+
 extension UIColor {
+    
     static var tintColor: UIColor {
-        get {
-            UIApplication.shared.windows.first?.rootViewController?.view.tintColor ?? .blue
-        }
+        UIApplication.shared.windows.first?.rootViewController?.view.tintColor ?? .blue
     }
+    
 }

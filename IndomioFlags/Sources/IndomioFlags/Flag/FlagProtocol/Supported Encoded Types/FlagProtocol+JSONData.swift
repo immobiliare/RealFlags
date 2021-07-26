@@ -39,10 +39,11 @@ public class JSONData {
     ///
     /// - Parameter jsonString: json string
     public init?(jsonString: String) {
-        guard let dict = try? JSONSerialization.jsonObject(with: jsonString.data(using: .utf8)!,
-                                                           options: .allowFragments) as? NSDictionary else {
+        guard let data = jsonString.data(using: .utf8),
+              let dict = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? NSDictionary else {
             return nil
         }
+        
         self.dictionary = dict
     }
     

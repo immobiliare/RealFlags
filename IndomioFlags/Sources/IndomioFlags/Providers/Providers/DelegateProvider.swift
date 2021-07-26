@@ -19,14 +19,14 @@ public protocol DelegateProviderProtocol: AnyObject {
     /// Get the value for a specified key.
     ///
     /// - Parameter key: key
-    func valueForFlag<Value>(key: FlagKeyPath) -> Value? where Value : FlagProtocol
+    func valueForFlag<Value>(key: FlagKeyPath) -> Value? where Value: FlagProtocol
     
     /// Set value for specified key.
     ///
     /// - Parameters:
     ///   - value: value.
     ///   - key: key.
-    func setValue<Value>(_ value: Value?, forFlag key: FlagKeyPath) throws -> Bool where Value : FlagProtocol
+    func setValue<Value>(_ value: Value?, forFlag key: FlagKeyPath) throws -> Bool where Value: FlagProtocol
     
 }
 
@@ -56,11 +56,11 @@ public class DelegateProvider: FlagsProvider, Identifiable {
     
     // MARK: - Required Methods
     
-    public func valueForFlag<Value>(key: FlagKeyPath) -> Value? where Value : FlagProtocol {
+    public func valueForFlag<Value>(key: FlagKeyPath) -> Value? where Value: FlagProtocol {
         delegate?.valueForFlag(key: key)
     }
     
-    public func setValue<Value>(_ value: Value?, forFlag key: FlagKeyPath) throws -> Bool where Value : FlagProtocol {
+    public func setValue<Value>(_ value: Value?, forFlag key: FlagKeyPath) throws -> Bool where Value: FlagProtocol {
         guard isWritable else {
             return false
         }
@@ -69,4 +69,3 @@ public class DelegateProvider: FlagsProvider, Identifiable {
     }
 
 }
-

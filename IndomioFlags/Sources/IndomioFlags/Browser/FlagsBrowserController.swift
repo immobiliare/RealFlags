@@ -12,8 +12,6 @@
 
 import UIKit
 
-// MARK: - FlagsBrowserController
-
 public class FlagsBrowserController: UIViewController {
     
     // MARK: - DataType
@@ -45,7 +43,10 @@ public class FlagsBrowserController: UIViewController {
     }
     
     public static func create(loaders: [AnyFlagsLoader], title: String? = nil) -> UINavigationController {
-        let controller = UIStoryboard(name: "FlagsBrowserController", bundle: .module).instantiateInitialViewController() as! FlagsBrowserController
+        guard let controller = UIStoryboard(name: "FlagsBrowserController", bundle: .module).instantiateInitialViewController() as? FlagsBrowserController else {
+            fatalError("Failed to get FlagsBrowserController from xib")
+        }
+        
         controller.title = title ?? "FeatureFlags Browser"
         controller.data = .loaders(loaders)
         
@@ -96,6 +97,7 @@ public class FlagsBrowserController: UIViewController {
         tableView?.reloadData()
     }
     
+    // swiftlint:disable function_body_length
     private func reloadDataForFlagDetail(_ flag: AnyFlag, inProvider provider: FlagsProvider) -> [FlagBrowserItem] {
         let infoSection = FlagBrowserItem(title: "Info")
         
@@ -147,6 +149,7 @@ public class FlagsBrowserController: UIViewController {
             dataSection.childs.append(
                 FlagBrowserItem(title: "Int Value",
                                 subtitle: "Tap to modify the value",
+                                // swiftlint:disable force_unwrapping
                                 value: String(describing: value!),
                                 accessoryType: (value != nil ? .checkmark : .none),
                                 selectable: valueIsEditable,
@@ -323,106 +326,25 @@ public class FlagsBrowserController: UIViewController {
         }
     }
     
-    private func didSelectAction(_ action: FlagBrowserItem.ActionType, cell: UITableViewCell?) {
-        do {
-            switch action {
-            case .none:
-                break
-                
-            case .clearValue:
-                guard case .flagData(let flagInProvider) = data else { return }
-                
-                let value: Bool? = nil
-                try flagInProvider.provider.setValue(value, forFlag: flagInProvider.flag.keyPath)
-                goBackInNavigation()
-                
-            case .setBoolValue(let value):
-                guard case .flagData(let flagInProvider) = data else { return }
-                
-                try flagInProvider.provider.setValue(value, forFlag: flagInProvider.flag.keyPath)
-                goBackInNavigation()
-                
-            case .setStringValue:
-                guard case .flagData(let flagInProvider) = data,
-                      let entryCell = firstEntryFieldCell() else {
-                    return
-                }
-                
-                if let newValue = entryCell.valueField.text, newValue.isEmpty == false {
-                    try flagInProvider.provider.setValue(newValue, forFlag: flagInProvider.flag.keyPath)
-                    goBackInNavigation()
-                }
-                
-            case .setNumericValue(let valueType):
-                guard case .flagData(let flagInProvider) = data else { return }
-                
-                let alert = UIAlertController(title: "Set Numeric Value", message: nil, preferredStyle: .alert)
-                alert.addTextField { field in
-                    field.keyboardType = .numbersAndPunctuation
-                    field.autocorrectionType = .no
-                }
-                alert.addAction(UIAlertAction(title: "Set", style: .default, handler: { [weak self] _ in
-                    guard let value = alert.textFields?.first?.text, value.isEmpty == false else {
-                        return
-                    }
-                    
-                    do {
-                        switch valueType {
-                        case .double:
-                            let doubleValue = Double(value)
-                            try flagInProvider.provider.setValue(doubleValue, forFlag: flagInProvider.flag.keyPath)
-                        case .float:
-                            let floatValue = Float(value)
-                            try flagInProvider.provider.setValue(floatValue, forFlag: flagInProvider.flag.keyPath)
-                        case .int:
-                            let intValue = Int(value)
-                            try flagInProvider.provider.setValue(intValue, forFlag: flagInProvider.flag.keyPath)
-                        }
-                        
-                        self?.goBackInNavigation()
-                    } catch {
-                        self?.showErrorMessage("Failed to cast value", message: error.localizedDescription)
-                    }
-                    
-                }))
-                alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-                present(alert, animated: true, completion: nil)
-                
-            case .setJSONValue:
-                guard case .flagData(let flagInProvider) = data,
-                      let entryCell = firstEntryFieldCell() else {
-                    return
-                }
-
-                if let newValue = entryCell.valueField.text, newValue.isEmpty == false,
-                   let jsonData = JSONData(jsonString: newValue) {
-                    try flagInProvider.provider.setValue(jsonData, forFlag: flagInProvider.flag.keyPath)
-                    goBackInNavigation()
-                }
-            }
-        } catch {
-            
-        }
-    }
+    // MARK: - Miscs
     
-    private func firstEntryFieldCell() -> FlagBrowserDataCell? {
-        tableView?.visibleCells.first(where: { $0 as? FlagBrowserDataCell != nil }) as? FlagBrowserDataCell
-    }
-    
-    private func showErrorMessage(_ title: String, message: String?) {
+    internal func showErrorMessage(_ title: String, message: String?) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
         present(alert, animated: true, completion: nil)
     }
     
-    private func createAndPushBrowserController(withData data: DataType, title: String?) {
-        let controller = UIStoryboard(name: "FlagsBrowserController", bundle: .module).instantiateInitialViewController() as! FlagsBrowserController
+    internal func createAndPushBrowserController(withData data: DataType, title: String?) {
+        guard let controller = UIStoryboard(name: "FlagsBrowserController", bundle: .module).instantiateInitialViewController() as? FlagsBrowserController else {
+            return
+        }
+        
         controller.title = title ?? ""
         controller.data = data
         navigationController?.pushViewController(controller, animated: true)
     }
     
-    private func goBackInNavigation() {
+    internal func goBackInNavigation() {
         navigationController?.popViewController(animated: true)
     }
     

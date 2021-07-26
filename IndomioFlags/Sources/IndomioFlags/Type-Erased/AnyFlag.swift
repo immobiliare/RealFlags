@@ -82,6 +82,7 @@ extension Flag: AnyFlag {
         }
         
         if isOptional(wrappedValue) {
+            // swiftlint:disable force_unwrapping
             return wrappedTypeFromOptionalType(type(of: wrappedValue.self))!
         } else {
             return type(of: wrappedValue.self)

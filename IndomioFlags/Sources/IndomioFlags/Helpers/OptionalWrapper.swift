@@ -14,7 +14,7 @@ protocol OptionalProtocol {
     static var wrappedType: Any.Type { get }
 }
 
-extension Optional : OptionalProtocol {
+extension Optional: OptionalProtocol {
     static var wrappedType: Any.Type { return Wrapped.self }
 }
 
