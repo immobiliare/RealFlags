@@ -37,7 +37,7 @@ opt_in_rules:
   - quick_discouraged_pending_test
   - single_test_class
 
-  # TODO: maybe turn it on one day... (a lot of fixes)
+  # TODO: maybe turn it on one day
   # - closure_end_indentation
   # - let_var_whitespace
   # - implicitly_unwrapped_optional
@@ -48,7 +48,8 @@ opt_in_rules:
   # - switch_case_on_newline
 
 included:
-  - IndomioFlags
+  - IndomioFlags/Sources/IndomioFlags/Classes
+  - IndomioFlagsFirebase/Sources/IndomioFlagsFirebase/Classes
 
 excluded:
   - SourcePackages
