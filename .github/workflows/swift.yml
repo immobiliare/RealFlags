@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  Build & Tests:
     runs-on: macos-latest
     steps:
     - uses: actions/cache@v2
