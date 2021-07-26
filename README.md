@@ -162,7 +162,7 @@ Aadd it as a dependency in a Swift Package, add it to your Package.swift:
 
 ```swift
 dependencies: [
-    .package(url: "", from: "1.0.0")
+    .package(url: "https://github.com/immobiliare/IndomioFlags.git", from: "1.0.0")
 ]
 ```
 
@@ -171,7 +171,7 @@ And add it as a dependency of your target:
 ```swift
 targets: [
     .target(name: "MyTarget", dependencies: [
-        .product(name: "", package: "")
+        .product(name: "https://github.com/immobiliare/IndomioFlags.git", package: "IndomioFlags")
     ])
 ]
 ```
