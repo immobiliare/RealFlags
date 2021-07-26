@@ -1,5 +1,5 @@
 Pod::Spec.new do |s|
-  s.name         = "IndomioFlags"
+  s.name         = "IndomioFlagsFirebase"
   s.version      = "1.0.0"
   s.summary      = "Feature flagging framework for Swift"
   s.homepage     = "https://github.com/malcommac/IndomioFlags.git"
@@ -14,9 +14,8 @@ Pod::Spec.new do |s|
   s.swift_versions = ['5.0', '5.1', '5.3', '5.4', '5.5']
   s.framework = 'UIKit'
 
-  s.source_files = 'IndomioFlags/Sources/**/*.{h,m,swift}'
-  s.resource_bundles = {
-    'IndomioFlags' => ['IndomioFlags/**/*.{png,storyboard,lproj,xcassets,xib}']
-  }
+  s.source_files = 'IndomioFlagsFirebase/Sources/**/*.{h,m,swift}'
+  s.dependency 'IndomioFlags'
+  s.dependency 'FirebaseRemoteConfig'
 
 end

@@ -146,7 +146,7 @@ The following documentation describe detailed usage of the library.
 
 IndomioFlags can be installed in any platform which supports Swift 5.4+ including Windows and Linux. On Apple platform the following configuration is required:
 
-- iOS 12+, watchOS 7+, tvOS 9+
+- iOS 12+
 - Xcode 12.5+
 - Swift 5.4+
 
