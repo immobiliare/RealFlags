@@ -33,7 +33,7 @@ public class FlagsBrowserDefaultCell: UITableViewCell, Reusable, NibType {
     }
 
     public static var nibBundle: Bundle {
-        .module
+        .libraryBundle
     }
     
     // MARK: - Public Functions

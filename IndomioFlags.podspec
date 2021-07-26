@@ -20,6 +20,9 @@ Pod::Spec.new do |s|
 
   s.subspec 'IndomioFlags' do |ss|
     ss.source_files = 'IndomioFlags/Sources/**/*'
+    ss.resource_bundles = {
+      'IndomioFlags' => ['IndomioFlags/**']
+    }
   end
 
   s.subspec 'IndomioFlagsFirebase' do |ss|

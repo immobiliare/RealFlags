@@ -36,7 +36,7 @@ public class FlagBrowserDataCell: UITableViewCell, Reusable, NibType, UITextView
     }
 
     public static var nibBundle: Bundle {
-        .module
+        .libraryBundle
     }
     
     public override func awakeFromNib() {

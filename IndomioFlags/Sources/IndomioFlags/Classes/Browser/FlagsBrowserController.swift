@@ -43,7 +43,7 @@ public class FlagsBrowserController: UIViewController {
     }
     
     public static func create(loaders: [AnyFlagsLoader], title: String? = nil) -> UINavigationController {
-        guard let controller = UIStoryboard(name: "FlagsBrowserController", bundle: .module).instantiateInitialViewController() as? FlagsBrowserController else {
+        guard let controller = UIStoryboard(name: "FlagsBrowserController", bundle: .libraryBundle).instantiateInitialViewController() as? FlagsBrowserController else {
             fatalError("Failed to get FlagsBrowserController from xib")
         }
         
@@ -284,7 +284,7 @@ public class FlagsBrowserController: UIViewController {
             case let collection as AnyFlagCollection:
                 return FlagBrowserItem(title: collection.name,
                                        subtitle: collection.description,
-                                       icon: UIImage(named: "datatype_list", in: .module, with: nil),
+                                       icon: UIImage(named: "datatype_list", in: .libraryBundle, with: nil),
                                        accessoryType: .disclosureIndicator,
                                        selectable: true,
                                        representedObj: collection)
@@ -335,7 +335,7 @@ public class FlagsBrowserController: UIViewController {
     }
     
     internal func createAndPushBrowserController(withData data: DataType, title: String?) {
-        guard let controller = UIStoryboard(name: "FlagsBrowserController", bundle: .module).instantiateInitialViewController() as? FlagsBrowserController else {
+        guard let controller = UIStoryboard(name: "FlagsBrowserController", bundle: .libraryBundle).instantiateInitialViewController() as? FlagsBrowserController else {
             return
         }
         
@@ -432,19 +432,19 @@ extension AnyFlag {
         // Default data type icons
         switch dataType {
         case is String.Type:
-            return UIImage(named: "datatype_string", in: .module, with: .none)
+            return UIImage(named: "datatype_string", in: .libraryBundle, with: .none)
             
         case is Bool.Type:
-            return UIImage(named: "datatype_bool", in: .module, with: .none)
+            return UIImage(named: "datatype_bool", in: .libraryBundle, with: .none)
 
         case is Int.Type, is Int8.Type, is Int16.Type, is Int32.Type, is Int64.Type:
-            return UIImage(named: "datatype_number", in: .module, with: .none)
+            return UIImage(named: "datatype_number", in: .libraryBundle, with: .none)
             
         case is Double.Type:
-            return UIImage(named: "datatype_number", in: .module, with: .none)
+            return UIImage(named: "datatype_number", in: .libraryBundle, with: .none)
             
         case is JSONData.Type:
-            return UIImage(named: "datatype_json", in: .module, with: .none)
+            return UIImage(named: "datatype_json", in: .libraryBundle, with: .none)
             
         default:
             return nil

@@ -1,8 +1,13 @@
 //
-//  File.swift
-//  
+//  IndomioFlags
+//  Easily manage Feature Flags in Swift
 //
-//  Created by Daniele on 01/07/21.
+//  Created by the Mobile Team @ ImmobiliareLabs
+//  Email: mobile@immobiliare.it
+//  Web: http://labs.immobiliare.it
+//
+//  Copyright ©2021 Immobiliare.it SpA. All rights reserved.
+//  Licensed under MIT License.
 //
 
 import Foundation
