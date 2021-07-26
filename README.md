@@ -2,10 +2,10 @@
 <img src="./documentation/assets/indomioflags_logo.png" alt="IndomioFlags" width="800"/>
 </p>
 
-<p align="center">T
-IndomioFlags makes it **easy to configure feature flags** in your codebase.  
-It's designed for Swift and **provides a simple and elegant abstraction layer** over multiple providers you can query with your own priority.  
-It also comes with an **handy UI tool to browse and alter values directly at runtime!**
+<p align="center">
+IndomioFlags makes it <b>easy to configure feature flags</b> in your codebase.  
+It's designed for Swift and <b>provides a simple and elegant abstraction layer</b> over multiple providers you can query with your own priority.  
+It also comes with an <b>handy UI tool to browse and alter values directly at runtime!</b>.
 </p>
 
 <p align="center">
