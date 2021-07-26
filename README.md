@@ -2,20 +2,9 @@
 <img src="./documentation/assets/indomioflags_logo.png" alt="IndomioFlags" width="800"/>
 </p>
 
-<p align="center">
-IndomioFlags makes it <b>easy to configure feature flags</b> in your codebase.  
-It's designed for Swift and <b>provides a simple and elegant abstraction layer</b> over multiple providers you can query with your own priority.  
-It also comes with an <b>handy UI tool to browse and alter values directly at runtime!</b>.
-</p>
-
-<p align="center">
-<a href="https://developer.apple.com/swift"><img alt="Swift5" src="https://img.shields.io/badge/language-Swift5-orange.svg"/></a>
-<!---<a href="https://github.com/immobiliare/IndomioFlags/releases/latest"><img alt="Release" src="https://img.shields.io/github/release/immobiliare/IndomioFlags.svg"/></a> -->
-<!--- <a href="https://cocoapods.org/pods/IndomioFlags"><img alt="CocoaPods" src="https://img.shields.io/cocoapods/v/IndomioFlags.svg"/></a> -->
-<a href="https://swift.org/package-manager"><img alt="Swift Package Manager" src="https://img.shields.io/badge/SwiftPM-compatible-yellowgreen.svg"/></a>
-</br>
-<a href="https://developer.apple.com/"><img alt="Platform" src="https://img.shields.io/badge/platform-iOS%20%7C%20tvOS%20%7C%20watchOS%20%7C%20Linux-green.svg"/></a>
-</p>
+IndomioFlags makes it **easy to configure feature flags**in your codebase.  
+It's designed for Swift and **provides a simple and elegant abstraction layer** over multiple providers you can query with your own priority.  
+It also comes with an **handy UI tool to browse and alter values directly at runtime!**
 
 <br/>
 <p align="center">
