@@ -21,7 +21,7 @@ jobs:
       run: xcodebuild -scheme IndomioFlags-Package test -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 12'
 
   SwiftLint:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Get file changes
         id: get_file_changes
