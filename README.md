@@ -2,9 +2,11 @@
 <img src="./documentation/assets/indomioflags_logo.png" alt="IndomioFlags" width="800"/>
 </p>
 
+<p align="center">T
 IndomioFlags makes it **easy to configure feature flags** in your codebase.  
 It's designed for Swift and **provides a simple and elegant abstraction layer** over multiple providers you can query with your own priority.  
 It also comes with an **handy UI tool to browse and alter values directly at runtime!**
+</p>
 
 <p align="center">
 <a href="https://developer.apple.com/swift"><img alt="Swift5" src="https://img.shields.io/badge/language-Swift5-orange.svg"/></a>
