@@ -19,14 +19,14 @@ Pod::Spec.new do |s|
   s.default_subspec = 'IndomioFlags'
 
   s.subspec 'IndomioFlags' do |ss|
-    ss.source_files = 'IndomioFlags/Sources/**/*'
+    ss.source_files = 'IndomioFlags/Sources/**/*.{h,m,swift}'
     ss.resource_bundles = {
-      'IndomioFlags' => ['IndomioFlags/**']
+      'IndomioFlags' => ['IndomioFlags/**/*.{png,storyboard,lproj,xcassets,xib}']
     }
   end
 
   s.subspec 'IndomioFlagsFirebase' do |ss|
-    ss.source_files = 'IndomioFlagsFirebase/Sources/**/*'
+    ss.source_files = 'IndomioFlagsFirebase/Sources/**/*.{h,m,swift}'
     ss.dependency 'FirebaseRemoteConfig'
   end
 
