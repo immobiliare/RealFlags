@@ -7,7 +7,7 @@ It's designed for Swift and **provides a simple and elegant abstraction layer** 
 It also comes with an **handy UI tool to browse and alter values directly at runtime!**
 
 <p align="center">
-<img src="./documentation/assets/immobiliarelabs_logo.png" href="http://labs.immobiliare.it" alt="ImmobiliareLabs" width="150"/>
+<a href="http://labs.immobiliare.it"><img src="./documentation/assets/immobiliarelabs_logo.png" alt="ImmobiliareLabs" width="150"/></a>
 </p>
 
 <br/>
