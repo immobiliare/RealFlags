@@ -6,6 +6,10 @@ IndomioFlags makes it **easy to configure feature flags**in your codebase.
 It's designed for Swift and **provides a simple and elegant abstraction layer** over multiple providers you can query with your own priority.  
 It also comes with an **handy UI tool to browse and alter values directly at runtime!**
 
+<p align="center">
+<img src="./documentation/assets/immobiliarelabs_logo.png" alt="IndomioFlags" width="200"/>
+</p>
+
 <br/>
 <p align="center">
 <b><a href="#features">Features</a></b>
@@ -198,6 +202,13 @@ We'd love for you to contribute to IndomioFlags!
 If you have any questions on how to use IndomioFlags, bugs and enhancement please feel free to reach out by opening a [GitHub Issue](https://github.com/immobiliare/IndomioFlags/issues).
 
 <a name="#license"/>
+
+## Authors
+
+IndomioFlags was created and maintained by the ImmobiliareLabs team, the tech departement fo Immobiliare.it.  
+This is the list of current contributors (internal/external) of the project:
+
+- [Daniele Margutti](https://github.com/malcommac)
 
 ## License
 
