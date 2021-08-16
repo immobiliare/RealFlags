@@ -1,9 +1,12 @@
-[↑ Index](./../README.md)
-[← Organize Feature Flags](./../organize_feature_flags.md)
+[↑ DOCUMENTATION INDEX](./../README.md#documentation)
 
 # 3. Advanced Usage
 
-<a name="#3.1"/>
+- 3.1 - [Using FlagsManager](#31-using-flagsmanager)
+- 3.2 - [Use and Creation of Data Providers](#32---use-and-creation-of-data-providers)
+- 3.3 - [Firebase Remote Config with FirebaseRemoteProvider](#33-firebase-remote-config-with-firebaseremoteprovider)
+- 3.4 - [Modify a feature flag at runtime](#34-modify-a-feature-flag-at-runtime)
+- 3.5 - [Flags Browser & Editor](#35-flags-browser--editor)
 
 ## 3.1 Using `FlagsManager`
 
@@ -57,7 +60,7 @@ You can also remove collection from `FlagsManager` using the `removeCollection()
 
 > NOTE: As you may have noticed only a single collection type can be loaded by a `FlagsManager`: you can't have multiple instances of the same collection type.
 
-<a name="#3.2"/>
+[↑ INDEX](#3-advanced-usage)
 
 ## 3.2 - Use and Creation of Data Providers
 
@@ -84,7 +87,7 @@ IndomioFlags supports the following built-in providers:
 Then the following remote providers (you can fetch from a separate package):
 - `FirebaseRemoteProvider` supports Firebase Remote Config feature flag service. It supports only read and only for primitive types (no JSON is supported but you can use your own Strings).
 
-<a name="#3.3"/>
+[↑ INDEX](#3-advanced-usage)
 
 ## 3.3 Firebase Remote Config with `FirebaseRemoteProvider`
 
@@ -131,7 +134,7 @@ extension AppDelegate: FirebaseRemoteConfigProviderDelegate {
 }
 ```
 
-<a name="#3.4"/>
+[↑ INDEX](#3-advanced-usage)
 
 ## 3.4 Modify a feature flag at runtime 
 
@@ -158,7 +161,7 @@ let json = JSONData(["column": 5, "showDesc": true, "title": true])
 appFlags.ui.$layoutAttributes.setValue(json, providers: [LocalProvider.self])
 ```
 
-<a name="#3.5"/>
+[↑ INDEX](#3-advanced-usage)
 
 ## 3.5 Flags Browser & Editor
 
@@ -208,3 +211,5 @@ A `Flag` instance also include a `FlagMetadata` object (via `.metadata`) which e
 - `uiIcon`: an optional icon to show in Flags Browser. By default you can keep it `nil` and the default datatype icon is used (default is `nil`).
 - `isLocked`: when `true` you cannot change the value of the flag via Flags Browser (default is `false`).
 - `isInternal`: when `true` value is not visible in Flags Browser (default is `false`)
+
+[↑ INDEX](#3-advanced-usage)

@@ -1,7 +1,9 @@
-[↑ Index](./../README.md)
-[← Introduction](./../introduction.md)
-
+[↑ DOCUMENTATION INDEX](./../README.md#documentation)
 # 2. Organize Feature Flags
+
+- 2.1 - [The `@FlagCollection` annotation](#21-the-flagcollection-annotation)
+- 2.2 - [Nested Structures](#22-nested-structures)
+- 2.3 - [Configure `FlagCollection`'s contribution to properties keypath generation](#23-configure-flagcollections-contribution-to-properties-keypath-generation)
 
 <a name="#2.1"/>
 
@@ -38,7 +40,7 @@ if appFlags.checkout.someProperty == "..." { ... }
 
 A structure may contains subcollections and properties as you wish.
 
-<a name="#2.2"/>
+[↑ INDEX](##2-organize-feature-flags)
 
 ## 2.2. Nested Structures
 
@@ -100,7 +102,7 @@ if appFlags.userFlags.showSocialLogin {
 }
 ```
 
-<a name="#2.3"/>
+[↑ INDEX](##2-organize-feature-flags)
 
 ## 2.3 Configure `FlagCollection`'s contribution to properties keypath generation
 
@@ -146,3 +148,5 @@ Allowed transformations are pretty similar to the `keyConfiguration` of the `@Fl
 - `snakeCase`: refers to the style of writing in which each space is replaced by a `_` character. It uses the snake case with the current property key (`first_group/...`)
 - `skip`: ignore the current's collection contribution to keypath generation.
 - `custom(String)`: uses a fixed value to describe the current keypath component.
+
+[↑ INDEX](##2-organize-feature-flags)

@@ -1,9 +1,11 @@
-[↑ Index](./../README.md)
-
+[↑ DOCUMENTATION INDEX](./../README.md#documentation)
 # 1. Introduction
 
-<a name="#1.1"/>
-
+- 1.1 [@Flag Annotation](#11-flag-annotation)
+- 1.2 [@Flag Supported Datatypes](#12--flag-supported-data-types)
+- 1.3 [Load a Feature Flag Collection in a `FlagLoader`](#13-load-a-feature-flag-collection-in-a-flagloader)
+- 1.4 [Configure Key Evaluation for `FlagsLoader`'s `@Flag`](#14-configure-key-evaluation-for-flagsloaders-flag)
+- 1.5 [Query a specific data provider](#15-query-a-specific-data-provider)
 ## 1.1 `@Flag` Annotation
 
 To create a feature flag you must create a `FlagProtocol` conform object and use the `@Flag` property wrapper annotation.
@@ -38,7 +40,7 @@ var ratingMode: String?
 The following `ratingMode` describe an optional `String` feature flag. When loaded into an instance the loader itself ask the value `ios_app_rating_mode` to any specified data provider.  
 If no value is found the `default` option is returned (in this case, as optional, it just return `nil`).
 
-<a name="#1.2"/>
+[↑ INDEX](#introduction)
 
 ## 1.2  `@Flag` Supported Data Types
 
@@ -58,8 +60,7 @@ Moreover all `Codable` ready object are automatically conforms to `FlagProtocol`
 ### NOTE
 While you can define virtually any kind of data type as feature flag using the `@Flag` annotation you must keep in mind not all data providers may supports them.
 
-<a name="#1.3/>
-
+[↑ INDEX](#introduction)
 ## 1.3 Load a Feature Flag Collection in a `FlagLoader`
 
 `@Flag` allows you to describe a feature flag property.  
@@ -85,8 +86,7 @@ IndomioFlags ask for value in the following order:
 - to `firebase` *if no value is returned then*
 - fallback `default` value
 
-<a name="#1.4"/>
-
+[↑ INDEX](#introduction)
 ## 1.4 Configure Key Evaluation for `FlagsLoader`'s `@Flag`
 
 `FlagLoader` instance can be initialized by also configuring how keys are evaluated for each `@Flag` of the loaded collection.
@@ -148,7 +148,7 @@ var nestedBoolean: Bool
 
 In this case the automatic key evaluation is disabled for this property and `nestedAwesomeProp` is the value to query to any data provider.
 
-<a name="#1.5"/>
+[↑ INDEX](#introduction)
 
 ## 1.5 Query a specific data provider
 
@@ -163,3 +163,4 @@ The `flagValue()` function (accessible via the `$` of the property wrapper) allo
 
 > NOTE: If provider is not previously set into the `FlagsLoader` the fallback value is returned instead.
 
+[↑ INDEX](#introduction)
