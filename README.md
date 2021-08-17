@@ -184,13 +184,6 @@ Made with ❤️ by <a href="https://github.com/orgs/immobiliare">ImmobiliareLab
 We'd love for you to contribute to IndomioFlags!  
 If you have any questions on how to use IndomioFlags, bugs and enhancement please feel free to reach out by opening a [GitHub Issue](https://github.com/immobiliare/IndomioFlags/issues).
 
-## Authors
-
-IndomioFlags was created and maintained by the ImmobiliareLabs team, the tech departement fo Immobiliare.it.  
-This is the list of current contributors (internal/external) of the project:
-
-- [Daniele Margutti](https://github.com/malcommac)
-
 ## License
 
 IndomioFlags is licensed under the MIT license.  

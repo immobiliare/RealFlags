@@ -1,4 +1,5 @@
 [↑ DOCUMENTATION INDEX](./../README.md#documentation)
+
 # 2. Organize Feature Flags
 
 - 2.1 - [The `@FlagCollection` annotation](#21-the-flagcollection-annotation)
