@@ -1,13 +1,13 @@
-# 💻 Contributing to IndomioFlags
+# 💻 Contributing to RealFlags
 
-First of all, thanks for your interest in IndomioFlags.  
+First of all, thanks for your interest in RealFlags.  
 
 There are several ways to contribute to this project. We welcome contributions in all ways.  
 We have made some contribution guidelines to smoothly incorporate your opinions and code into this project.  
 
 ## 📝 Open Issue
 
-When you found a bug or having a feature request, search for the issue from the [existing](https://github.com/malcommac/IndomioFlags/issues) and feel free to open the issue after making sure it isn't already reported.  
+When you found a bug or having a feature request, search for the issue from the [existing](https://github.com/immobiliare/RealFlags/issues) and feel free to open the issue after making sure it isn't already reported.  
 
 In order to we understand your issue accurately, please include as much information as possible in the issue template.  
 The screenshot are also big clue to understand the issue.  
@@ -20,9 +20,9 @@ We are waiting for a pull request to make this project more better with us.
 If you want to add a new feature, let's discuss about it first on issue.  
 
 ```bash
-$ git clone https://github.com/malcommac/IndomioFlags.git
-$ cd IndomioFlags/
-$ open IndomioFlags
+$ git clone https://github.com/immobiliare/RealFlags.git
+$ cd RealFlags/
+$ open RealFlags
 ```
 
 ### Lint
