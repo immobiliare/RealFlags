@@ -1,8 +1,8 @@
 <p align="center">
-<img src="./documentation/assets/indomio_flag_logo.png" alt="IndomioFlags" width="900"/>
+<img src="./documentation/assets/realflags_logo.png" alt="RealFlags" width="900"/>
 </p>
 
-IndomioFlags makes it **easy to configure feature flags**in your codebase.  
+RealFlags makes it **easy to configure feature flags**in your codebase.  
 It's designed for Swift and **provides a simple and elegant abstraction layer** over multiple providers you can query with your own priority.  
 It also comes with an **handy UI tool to browse and alter values directly at runtime!**
 
@@ -44,7 +44,7 @@ It also comes with an **handy UI tool to browse and alter values directly at run
 
 ## What You Get
 
-Our goal making IndomioFlags is to provide a type-safe abstract way to describe and query for feature flags.
+Our goal making RealFlags is to provide a type-safe abstract way to describe and query for feature flags.
 
 The first step is to  describe your collection of flags:
 
@@ -92,7 +92,7 @@ This is just an overview of the library; if you want to know more follow the [do
 
 ## Flags Browser & Editor
 
-IndomioFlags also comes with an handy tool you can use to browse and edit feature flags values directly in your client! It can be useful for testing purpose or allow product owners to enable/disable and verify features of the app.
+RealFlags also comes with an handy tool you can use to browse and edit feature flags values directly in your client! It can be useful for testing purpose or allow product owners to enable/disable and verify features of the app.
 
 [Checkout the doc for more infos!](./documentation/advanced_usage.md#3.5)
 
@@ -100,7 +100,7 @@ IndomioFlags also comes with an handy tool you can use to browse and edit featur
 
 ## Tests
 
-IndomioFlags includes an extensive collection of unit tests: you can found it into the `Tests` directory.
+RealFlags includes an extensive collection of unit tests: you can found it into the `Tests` directory.
 
 ## Documentation
 
@@ -126,7 +126,7 @@ The following documentation describe detailed usage of the library.
 
 ## Requirements
 
-IndomioFlags can be installed in any platform which supports Swift 5.4+ including Windows and Linux. On Apple platform the following configuration is required:
+RealFlags can be installed in any platform which supports Swift 5.4+ including Windows and Linux. On Apple platform the following configuration is required:
 
 - iOS 12+
 - Xcode 12.5+
@@ -134,7 +134,7 @@ IndomioFlags can be installed in any platform which supports Swift 5.4+ includin
 
 ## Installation
 
-To use IndomioFlags in your project you can use Swift Package Manager (our primary choice) or CocoaPods.
+To use RealFlags in your project you can use Swift Package Manager (our primary choice) or CocoaPods.
 
 ### Swift Package Manager
 
@@ -142,7 +142,7 @@ Aadd it as a dependency in a Swift Package, add it to your Package.swift:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/immobiliare/IndomioFlags.git", from: "1.0.0")
+    .package(url: "https://github.com/immobiliare/RealFlags.git", from: "1.0.0")
 ]
 ```
 
@@ -151,7 +151,7 @@ And add it as a dependency of your target:
 ```swift
 targets: [
     .target(name: "MyTarget", dependencies: [
-        .product(name: "https://github.com/immobiliare/IndomioFlags.git", package: "IndomioFlags")
+        .product(name: "https://github.com/immobiliare/RealFlags.git", package: "RealFlags")
     ])
 ]
 ```
@@ -160,31 +160,31 @@ In Xcode 11+ you can also navigate to the File menu and choose Swift Packages ->
 
 ### CocoaPods
 
-IndomioFlags can be installed with CocoaPods by adding pod 'IndomioFlags' to your Podfile.
+RealFlags can be installed with CocoaPods by adding pod 'RealFlags' to your Podfile.
 
 ```ruby
-pod 'IndomioFlags'
+pod 'RealFlags'
 ```
 ## Powered Apps
 
-IndomioFlags was created by the amazing mobile team at ImmobiliareLabs, the Tech dept at Immobiliare.it, the first real estate site in Italy.  
-We are currently using IndomioFlags in all of our products.
+RealFlags was created by the amazing mobile team at ImmobiliareLabs, the Tech dept at Immobiliare.it, the first real estate site in Italy.  
+We are currently using RealFlags in all of our products.
 
-**If you are using IndomioFlags in your app [drop us a message](mailto://mobile@immobiliare.it), we'll add below**.
+**If you are using RealFlags in your app [drop us a message](mailto://mobile@immobiliare.it), we'll add below**.
 
-<a href="https://apps.apple.com/us/app/immobiiiare-it-indomio/id335948517"><img src="./documentation/assets/powered_by_indomioflags_apps.png" alt="Indomio" width="270"/></a>
+<a href="https://apps.apple.com/us/app/immobiiiare-it-indomio/id335948517"><img src="./documentation/assets/powered_by_realflags_apps.png" alt="Indomio" width="270"/></a>
 
 ## Support
 
 <p align="center">
-Made with ❤️ by <a href="https://github.com/orgs/immobiliare">ImmobiliareLabs</a> and <a href="https://github.com/immobiliare/IndomioFlags/graphs/contributors">Contributors</a>
+Made with ❤️ by <a href="https://github.com/orgs/immobiliare">ImmobiliareLabs</a> and <a href="https://github.com/immobiliare/RealFlags/graphs/contributors">Contributors</a>
 <br clear="all">
 </p>
 
-We'd love for you to contribute to IndomioFlags!  
-If you have any questions on how to use IndomioFlags, bugs and enhancement please feel free to reach out by opening a [GitHub Issue](https://github.com/immobiliare/IndomioFlags/issues).
+We'd love for you to contribute to RealFlags!  
+If you have any questions on how to use RealFlags, bugs and enhancement please feel free to reach out by opening a [GitHub Issue](https://github.com/immobiliare/RealFlags/issues).
 
 ## License
 
-IndomioFlags is licensed under the MIT license.  
+RealFlags is licensed under the MIT license.  
 See the [LICENSE](./LICENSE) file for more information.

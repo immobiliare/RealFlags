@@ -4,13 +4,13 @@
 import PackageDescription
 
 let package = Package(
-    name: "IndomioFlags",
+    name: "RealFlags",
     platforms: [
         .iOS(.v13)
     ],
     products: [
-        .library(name: "IndomioFlags", targets: ["IndomioFlags"]),
-        .library(name: "IndomioFlagsFirebase", targets: ["IndomioFlagsFirebase"])
+        .library(name: "RealFlags", targets: ["RealFlags"]),
+        .library(name: "RealFlagsFirebase", targets: ["RealFlagsFirebase"])
     ],
     dependencies: [
         .package(
@@ -21,20 +21,20 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "IndomioFlags",
+            name: "RealFlags",
             dependencies: [],
-            path: "IndomioFlags/Sources"
+            path: "RealFlags/Sources"
         ),
         .target(
-            name: "IndomioFlagsFirebase",
+            name: "RealFlagsFirebase",
             dependencies: [
-                "IndomioFlags",
+                "RealFlags",
                 .product(name: "FirebaseRemoteConfig", package: "Firebase"),
             ],
-            path: "IndomioFlagsFirebase/Sources"
+            path: "RealFlagsFirebase/Sources"
         ),
         .testTarget(
-            name: "IndomioFlagsTests",
-            dependencies: ["IndomioFlags"]),
+            name: "RealFlagsTests",
+            dependencies: ["RealFlags"]),
     ]
 )

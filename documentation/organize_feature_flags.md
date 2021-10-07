@@ -10,7 +10,7 @@
 
 ## 2.1. The `@FlagCollection` annotation
 
-IndomioFlags allows you to describe complex nested structure for flags. You can, for example, create a collection inside another collection and create a data tree for feature flags which better describe your application's requirements.
+RealFlags allows you to describe complex nested structure for flags. You can, for example, create a collection inside another collection and create a data tree for feature flags which better describe your application's requirements.
 
 In order to define a sub-collection inside a root structure (a `FlagCollectionProtocol` conform object) you must use the `@FlagProtocol`: it allows you to identify another `FlagCollectionProtocol` collection.
 
@@ -45,7 +45,7 @@ A structure may contains subcollections and properties as you wish.
 
 ## 2.2. Nested Structures
 
-While IndomioFlags leave you free to organize your feature flags the library's architecture itself encourage you to classify feature flags and group them according to your criteria.  
+While RealFlags leave you free to organize your feature flags the library's architecture itself encourage you to classify feature flags and group them according to your criteria.  
 You can stay flat or you can create nested categories. 
 
 A single struct conforms to `FlagCollectionProtocol` may contains both properties and other collections.
@@ -55,7 +55,7 @@ Consider the following example:
 ![](./assets/example_structure.png)
 
 We have created a nested structure where the root is `AppFeatureFlags`.  
-We can translate the following tree in IndomioFlags as follow *(not all properties are exposed for brevity)*:
+We can translate the following tree in RealFlags as follow *(not all properties are exposed for brevity)*:
 
 ```swift
 

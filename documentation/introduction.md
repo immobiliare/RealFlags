@@ -44,7 +44,7 @@ If no value is found the `default` option is returned (in this case, as optional
 
 ## 1.2  `@Flag` Supported Data Types
 
-IndomioFlags allows you to define your own feature flags; it supports any primitive type both in wrapped and optional form:
+RealFlags allows you to define your own feature flags; it supports any primitive type both in wrapped and optional form:
 
 - `Bool`
 - `Int` & `UInt` (in 8, 16, 32 and 64 variants)
@@ -81,7 +81,7 @@ This mean that when you ask for a value inside, ie:
 let currentValue = appFlags.ratingMode
 ```
 
-IndomioFlags ask for value in the following order:
+RealFlags ask for value in the following order:
 - to `local`, *if no value is returned then ask to*
 - to `firebase` *if no value is returned then*
 - fallback `default` value
@@ -115,7 +115,7 @@ You have two properties:
 - `flatBoolean` is in the root structure
 - `nestedBoolean` is inside the `NestedCollection`
 
-By default the key which IndomioFlags uses to query for values to any set data provider are:
+By default the key which RealFlags uses to query for values to any set data provider are:
 
 - `flat_boolean` for `flatBoolean` property
 - `nested/nested_boolean` for `nestedBoolean` property

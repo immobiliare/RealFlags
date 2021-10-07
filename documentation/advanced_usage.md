@@ -64,7 +64,7 @@ You can also remove collection from `FlagsManager` using the `removeCollection()
 
 ## 3.2 - Use and Creation of Data Providers
 
-IndomioFlags create an abstract layer of the vertical feature flags implementations. You can use or create a new data provider which uses your service without altering the structure of your feature flags.
+RealFlags create an abstract layer of the vertical feature flags implementations. You can use or create a new data provider which uses your service without altering the structure of your feature flags.
 
 Each data provider must be conform to the `FlagsProvider` protocol which defines two important methods:
 
@@ -79,7 +79,7 @@ func setValue<Value>(_ value: Value?, forFlag key: FlagKeyPath) throws -> Bool w
 One for getting value and another for set.  
 If your data provider does not provide writable support you must set the `isWritable = false` to inhibit the operation.
 
-IndomioFlags supports the following built-in providers:
+RealFlags supports the following built-in providers:
 - `LocalProvider` is a local XML based provider which support read&write and storage of any property type including all objects conform to `Codable` protocol. You can instantiate an ephimeral data provider (in-memory) or a file-backed provider to persists data between app restarts.
 - any `UserDefaults` instance is conform to `FlagsProvider` so you can use it as a data provider. It supports read&write with also `Codable` objects supports too.
 - `DelegateProvider` is just a forwarder object you can use to attach your own implementation without creating a `FlagsProvider` conform object.
@@ -92,7 +92,7 @@ Then the following remote providers (you can fetch from a separate package):
 ## 3.3 Firebase Remote Config with `FirebaseRemoteProvider`
 
 `FirebaseRemoteProvider` is the data provider for [Firebase Remote Config](https://firebase.google.com/docs/remote-config) service.  
-You can use it by fetching the additional `IndomioFlagsFirebase` from SwiftPM or CocoaPods (it will dependeds by [Firebase iOS SDK](https://github.com/firebase/firebase-ios-sdk.git)).
+You can use it by fetching the additional `RealFlagsFirebase` from SwiftPM or CocoaPods (it will dependeds by [Firebase iOS SDK](https://github.com/firebase/firebase-ios-sdk.git)).
 
 Once fetched remember to configure your Firebase SDK before load the provider.  
 This is just an example:
@@ -170,7 +170,7 @@ It's part of the library and you can include it in your product like inside the 
 
 ![](./assets/flags_browser_video.mp4)
 
-It's really easy to use, just allocate and push our built-in view controller by passing a list of `FlagsLoader` or a `FlagsManager`; IndomioFlags takes care to read all values and show them in a confortable user interface.
+It's really easy to use, just allocate and push our built-in view controller by passing a list of `FlagsLoader` or a `FlagsManager`; RealFlags takes care to read all values and show them in a confortable user interface.
 
 If you are using `FlagsManager` to keep organized your flags just pass it to the init:
 
