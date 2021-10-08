@@ -1,5 +1,5 @@
 //
-//  IndomioFlags
+//  RealFlags
 //  Easily manage Feature Flags in Swift
 //
 //  Created by the Mobile Team @ ImmobiliareLabs
@@ -13,7 +13,7 @@
 import Foundation
 
 import XCTest
-@testable import IndomioFlags
+@testable import RealFlags
 
 /// Test how the value are encoded.
 final class FlagValueEncodedTests: XCTestCase {

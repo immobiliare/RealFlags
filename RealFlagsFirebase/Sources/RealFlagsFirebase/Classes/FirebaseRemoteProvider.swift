@@ -1,5 +1,5 @@
 //
-//  IndomioFlags
+//  RealFlags
 //  Easily manage Feature Flags in Swift
 //
 //  Created by the Mobile Team @ ImmobiliareLabs
@@ -11,7 +11,7 @@
 //
 
 import Foundation
-import IndomioFlags
+import RealFlags
 import FirebaseRemoteConfig
 import Firebase
 

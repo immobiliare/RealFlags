@@ -1,5 +1,5 @@
 //
-//  IndomioFlags
+//  RealFlags
 //  Easily manage Feature Flags in Swift
 //
 //  Created by the Mobile Team @ ImmobiliareLabs
@@ -11,7 +11,7 @@
 //
 
 import XCTest
-@testable import IndomioFlags
+@testable import RealFlags
 
 public class LocalProviderA: LocalProvider { }
 public class LocalProviderB: LocalProvider { }

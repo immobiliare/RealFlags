@@ -18,7 +18,7 @@ jobs:
           ${{ runner.os }}-spm-
     - uses: actions/checkout@v2
     - name: Build & Run Tests
-      run: xcodebuild -scheme IndomioFlags-Package test -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 12'
+      run: xcodebuild -scheme RealFlags-Package test -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 12'
 
   SwiftLint:
     runs-on: ubuntu-latest

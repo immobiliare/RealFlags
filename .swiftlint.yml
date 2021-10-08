@@ -48,7 +48,7 @@ opt_in_rules:
   # - switch_case_on_newline
 
 included:
-  - IndomioFlags/Sources/IndomioFlags/Classes
+  - RealFlags/Sources/RealFlags/Classes
   - IndomioFlagsFirebase/Sources/IndomioFlagsFirebase/Classes
 
 excluded:

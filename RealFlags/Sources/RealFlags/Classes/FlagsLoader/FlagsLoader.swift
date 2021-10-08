@@ -1,5 +1,5 @@
 //
-//  IndomioFlags
+//  RealFlags
 //  Easily manage Feature Flags in Swift
 //
 //  Created by the Mobile Team @ ImmobiliareLabs
