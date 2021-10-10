@@ -163,8 +163,10 @@ In Xcode 11+ you can also navigate to the File menu and choose Swift Packages ->
 RealFlags can be installed with CocoaPods by adding pod 'RealFlags' to your Podfile.
 
 ```ruby
-pod 'RealFlags'
+pod 'RealFlags' // to import the core framework
+pod 'RealFlagsFirebase' // to also import Firebase Data Provider
 ```
+
 ## Powered Apps
 
 RealFlags was created by the amazing mobile team at ImmobiliareLabs, the Tech dept at Immobiliare.it, the first real estate site in Italy.  
