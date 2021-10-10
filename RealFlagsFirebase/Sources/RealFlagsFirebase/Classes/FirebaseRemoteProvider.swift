@@ -13,7 +13,7 @@
 import Foundation
 import RealFlags
 import FirebaseRemoteConfig
-import Firebase
+import FirebaseCore
 
 /// FirebaseRemoteProvider is an layer above the FirebaseRemoteConfig which support
 /// retriving data from Firebase's Remote Config.
