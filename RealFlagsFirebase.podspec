@@ -16,6 +16,7 @@ Pod::Spec.new do |s|
 
   s.source_files = 'RealFlagsFirebase/Sources/**/*.{h,m,swift}'
   s.dependency 'RealFlags'
+  s.dependency 'Firebase'
   s.dependency 'FirebaseRemoteConfig'
 
 end
