@@ -17,6 +17,8 @@ import UIKit
 @propertyWrapper
 public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identifiable, CustomDebugStringConvertible {
     
+    public typealias ComputedFlagClosure = (() -> Value?)
+    
     // MARK: - Public Properties
     
     /// Unique identifier of the feature flag.
@@ -37,6 +39,34 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
     public var projectedValue: Flag<Value> {
         self
     }
+    
+    /// If specified you can attach a dynamic closure which may help you to compute the value of of the
+    /// flag. This can be useful when your flags depend from other static or runtime-based values.
+    /// This value is computed before any provider; if returned value is `nil` the library continue
+    /// asking to the other providers; if you provide a non `nil` value no other provider are queried.
+    ///
+    /// DISCUSSION:
+    /// This is a short example where the `computedValue` can be useful; the property `hasPublishButton`
+    /// depend by the language of the app set, which is a runtime dynamic property:
+    ///
+    /// This is the definition of the flags:
+    ///
+    ///```swift
+    /// public struct MiscFlags: FlagCollectionProtocol {
+    ///
+    ///     @Flag(default: false, computedValue: MiscFlags.computedPublishButton, description: "")
+    ///     var hasPublishButton: Bool
+        
+    ///     public init() { }
+    ///
+    ///     private static func computedPublishButton() -> Bool? {
+    ///         Language.main.code == "it"
+    ///     }
+    /// }
+    /// ```
+    ///
+    /// You can create a custom private static function inside the struct in other to bloat the @Flag definition.
+    public var computedValue: ComputedFlagClosure?
     
     /// This is the full keypath which will be send to the associated providers to get the value
     /// of the feature flag. It's composed according to the `FlagLoader`'s configuration.
@@ -80,16 +110,23 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
     ///   - default: the default value is used when key cannot be found in `FlagLoader`'s providers.
     ///   - allowedProviders: you can limit the providers where to get the value; if you specify a non `nil` array of types only instances
     ///                       of these types are queried to get value.
+    ///   - excludedProviders: allows you to define several providers you want to exclude when flag is loaded in any `FlagProvider`.
+    ///                        For example certain property should be not retrived from `FirebaseProvider` but only locally.
+    ///   - computedValue: you should also set a computed provider. A computed value is evaluated before any provider; if it return a non
+    ///                    `nil` value it will be the value of the flag. If `nil` is returned the provider continue asking to defined
+    ///                    provider in order.
     ///   - description: description of the proprerty; you are encouraged to provide a short description of the feature flag.
     public init(name: String? = nil,
                 key: String? = nil,
                 default defaultValue: Value,
                 excludedProviders: [FlagsProvider.Type]? = nil,
+                computedValue: ComputedFlagClosure? = nil,
                 description: FlagMetadata) {
         
         self.defaultValue = defaultValue
         self.excludedProviders = excludedProviders
         self.fixedKey = key
+        self.computedValue = computedValue
         
         var info = description
         info.name = name
@@ -106,6 +143,10 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
     /// - Parameter providerType: provider type, if `nil` the providers list with `allowedProviders` is read.
     /// - Returns: Value
     public func flagValue(from providerType: FlagsProvider.Type? = nil, fallback: Bool = true) -> (value: Value?, source: FlagsProvider?) {
+        if let value = computedValue?() {
+            return (value, nil) // value is obtained by dynamic function.
+        }
+        
         guard loader.instance != nil else {
             return (defaultValue, nil) // no loader has been set, we want to get the fallback result.
         }
