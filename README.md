@@ -59,6 +59,8 @@ struct UserFlags: FlagCollectionProtocol {
     
     @Flag(key: "rating_mode", default: "at_launch", description: "The behaviour to show the rating popup")
     var appReviewRating: String
+
+    public init() {}
 }
 ```
 
@@ -109,9 +111,11 @@ The following documentation describe detailed usage of the library.
 - 1.0 - [Introduction](./documentation/introduction.md)  
     - 1.1 - [@Flag Annotation](./documentation/introduction.md#11-flag-annotation)
     - 1.2 - [@Flag Supported Datatypes](./documentation/introduction.md#12--flag-supported-data-types)
-    - 1.3 - [Load a Feature Flag Collection in a `FlagLoader`](./documentation/introduction.md#13-load-a-feature-flag-collection-in-a-flagloader)
-    - 1.4 - [Configure Key Evaluation for `FlagsLoader`'s `@Flag`](./documentation/introduction.md#14-configure-key-evaluation-for-flagsloaders-flag)
-    - 1.5 - [Query a specific data provider](./documentation/introduction.md#15-query-a-specific-data-provider)
+    - 1.3 - [`Codable` types and `@Flag`](#13-codable-types-and--flag)
+    - 1.4 - [Computed @Flag](./documentation/introduction.md#14-computed--flag)
+    - 1.5 - [Load a Feature Flag Collection in a `FlagLoader`](./documentation/introduction.md#15-load-a-feature-flag-collection-in-a-flagloader)
+    - 1.6 - [Configure Key Evaluation for `FlagsLoader`'s `@Flag`](./documentation/introduction.md#16-configure-key-evaluation-for-flagsloaders-flag)
+    - 1.7 - [Query a specific data provider](./documentation/introduction.md#17-query-a-specific-data-provider)  
 - 2.0 - [Organize Feature Flags](./documentation/organize_feature_flags.md)  
     - 2.1 - [The `@FlagCollection` annotation](./documentation/organize_feature_flags.md#21-the-flagcollection-annotation)
     - 2.2 - [Nested Structures](./documentation/organize_feature_flags.md#22-nested-structures)

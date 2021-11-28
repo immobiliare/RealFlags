@@ -14,7 +14,7 @@ import Foundation
 
 // MARK: - Codable
 
-extension Decodable where Self: FlagProtocol, Self: Encodable {
+public extension Decodable where Self: FlagProtocol, Self: Encodable {
     
     public init?(encoded value: EncodedFlagValue) {
         guard case .data(let data) = value else {
@@ -31,7 +31,7 @@ extension Decodable where Self: FlagProtocol, Self: Encodable {
     
 }
 
-extension Encodable where Self: FlagProtocol, Self: Decodable {
+public extension Encodable where Self: FlagProtocol, Self: Decodable {
     
     public func encoded() -> EncodedFlagValue {
         do {
