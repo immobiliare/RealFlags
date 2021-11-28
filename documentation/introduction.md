@@ -3,9 +3,11 @@
 
 - 1.1 [@Flag Annotation](#11-flag-annotation)
 - 1.2 [@Flag Supported Datatypes](#12--flag-supported-data-types)
-- 1.3 [Load a Feature Flag Collection in a `FlagLoader`](#13-load-a-feature-flag-collection-in-a-flagloader)
-- 1.4 [Configure Key Evaluation for `FlagsLoader`'s `@Flag`](#14-configure-key-evaluation-for-flagsloaders-flag)
-- 1.5 [Query a specific data provider](#15-query-a-specific-data-provider)
+- 1.3 [`Codable` types and `@Flag`](#13-codable-types-and--flag)
+- 1.4 [Computed @Flag](#14-computed--flag)
+- 1.5 [Load a Feature Flag Collection in a `FlagLoader`](#15-load-a-feature-flag-collection-in-a-flagloader)
+- 1.6 [Configure Key Evaluation for `FlagsLoader`'s `@Flag`](#16-configure-key-evaluation-for-flagsloaders-flag)
+- 1.7 [Query a specific data provider](#17-query-a-specific-data-provider)
 ## 1.1 `@Flag` Annotation
 
 To create a feature flag you must create a `FlagProtocol` conform object and use the `@Flag` property wrapper annotation.
@@ -55,13 +57,86 @@ RealFlags allows you to define your own feature flags; it supports any primitive
 - `Dictionary` and `Array` where value is any object conform to `FlagProtocol`
 - `JSON` via `JSONData` custom type
 
+[↑ INDEX](#introduction)
+## 1.3 Codable types and @Flag
+
+When you need to support a custom datatype you just need to make it conform to the `Codable` protocol and `FlagProtocol`; serialization/deserialization operations are performed automatically by the library.
+
+This is an example with `CLLocationCoordinate2D` which by default is not conform to `Codable` protocol:
+
+```swift
+extension CLLocationCoordinate2D: FlagProtocol, Codable {
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.unkeyedContainer()
+        try container.encode(longitude)
+        try container.encode(latitude)
+    }
+
+    public init(from decoder: Decoder) throws {
+        var container = try decoder.unkeyedContainer()
+        let longitude = try container.decode(CLLocationDegrees.self)
+        let latitude = try container.decode(CLLocationDegrees.self)
+        self.init(latitude: latitude, longitude: longitude)
+    }
+}
+```
+
+Once you made it conform you are able to just use easily:
+
+```swift
+public struct MapFlags: FlagCollectionProtocol {
+
+    @Flag(default: CLLocationCoordinate2D(latitude: 33, longitude: 33), description: "...")
+    var defaultCoordinates: CLLocationCoordinate2D
+
+    public init() { }
+
+}
+```
+
 Moreover all `Codable` ready object are automatically conforms to `FlagProtocol` so you can virtually use any object type as feature flag.
 
 ### NOTE
 While you can define virtually any kind of data type as feature flag using the `@Flag` annotation you must keep in mind not all data providers may supports them.
 
 [↑ INDEX](#introduction)
-## 1.3 Load a Feature Flag Collection in a `FlagLoader`
+
+## 1.4 Computed @Flag
+
+Sometimes you may need to create a feature flag where the value is a combination of other flags or runtime values you need to evaluate dynamically.  
+This is the perfect example to use the `computedValue` of the `@Flag` annotation.  
+
+`computedValue` allows you to define a callback function which is called before any other defined provider.  
+When the function return a non `nil` value it will be the value of the flag (and no further checks are made on providers).  
+If you return a `nil` value the library will perform a default check to defined providers and default value.
+
+### NOTE
+`computedValue` should be short but you may encounter situations where the value must be a bit complex to evaluate. In this case **we strongly suggest defining a `private static func` in your struct and refer it into the flag definition. See the code below.
+
+The following example defines a `Bool` property `hasPublishButton` where the value is returned by checking the current language of the app:
+
+```swift
+public struct MiscFlags: FlagCollectionProtocol {
+
+    // MARK: - Flags
+
+    @Flag(default: false, computedValue: MiscFlags.computedPublishButton, description: "")
+    var hasPublishButton: Bool
+            
+    // MARK: - Computed Properties Functions
+
+    public init() { }
+
+    private static func computedPublishButton() -> Bool? {
+        Language.main.code == "it"
+    }
+}
+```
+
+[↑ INDEX](#introduction)
+
+## 1.5 Load a Feature Flag Collection in a `FlagLoader`
 
 `@Flag` allows you to describe a feature flag property.  
 However you can consider it as description of the property structure. Value for a feature flag is obtained by an instance of a `FlagLoader`.  
@@ -87,7 +162,7 @@ RealFlags ask for value in the following order:
 - fallback `default` value
 
 [↑ INDEX](#introduction)
-## 1.4 Configure Key Evaluation for `FlagsLoader`'s `@Flag`
+## 1.6 Configure Key Evaluation for `FlagsLoader`'s `@Flag`
 
 `FlagLoader` instance can be initialized by also configuring how keys are evaluated for each `@Flag` of the loaded collection.
 
@@ -150,7 +225,7 @@ In this case the automatic key evaluation is disabled for this property and `nes
 
 [↑ INDEX](#introduction)
 
-## 1.5 Query a specific data provider
+## 1.7 Query a specific data provider
 
 Sometimes you may need to query a specific provider for a value.  
 Consider the previous property and suppose you want query just the `Firebase` provider:
