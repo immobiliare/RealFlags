@@ -16,7 +16,7 @@ import Foundation
 
 public extension Decodable where Self: FlagProtocol, Self: Encodable {
     
-    public init?(encoded value: EncodedFlagValue) {
+    init?(encoded value: EncodedFlagValue) {
         guard case .data(let data) = value else {
             return nil
         }
@@ -33,7 +33,7 @@ public extension Decodable where Self: FlagProtocol, Self: Encodable {
 
 public extension Encodable where Self: FlagProtocol, Self: Decodable {
     
-    public func encoded() -> EncodedFlagValue {
+    func encoded() -> EncodedFlagValue {
         do {
             let encoder = JSONEncoder()
             encoder.outputFormatting = .sortedKeys
