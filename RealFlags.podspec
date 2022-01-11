@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "RealFlags"
-  s.version      = "1.1.1"
+  s.version      = "1.1.2"
   s.summary      = "Feature flagging framework for Swift"
   s.homepage     = "https://github.com/immobiliare/RealFlags.git"
   s.license      = { :type => "MIT", :file => "LICENSE" }
