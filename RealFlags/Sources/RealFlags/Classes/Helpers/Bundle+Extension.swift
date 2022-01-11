@@ -14,12 +14,18 @@ import Foundation
 
 extension Bundle {
     
+    private static let internalBundle = Bundle(for: FlagsBrowserController.self)
+    
     internal static var libraryBundle: Bundle {
         #if SWIFT_PACKAGE
-        return Bundle.module
+        Bundle.module
         #else
-        return Bundle(for: Self.self)
+        [
+            Bundle(url: internalBundle.bundleURL.appendingPathComponent("RealFlags.bundle")),
+            internalBundle
+        ].lazy.compactMap({ $0 }).first ?? Bundle.main
         #endif
     }
     
 }
+
