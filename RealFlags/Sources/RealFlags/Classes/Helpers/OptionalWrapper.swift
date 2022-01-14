@@ -24,5 +24,5 @@ extension Optional: OptionalProtocol {
 }
 
 public func wrappedTypeFromOptionalType(_ type: Any.Type) -> Any.Type? {
-    return (type as? OptionalProtocol.Type)?.wrappedType
+    (type as? OptionalProtocol.Type)?.wrappedType ?? type
 }
