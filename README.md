@@ -75,6 +75,7 @@ let fbProvider = FirebaseRemoteProvider()
 
 // Loader is the point for query values
 let userFlagsLoader = FlagsLoader(UserFlags.self, // load flags definition
+                                  description: .init(name: "User Features", description: "Cool experimental features for user account"),
                                   providers: [fbProvider, localProvider]) // set providers
 ```
 
