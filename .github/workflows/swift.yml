@@ -9,7 +9,7 @@ jobs:
   iOS:
     name: "Test iOS"
     runs-on: macOS-12.1
-    timeout-minutes: 10
+    timeout-minutes: 15
     strategy:
       fail-fast: false
       matrix:
