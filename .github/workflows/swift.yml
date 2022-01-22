@@ -17,4 +17,4 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build & Run Tests
-        run: set -o pipefail && xcodebuild -scheme RealFlags-Package test -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 12 Pro'
+        run: xcodebuild -scheme RealFlags-Package test -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 12 Pro'
