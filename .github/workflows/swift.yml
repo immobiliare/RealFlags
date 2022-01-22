@@ -9,9 +9,6 @@ jobs:
   iOS:
     name: "Test iOS"
     runs-on: macOS-10.15
-    defaults:
-      run:
-        shell: "/usr/bin/arch -arch arm64e /bin/zsh {0}"
     env:
       DEVELOPER_DIR: "/Applications/Xcode_13.2.1.app/Contents/Developer"
     timeout-minutes: 10
