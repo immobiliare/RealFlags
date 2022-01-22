@@ -20,12 +20,3 @@ jobs:
       - uses: actions/checkout@v2
       - name: Build & Run Tests
         run: xcodebuild -scheme RealFlags-Package test -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 12 Pro'
-  swift-build:
-    name: Swift Build (SPM)
-    runs-on: macOS-11
-    env:
-      DEVELOPER_DIR: /Applications/Xcode_13.0.app/Contents/Developer
-    steps:
-      - uses: actions/checkout@v2
-      - name: Build
-        run: swift build
