@@ -14,14 +14,7 @@ jobs:
       fail-fast: false
       matrix:
         xcode_version: ["13.2.1"]
-        include:
-          - destination: "OS=15.2,name=iPhone 13 Pro"
-            name: "iOS 15.2"
-          - destination: "OS=14.5,name=iPhone 12 Pro"
-            name: "iOS 14.5"
-          - destination: "OS=13.7,name=iPhone 11 Pro"
-            name: "iOS 13.7"
     steps:
       - uses: actions/checkout@v2
       - name: Build & Run Tests
-        run: xcodebuild -scheme RealFlags-Package test -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 13 Pro'
+        run: xcodebuild -scheme RealFlags-Package test -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 12 Pro'
