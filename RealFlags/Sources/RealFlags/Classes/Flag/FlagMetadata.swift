@@ -36,10 +36,18 @@ public struct FlagMetadata {
     /// By default is set to `false`.
     public var isInternal = false
     
+    /// Where applicable the index defines the order of the item into a UI list view.
+    public var order: Int = 0
+    
     // MARK: - Initialization
     
-    public init(description: String, isInternal: Bool = false, uiIcon: UIImage? = nil, isLocked: Bool = false) {
+    public init(name: String? = nil, description: String, order: Int = 0,
+                isInternal: Bool = false,
+                uiIcon: UIImage? = nil,
+                isLocked: Bool = false) {
+        self.name = name
         self.description = description
+        self.order = order
         self.isInternal = isInternal
         self.uiIcon = uiIcon
         self.isLocked = isLocked

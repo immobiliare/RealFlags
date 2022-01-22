@@ -17,6 +17,7 @@ public class FlagBrowserItem {
     public enum CellType {
         case `default`
         case entryTextField
+        case booleanToggle
     }
     
     public enum NumericConversion {
@@ -45,6 +46,7 @@ public class FlagBrowserItem {
     public private(set) var accessoryType: UITableViewCell.AccessoryType = .none
     public var isSelectable = false
     public var isDisabled = false
+    public var order: Int = 0
 
     public var representedObj: Any?
     public var cellType: CellType = .default
@@ -75,22 +77,29 @@ public class FlagBrowserItem {
     }
     
     public init(loader: AnyFlagsLoader) {
-        self.title = loader.collectionType
+        //self.title = loader.collectionType
+        self.title = loader.metadata?.name ?? loader.collectionType
+        self.subtitle = loader.metadata?.description
+        self.isSelectable = true
         self.representedObj = loader
-        
+        self.accessoryType = .disclosureIndicator
+        self.order = loader.metadata?.order ?? 0
+        self.value = String(loader.hierarcyFeatureFlags.count)
+        /*
         childs.append(contentsOf: [
-            FlagBrowserItem(title: "Group Name",
-                            value: loader.collectionType,
+            FlagBrowserItem(title: loader.metadata?.name ?? loader.collectionType,//"Group Name",
+                            subtitle: loader.metadata?.description,
+                            //value: loader.collectionType,
                             selectable: false),
-            FlagBrowserItem(title: "Providers",
+            /*FlagBrowserItem(title: "Providers",
                             value: loader.providers?.map({ $0.name }).joined(separator: "\n"),
-                            selectable: false),
-            FlagBrowserItem(title: "Browse Data",
+                            selectable: false),*/
+            FlagBrowserItem(title: "Browse",
                             value: "\(loader.hierarcyFeatureFlags.count) Elements",
                             accessoryType: .disclosureIndicator,
                             selectable: true,
                             representedObj: loader)
-        ])
+        ])*/
     }
     
 }

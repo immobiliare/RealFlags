@@ -41,6 +41,9 @@ public protocol AnyFlag: AnyFlagOrCollection {
     /// Associated providers.
     var providers: [FlagsProvider] { get }
     
+    /// Has an associated writable provider.
+    var hasWritableProvider: Bool { get }
+    
     /// Description of the flag.
     var defaultFallbackValue: Any? { get }
         
@@ -64,6 +67,12 @@ public protocol AnyFlag: AnyFlagOrCollection {
 // MARK: - AnyFlag (Flag Conformance)
 
 extension Flag: AnyFlag {
+    
+    public var hasWritableProvider: Bool {
+        guard !isUILocked else { return false }
+        
+        return providers.first(where: { $0.isWritable }) != nil
+    }
     
     public var isUILocked: Bool {
         metadata.isLocked
