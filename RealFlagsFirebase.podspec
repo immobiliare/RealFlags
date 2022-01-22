@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "RealFlagsFirebase"
-  s.version      = "1.1.3"
+  s.version      = "1.2.0"
   s.summary      = "Feature flagging framework for Swift: FirebaseRemoteConfig Data Provider"
   s.homepage     = "https://github.com/immobiliare/RealFlags.git"
   s.license      = { :type => "MIT", :file => "LICENSE" }

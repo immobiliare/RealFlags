@@ -81,7 +81,7 @@ public class LocalProvider: FlagsProvider, Identifiable {
         let encodedValue = value?.encoded().nsObject()
         BentoDict.setValueForDictionary(&storage, value: encodedValue, keyPath: key)
         
-        try? saveToDisk()
+        try saveToDisk()
         return true
     }
     

@@ -47,7 +47,7 @@ public class FlagsBrowserController: UIViewController {
             fatalError("Failed to get FlagsBrowserController from xib")
         }
         
-        controller.title = title ?? "FeatureFlags Browser"
+        controller.title = title ?? "Feature Flags"
         controller.data = .loaders(loaders)
         
         let navigation = UINavigationController(rootViewController: controller)
@@ -61,6 +61,7 @@ public class FlagsBrowserController: UIViewController {
         
         tableView?.registerNib(type: FlagsBrowserDefaultCell.self)
         tableView?.registerNib(type: FlagBrowserDataCell.self)
+        tableView?.registerNib(type: FlagsBrowserToggleCell.self)
         tableView?.estimatedRowHeight = 44.0
         tableView?.dataSource = self
         tableView?.delegate = self
@@ -211,7 +212,12 @@ public class FlagsBrowserController: UIViewController {
     }
     
     private func reloadDataForLoaders(_ loaders: [AnyFlagsLoader]) -> [FlagBrowserItem] {
-        loaders.map { FlagBrowserItem(loader: $0) }
+        let collections = loaders.map({ FlagBrowserItem(loader: $0) }).sorted { l, r in
+            l.order < r.order // follow the order when available
+        }
+        let section = FlagBrowserItem(title: "\(collections.count) COLLECTIONS")
+        section.childs = collections
+        return [section]
     }
     
     private func reloadDataForFlagCollection(_ flag: AnyFlagCollection) -> [FlagBrowserItem] {
@@ -274,12 +280,19 @@ public class FlagsBrowserController: UIViewController {
             
             switch flag {
             case let flag as AnyFlag:
+                // For boolean flags we want to show a fast toggle directly on tag page without
+                // the needs to open the detail panel to alter value.
+                let isLocalWritableBooleanFlag = flag.dataType == Bool.self && flag.hasWritableProvider
+                let cellType: FlagBrowserItem.CellType = (isLocalWritableBooleanFlag ? .booleanToggle : .default)
+                
                 return FlagBrowserItem(title: flag.name,
                                        subtitle: flag.description,
                                        value: flag.getValueDescriptionForFlag(from: nil).value,
                                        icon: flag.icon,
-                                       accessoryType: .disclosureIndicator,
-                                       selectable: true, representedObj: flag)
+                                       accessoryType: .detailButton,
+                                       selectable: false,
+                                       representedObj: flag,
+                                       cellType: cellType)
                 
             case let collection as AnyFlagCollection:
                 return FlagBrowserItem(title: collection.name,
@@ -304,7 +317,7 @@ public class FlagsBrowserController: UIViewController {
         switch value {
         case let loader as AnyFlagsLoader:
             createAndPushBrowserController(withData: .flags(loader),
-                                           title: loader.collectionType)
+                                           title: loader.metadata?.name ?? loader.collectionType)
             
         case let flag as AnyFlag:
             let isLocked = (flag.isUILocked)
@@ -348,6 +361,23 @@ public class FlagsBrowserController: UIViewController {
         navigationController?.popViewController(animated: true)
     }
     
+    internal func toggleBooleanValueForFlag(_ flag: AnyFlag?, value: Bool) -> Bool {
+        guard let flag = flag else { return false }
+        
+        let providers = flag.providers.filter({ $0.isWritable })
+        guard providers.isEmpty == false else { return false }
+        
+        do {
+            for provider in providers {
+                try provider.setValue(value, forFlag: flag.keyPath)
+            }
+            return true
+        } catch {
+            showErrorMessage("Failed to set toggle value for '\(flag.name)'", message: error.localizedDescription)
+            return false
+        }
+    }
+    
 }
 
 // MARK: - FlagsBrowserController (UITableViewDataSource, UITableViewDelegate)
@@ -384,6 +414,20 @@ extension FlagsBrowserController: UITableViewDataSource, UITableViewDelegate {
             cell.isDisabled = item.isDisabled
             return cell
             
+        case .booleanToggle:
+            let cell = FlagsBrowserToggleCell.dequeue(from: tableView, for: indexPath)
+            _ = cell.contentView
+            
+            cell.set(title: item.title, subtitle: item.subtitle, value: item.value, image: item.icon)
+            cell.accessoryType = item.accessoryType
+            cell.accessoryView = item.accessoryType != .none ? nil : UIView(frame: .init(x: 0, y: 0, width: 10, height: 0))
+            cell.isDisabled = item.isDisabled
+            cell.onChangeSwitchValue = { [weak self] newValue in
+                return self?.toggleBooleanValueForFlag(item.representedObj as? AnyFlag, value: newValue) ?? false
+            }
+            cell.switchButton.isOn = ((item.representedObj as? AnyFlag)?.getValueForFlag(from: nil) as? Bool) ?? false
+            return cell
+            
         case .entryTextField:
             let cell = FlagBrowserDataCell.dequeue(from: tableView, for: indexPath)
             cell.parentTableView = tableView
@@ -408,6 +452,14 @@ extension FlagsBrowserController: UITableViewDataSource, UITableViewDelegate {
         
         let item = items[indexPath.section].childs[indexPath.row]
         didSelectItem(item, cell: tableView.cellForRow(at: indexPath))
+    }
+    
+    public func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
+        let item = items[indexPath.section].childs[indexPath.row]
+        if let _ = item.representedObj as? AnyFlag {
+            // Info about a particular flag
+            didSelectItem(item, cell: tableView.cellForRow(at: indexPath))
+        }
     }
     
 }

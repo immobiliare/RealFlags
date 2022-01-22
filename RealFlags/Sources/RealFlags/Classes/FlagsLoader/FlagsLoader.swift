@@ -30,19 +30,25 @@ public class FlagsLoader<Collection: FlagCollectionProtocol>: FlagsLoaderProtoco
     /// How to build automatically keys for each property of the group.
     public let keyConfiguration: KeyConfiguration
     
+    /// Metadata associated with loaded flag collection.
+    public var metadata: FlagMetadata?
+    
     // MARK: - Initialization
     
     /// Initiali
     /// - Parameters:
     ///   - collection: type of collection to load. a new instance is made.
+    ///   - metadata: optional metadata associated with the flag loader.
     ///   - providers: providers to use to fetch values. Providers are fetched in order.
     ///   - keysConfiguration: configuration 
     public init (_ collectionType: Collection.Type,
+                 description: FlagMetadata? = nil,
                  providers: [FlagsProvider]? = nil,
                  keyConfiguration: KeyConfiguration = .init()) {
         self.loadedCollection = collectionType.init()
         self.providers = providers
         self.keyConfiguration = keyConfiguration
+        self.metadata = description
         initializeCollectionObjects()
     }
     

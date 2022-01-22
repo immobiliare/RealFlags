@@ -6,7 +6,8 @@ import PackageDescription
 let package = Package(
     name: "RealFlags",
     platforms: [
-        .iOS(.v13)
+        .iOS(.v13),
+        .macOS(.v10_12)
     ],
     products: [
         .library(name: "RealFlags", targets: ["RealFlags"]),
@@ -16,7 +17,7 @@ let package = Package(
         .package(
             name: "Firebase",
             url: "https://github.com/firebase/firebase-ios-sdk.git",
-            from: "7.0.0"
+            from: "8.10.0"
         )
     ],
     targets: [

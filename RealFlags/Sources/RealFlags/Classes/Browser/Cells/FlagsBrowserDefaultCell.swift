@@ -18,7 +18,7 @@ public class FlagsBrowserDefaultCell: UITableViewCell, Reusable, NibType {
     
     @IBOutlet public var subtitleLabel: UILabel!
     @IBOutlet public var titlelabel: UILabel!
-    @IBOutlet public var valueLabel: UILabel!
+    @IBOutlet public var valueLabel: UILabel?
     @IBOutlet public var iconView: UIImageView!
     @IBOutlet public var iconContainerView: UIView!
     @IBOutlet public var stackView: UIStackView!
@@ -27,7 +27,7 @@ public class FlagsBrowserDefaultCell: UITableViewCell, Reusable, NibType {
     public var isDisabled: Bool = false {
         didSet {
             titlelabel.textColor = (isDisabled ? .lightGray : .black)
-            valueLabel.textColor = (isDisabled ? .red : .tintColor)
+            valueLabel?.textColor = (isDisabled ? .red : .tintColor)
             subtitleLabel.textColor = (isDisabled ? .lightGray : .darkGray)
         }
     }
@@ -44,11 +44,11 @@ public class FlagsBrowserDefaultCell: UITableViewCell, Reusable, NibType {
         
         titlelabel.text = title
         subtitleLabel.text = subtitle
-        valueLabel.text = value
+        valueLabel?.text = value
         
         titlelabel.isHidden = title?.isEmpty ?? true
         subtitleLabel.isHidden = subtitle?.isEmpty ?? true
-        valueLabel.isHidden = value?.isEmpty ?? true
+        valueLabel?.isHidden = value?.isEmpty ?? true
     }
     
     public override func prepareForReuse() {

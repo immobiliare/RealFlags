@@ -25,9 +25,13 @@ public protocol AnyFlagsLoader {
     
     /// Hierarchical list of flags of the loader.
     var hierarcyFeatureFlags: [AnyFlagOrCollection] { get }
-
+    
+    /// Description of the key configuration.
     var keyConfiguration: KeyConfiguration { get }
-
+    
+    /// Metadata associated with loader.
+    var metadata: FlagMetadata? { get }
+    
 }
 
 extension FlagsLoader: AnyFlagsLoader {
