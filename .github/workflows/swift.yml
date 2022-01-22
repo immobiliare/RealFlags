@@ -8,6 +8,7 @@ concurrency:
 jobs:
   iOS:
     name: "Test iOS"
+    runs-on: ${{ matrix.runsOn }}
     defaults:
       run:
         shell: "/usr/bin/arch -arch arm64e /bin/zsh {0}"
