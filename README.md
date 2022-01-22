@@ -99,7 +99,9 @@ RealFlags also comes with an handy tool you can use to browse and edit feature f
 
 [Checkout the doc for more infos!](./documentation/advanced_usage.md#3.5)
 
-![](./documentation/assets/flags_browser_intro.gif)
+
+https://user-images.githubusercontent.com/235645/150638946-99646e96-d155-451f-a723-585ad7978c43.mp4
+
 
 ## Tests
 
