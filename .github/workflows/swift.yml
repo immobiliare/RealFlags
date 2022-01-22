@@ -22,7 +22,7 @@ concurrency:
   cancel-in-progress: true
   
 jobs:
-name: "Test iOS"
+  name: "Test iOS"
     defaults:
       run:
         shell: "/usr/bin/arch -arch arm64e /bin/zsh {0}"
