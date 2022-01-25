@@ -42,6 +42,11 @@ It also comes with an **handy UI tool to browse and alter values directly at run
 - 💡 **Configurable**: Enable, disable and customize features at runtime
 - 💡 **Integrated UI Tool**: the handy UI Tool allows you to customize and read flags at glance
 
+## An Hands-on Approach
+
+Would you use RealFlags in your product? We wrote an article about it.  
+**Check it out [here](https://www.offnotes.org/feature-flags/)**
+
 ## What You Get
 
 Our goal making RealFlags is to provide a type-safe abstract way to describe and query for feature flags.
