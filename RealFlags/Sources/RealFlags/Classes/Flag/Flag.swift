@@ -149,15 +149,18 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
     /// Return the value of the property by asking to the list of providers set.
     /// If a `providerType` is passed only that type is read.
     ///
-    /// - Parameter providerType: provider type, if `nil` the providers list with `allowedProviders` is read.
-    /// - Returns: Value
+    /// - Parameters:
+    ///   - providerType: provider to read, `nil` to read every set provider in order.
+    ///   - fallback: `true` to return the fallback value if no value were found in any provider, `false`
+    ///                to return `nil` in that case.
+    /// - Returns: `(value: Value?, source: FlagsProvider?)`
     public func flagValue(from providerType: FlagsProvider.Type? = nil, fallback: Bool = true) -> (value: Value?, source: FlagsProvider?) {
         if let value = computedValue?() {
             return (value, nil) // value is obtained by dynamic function.
         }
         
         guard loader.instance != nil else {
-            return (defaultValue, nil) // no loader has been set, we want to get the fallback result.
+            return ( (fallback ? defaultValue : nil), nil) // no loader has been set, we want to get the fallback result.
         }
         
         let providersToQuery = providersWithTypes([providerType].compactMap({ $0 }))
@@ -169,7 +172,7 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
             }
         }
         
-        return (nil, nil)
+        return ( (fallback ? defaultValue : nil), nil)
     }
     
     /// Change the default fallback value manually.
