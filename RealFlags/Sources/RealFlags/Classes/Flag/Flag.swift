@@ -197,7 +197,7 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
     ///                providers assigned to the parent's `FlagLoader`.
     /// - Returns: Return the list of provider which accepted the change.
     @discardableResult
-    public func setValue(_ value: Value?, providers: [FlagsProvider.Type]?) -> [FlagsProvider] {
+    public func setValue(_ value: Value?, providers: [FlagsProvider.Type]? = nil) -> [FlagsProvider] {
         var alteredProviders = [FlagsProvider]()
         for provider in providersWithTypes(providers) {
             do {
