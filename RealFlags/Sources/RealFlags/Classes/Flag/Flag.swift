@@ -19,7 +19,7 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
     
     public typealias ComputedFlagClosure = (() -> Value?)
     
-    private class ValueBox<Value> {
+    private class DefaultValueBox<Value> {
         var value: Value?
     }
     
@@ -31,7 +31,7 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
     /// The default value for this flag; this value is used when no provider can obtain the
     /// value you are requesting. Consider it as a fallback.
     public var defaultValue: Value {
-        box.value!
+        defaultValueBox.value!
     }
     
     /// The value associated with flag; if specified it will be get by reading the value of the provider, otherwise
@@ -106,7 +106,7 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
     private var fixedKey: String?
     
     /// This is necessary in order to avoid mutable box.
-    private var box = ValueBox<Value>()
+    private var defaultValueBox = DefaultValueBox<Value>()
         
     // MARK: - Initialization
     
@@ -132,7 +132,7 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
                 computedValue: ComputedFlagClosure? = nil,
                 description: FlagMetadata) {
         
-        self.box.value = defaultValue
+        self.defaultValueBox.value = defaultValue
         self.excludedProviders = excludedProviders
         self.fixedKey = key
         self.computedValue = computedValue
@@ -176,7 +176,7 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
     ///
     /// - Parameter value: value.
     public func setDefault(_ value: Value) {
-        box.value = value
+        defaultValueBox.value = value
     }
     
     /// Reset value stored in any writable provider assigned to this flag.
