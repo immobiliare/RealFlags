@@ -268,10 +268,14 @@ public func setupFlagsByTarget {
     #if TARGET_A
       // Target A only differ for a 200 default value for flagA
       loader.$flagA.setDefault(200)
-    #elseIf TARGET_B
+    #endif
+    
+    #if TARGET_B
       // Target B only differ in flagB which is false by default
       loader.$flagB.setDefault(false)
-    #elseIf TARGET_C
+    #endif
+    
+    #if TARGET_C
       // Target C has the same false for flagB but a different value for flagA
       loader.$flagA.setDefault(50)
     #endif
