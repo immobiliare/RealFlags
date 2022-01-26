@@ -128,4 +128,8 @@ public class FirebaseRemoteProvider: FlagsProvider {
         false
     }
     
+    public func resetValueForFlag(key: FlagKeyPath) throws {
+        // Not supported for firebase
+    }
+    
 }

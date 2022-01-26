@@ -179,6 +179,14 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
         box.value = value
     }
     
+    /// Reset value stored in any writable provider assigned to this flag.
+    /// Non writable provider are ignored.
+    public func resetValue() throws {
+        for provider in providers where provider.isWritable {
+            try provider.resetValueForFlag(key: self.keyPath)
+        }
+    }
+    
     /// Allows to change the value of feature flag by overwriting it to all or certain types
     /// of providers.
     ///

@@ -62,4 +62,8 @@ extension UserDefaults: FlagsProvider {
         return true
     }
     
+    public func resetValueForFlag(key: FlagKeyPath) throws {
+        removeObject(forKey: key.fullPath)
+    }
+    
 }

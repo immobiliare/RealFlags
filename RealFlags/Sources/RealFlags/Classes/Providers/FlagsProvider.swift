@@ -39,11 +39,14 @@ public protocol FlagsProvider {
     /// Store a new value for a flag value.
     ///
     /// - Parameters:
-    ///   - value: value to set; `nil` value is set to clear any previously set value for given key.
+    ///   - value: value to set.
     ///   - key: keypath to set.
     @discardableResult
     func setValue<Value>(_ value: Value?, forFlag key: FlagKeyPath) throws -> Bool where Value: FlagProtocol
-        
+    
+    /// Reset the value for keypath; it will remove the value from the record of the flag provider.
+    func resetValueForFlag(key: FlagKeyPath) throws
+    
     #if !os(Linux)
     // Apple platform also support Combine framework to provide realtime notification of new events to any subscriber.
     // By default it does nothing (take a look to the default implementation in extension below).

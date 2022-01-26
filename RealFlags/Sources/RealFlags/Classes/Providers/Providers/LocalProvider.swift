@@ -85,6 +85,17 @@ public class LocalProvider: FlagsProvider, Identifiable {
         return true
     }
     
+    /// Reset the value for a flag key inside the local provider.
+    ///
+    /// - Parameters:
+    ///   - key: key to remove.
+    ///   - save: `true` to save the provider's data snapshot to disk.
+    public func resetValueForFlag(key: FlagKeyPath) throws {
+        BentoDict.removeValue(&storage, forKeyPath: key)
+        
+        try saveToDisk()
+    }
+    
     // MARK: - Persistent Management
     
     /// Force saving of the data locally (only if `localURL` has been set).
