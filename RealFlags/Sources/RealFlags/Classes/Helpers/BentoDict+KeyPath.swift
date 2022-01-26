@@ -14,6 +14,21 @@ import Foundation
 
 public enum BentoDict {
     
+    /// Remove a set key from dictionary.
+    internal static func removeValue(_ dict: inout [String: Any], forKeyPath keyPath: FlagKeyPath) {
+        switch keyPath.count {
+        case 1:
+            dict.removeValue(forKey: keyPath.first!)
+        case (2..<Int.max):
+            let key = keyPath.first!
+            var subDict = (dict[key] as? [String: Any]) ?? [:]
+            removeValue(&subDict, forKeyPath: keyPath.dropFirst())
+            dict[key] = subDict
+        default:
+            return
+        }
+    }
+    
     /// Set the value into a dictionary for a keypath.
     ///
     /// - Parameters:

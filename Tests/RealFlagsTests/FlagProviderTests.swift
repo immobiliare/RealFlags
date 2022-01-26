@@ -80,6 +80,23 @@ final class FlagProviderTests: XCTestCase {
         XCTAssert(loader.topLevelFlag1 == "A_VALUE")
     }
     
+    func testDefaultValueChangeOnWritableProviders() throws {
+        try [localProviderOne, localProviderTwo].forEach {
+            try $0.resetAllData()
+        }
+        
+        loader.$topLevelFlag.setDefault(1000)
+        XCTAssert(loader.topLevelFlag == 1000)
+    }
+    
+    func testResetAllOnProviders() throws {
+        resetValuesOnProviders()
+
+        XCTAssert(loader.topLevelFlag == 5)
+        try loader.$topLevelFlag.resetValue()
+        XCTAssert(loader.topLevelFlag == 0)
+    }
+    
     func testValueDataType() {
         XCTAssert(loader.$topLevelFlag.dataType == Int.self)
         XCTAssert(loader.$topLevelFlag1.dataType == String.self)

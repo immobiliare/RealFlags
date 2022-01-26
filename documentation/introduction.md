@@ -8,6 +8,10 @@
 - 1.5 [Load a Feature Flag Collection in a `FlagLoader`](#15-load-a-feature-flag-collection-in-a-flagloader)
 - 1.6 [Configure Key Evaluation for `FlagsLoader`'s `@Flag`](#16-configure-key-evaluation-for-flagsloaders-flag)
 - 1.7 [Query a specific data provider](#17-query-a-specific-data-provider)
+- 1.8 [Set Flag defaultValue at runtime](#18-set-flag-defaultvalue-at-runtime)
+- 1.9 [Reset Flag values](#19-reset-flag-values)
+- 1.10 [Reset LocalProvider values](#110-reset-localprovider-values)
+
 ## 1.1 `@Flag` Annotation
 
 To create a feature flag you must create a `FlagProtocol` conform object and use the `@Flag` property wrapper annotation.
@@ -237,5 +241,65 @@ let valueInFirebase = appFlags.$ratingMode.flagValue(from: FirebaseRemoteProvide
 The `flagValue()` function (accessible via the `$` of the property wrapper) allows you to specify a particular data provider to query.
 
 > NOTE: If provider is not previously set into the `FlagsLoader` the fallback value is returned instead.
+
+[↑ INDEX](#introduction)
+
+## 1.8 [Set Flag defaultValue at runtime](#18-set-flag-defaultvalue-at-runtime)
+
+Sometimes you may want to alter the default value of a `Flag` set via the annotation `default` parameters.  
+This is true when, for example, you have different target of your product with different values for some flag and you would avoid creating duplicate files for each Flags Collection blue print.
+
+In this case you can define your own `FlagsCollection`s and use the `setDefaultValue()` on each different flag to setup your own value.
+
+Consider this example:
+
+```swift
+struct Flags: FlagCollectionProtocol {
+    @FlagCollection(default: 100, description: "...")
+    var flagA: Int
+
+    @Flag(default: false, description: "...")
+    var flagB: Bool
+}
+
+public func setupFlagsByTarget {
+    self.loader = FlagsLoader(Flags.self, provider: [...])
+
+    #if TARGET_A
+      // Target A only differ for a 200 default value for flagA
+      loader.$flagA.setDefault(200)
+    #endif
+    
+    #if TARGET_B
+      // Target B only differ in flagB which is false by default
+      loader.$flagB.setDefault(false)
+    #endif
+    
+    #if TARGET_C
+      // Target C has the same false for flagB but a different value for flagA
+      loader.$flagA.setDefault(50)
+    #endif
+}
+```
+
+[↑ INDEX](#introduction)
+
+## 1.9 [Reset Flag values](#18-reset-flag-values)
+
+If you need to reset the custom value set for a flag inside each of its set provider you can use `resetValue()`:
+
+```swift
+try? loader.$flagA.resetValue() 
+```
+
+This remove any custom value set for this flag in each of its **writable provider**.
+
+[↑ INDEX](#introduction)
+
+## 1.10 [Reset LocalProvider values](#18-reset-localprovider-values)
+
+You can also reset an entire `LocalProvider` instance optionally backed by a disk file.  
+Just call `resetAllData()` on your instance and both in-memory and disk value (when set) will be removed from the provider.
+
 
 [↑ INDEX](#introduction)

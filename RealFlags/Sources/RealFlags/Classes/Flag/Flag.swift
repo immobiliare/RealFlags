@@ -19,6 +19,10 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
     
     public typealias ComputedFlagClosure = (() -> Value?)
     
+    private class DefaultValueBox<Value> {
+        var value: Value?
+    }
+    
     // MARK: - Public Properties
     
     /// Unique identifier of the feature flag.
@@ -26,7 +30,9 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
 
     /// The default value for this flag; this value is used when no provider can obtain the
     /// value you are requesting. Consider it as a fallback.
-    public var defaultValue: Value
+    public var defaultValue: Value {
+        defaultValueBox.value!
+    }
     
     /// The value associated with flag; if specified it will be get by reading the value of the provider, otherwise
     /// the `defaultValue` is used instead.
@@ -39,7 +45,7 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
     public var projectedValue: Flag<Value> {
         self
     }
-    
+        
     /// If specified you can attach a dynamic closure which may help you to compute the value of of the
     /// flag. This can be useful when your flags depend from other static or runtime-based values.
     /// This value is computed before any provider; if returned value is `nil` the library continue
@@ -98,6 +104,9 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
     
     /// You can force a fixed key for a property instead of using auto-evaluation.
     private var fixedKey: String?
+    
+    /// This is necessary in order to avoid mutable box.
+    private var defaultValueBox = DefaultValueBox<Value>()
         
     // MARK: - Initialization
     
@@ -123,7 +132,7 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
                 computedValue: ComputedFlagClosure? = nil,
                 description: FlagMetadata) {
         
-        self.defaultValue = defaultValue
+        self.defaultValueBox.value = defaultValue
         self.excludedProviders = excludedProviders
         self.fixedKey = key
         self.computedValue = computedValue
@@ -163,6 +172,21 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
         return (nil, nil)
     }
     
+    /// Change the default fallback value manually.
+    ///
+    /// - Parameter value: value.
+    public func setDefault(_ value: Value) {
+        defaultValueBox.value = value
+    }
+    
+    /// Reset value stored in any writable provider assigned to this flag.
+    /// Non writable provider are ignored.
+    public func resetValue() throws {
+        for provider in providers where provider.isWritable {
+            try provider.resetValueForFlag(key: self.keyPath)
+        }
+    }
+    
     /// Allows to change the value of feature flag by overwriting it to all or certain types
     /// of providers.
     ///
@@ -173,7 +197,7 @@ public struct Flag<Value: FlagProtocol>: FeatureFlagConfigurableProtocol, Identi
     ///                providers assigned to the parent's `FlagLoader`.
     /// - Returns: Return the list of provider which accepted the change.
     @discardableResult
-    public func setValue(_ value: Value?, providers: [FlagsProvider.Type]?) -> [FlagsProvider] {
+    public func setValue(_ value: Value?, providers: [FlagsProvider.Type]? = nil) -> [FlagsProvider] {
         var alteredProviders = [FlagsProvider]()
         for provider in providersWithTypes(providers) {
             do {

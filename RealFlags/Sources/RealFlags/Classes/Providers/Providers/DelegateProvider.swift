@@ -28,6 +28,9 @@ public protocol DelegateProviderProtocol: AnyObject {
     ///   - key: key.
     func setValue<Value>(_ value: Value?, forFlag key: FlagKeyPath) throws -> Bool where Value: FlagProtocol
     
+    /// Reset the value for a specified key.
+    func resetValueForFlag(_ key: FlagKeyPath) throws
+
 }
 
 // MARK: - DelegateProvider
@@ -66,6 +69,10 @@ public class DelegateProvider: FlagsProvider, Identifiable {
         }
         
         return try delegate?.setValue(value, forFlag: key) ?? false
+    }
+    
+    public func resetValueForFlag(key: FlagKeyPath) throws {
+        try delegate?.resetValueForFlag(key)
     }
 
 }
