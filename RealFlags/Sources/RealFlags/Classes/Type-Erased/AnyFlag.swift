@@ -62,11 +62,27 @@ public protocol AnyFlag: AnyFlagOrCollection {
     /// - Parameter provider: provider to use.
     func setValueToProvider(_ provider: FlagsProvider) throws
     
+    /// Change the default fallback value.
+    /// Value must be of the same type of the Flag inner implementation.
+    func setDefaultValue(_ value: Any) throws
+    
 }
 
 // MARK: - AnyFlag (Flag Conformance)
 
 extension Flag: AnyFlag {
+    
+    public func setDefaultValue(_ value: Any) throws {
+        guard let value = value as? Value else {
+            fatalError("Error is not of the same type as expected: \(String(describing: value))")
+        }
+        
+        setDefault(value)
+    }
+    
+    public var defaultFallbackValue: Any? {
+        defaultValue
+    }
     
     public var hasWritableProvider: Bool {
         guard !isUILocked else { return false }
@@ -96,10 +112,6 @@ extension Flag: AnyFlag {
         } else {
             return type(of: wrappedValue.self)
         }
-    }
-    
-    public var defaultFallbackValue: Any? {
-        defaultValue
     }
 
     public var providers: [FlagsProvider] {
