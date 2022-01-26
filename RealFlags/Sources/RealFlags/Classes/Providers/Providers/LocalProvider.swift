@@ -109,4 +109,15 @@ public class LocalProvider: FlagsProvider, Identifiable {
         try data.write(to: localURL)
     }
     
+    /// The following method reset all the data of the local provider saved
+    /// to disk restoring and empty dictionary of data.
+    public func resetAllData() throws {
+        if let localURL = self.localURL,
+           FileManager.default.fileExists(atPath: localURL.path) {
+            
+            storage.removeAll()
+            try FileManager.default.removeItem(at: localURL)
+        }
+    }
+    
 }
