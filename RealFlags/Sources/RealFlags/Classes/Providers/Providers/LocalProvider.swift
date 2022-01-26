@@ -114,10 +114,9 @@ public class LocalProvider: FlagsProvider, Identifiable {
     public func resetAllData() throws {
         if let localURL = self.localURL,
            FileManager.default.fileExists(atPath: localURL.path) {
-            
-            storage.removeAll()
             try FileManager.default.removeItem(at: localURL)
         }
+        storage.removeAll()
     }
     
 }
