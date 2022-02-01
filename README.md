@@ -1,14 +1,10 @@
 <p align="center">
-<img src="./documentation/assets/realflags_logo.png" alt="RealFlags" width="900"/>
+<img src="./documentation/assets/logo.png" alt="RealFlags" width="350"/>
 </p>
 
 RealFlags makes it **easy to configure feature flags**in your codebase.  
 It's designed for Swift and **provides a simple and elegant abstraction layer** over multiple providers you can query with your own priority.  
 It also comes with an **handy UI tool to browse and alter values directly at runtime!**
-
-<p align="center">
-<a href="http://labs.immobiliare.it"><img src="./documentation/assets/immobiliarelabs_logo.png" alt="ImmobiliareLabs" width="150"/></a>
-</p>
 
 <br/>
 <p align="center">
