@@ -24,7 +24,11 @@ let package = Package(
         .target(
             name: "RealFlags",
             dependencies: [],
-            path: "RealFlags/Sources"
+            path: "RealFlags/Sources",
+            resources: [
+                .process("RealFlags/Classes/Browser/*.storyboard"),
+                .process("RealFlags/Classes/Browser/Cells/*.xib")
+            ]
         ),
         .target(
             name: "RealFlagsFirebase",
