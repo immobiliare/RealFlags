@@ -297,7 +297,7 @@ public class FlagsBrowserController: UIViewController {
             case let collection as AnyFlagCollection:
                 return FlagBrowserItem(title: collection.name,
                                        subtitle: collection.description,
-                                       icon: UIImage(named: "datatype_list", in: .libraryBundle, with: nil),
+                                       icon: UIImage(named: "datatype_list", in: .libraryBundle, compatibleWith: nil),
                                        accessoryType: .disclosureIndicator,
                                        selectable: true,
                                        representedObj: collection)
@@ -484,19 +484,19 @@ extension AnyFlag {
         // Default data type icons
         switch dataType {
         case is String.Type:
-            return UIImage(named: "datatype_string", in: .libraryBundle, with: .none)
+            return UIImage(named: "datatype_string", in: .libraryBundle, compatibleWith: nil)
             
         case is Bool.Type:
-            return UIImage(named: "datatype_bool", in: .libraryBundle, with: .none)
+            return UIImage(named: "datatype_bool", in: .libraryBundle, compatibleWith: nil)
 
         case is Int.Type, is Int8.Type, is Int16.Type, is Int32.Type, is Int64.Type:
-            return UIImage(named: "datatype_number", in: .libraryBundle, with: .none)
+            return UIImage(named: "datatype_number", in: .libraryBundle, compatibleWith: nil)
             
         case is Double.Type:
-            return UIImage(named: "datatype_number", in: .libraryBundle, with: .none)
+            return UIImage(named: "datatype_number", in: .libraryBundle, compatibleWith: nil)
             
         case is JSONData.Type:
-            return UIImage(named: "datatype_json", in: .libraryBundle, with: .none)
+            return UIImage(named: "datatype_json", in: .libraryBundle, compatibleWith: nil)
             
         default:
             return nil

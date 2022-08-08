@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "RealFlags",
     platforms: [
-        .iOS(.v13)
+        .iOS(.v11),
     ],
     products: [
         .library(name: "RealFlags", targets: ["RealFlags"]),
