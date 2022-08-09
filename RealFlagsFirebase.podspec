@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "RealFlagsFirebase"
-  s.version      = "1.3.1"
+  s.version      = "1.4.0"
   s.summary      = "Feature flagging framework for Swift: FirebaseRemoteConfig Data Provider"
   s.homepage     = "https://github.com/immobiliare/RealFlags.git"
   s.license      = { :type => "MIT", :file => "LICENSE" }
@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
 
   s.source_files = 'RealFlagsFirebase/Sources/**/*.{h,m,swift}'
   s.dependency 'RealFlags', s.version.to_s
-  s.dependency 'FirebaseCore', '~> 7.0'
-  s.dependency 'FirebaseRemoteConfig', '~> 7.0'
+  s.dependency 'FirebaseCore', '~> 9.0'
+  s.dependency 'FirebaseRemoteConfig', '~> 9.0'
 
 end
