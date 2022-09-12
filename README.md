@@ -192,7 +192,7 @@ We are currently using RealFlags in all of our products.
 **If you are using RealFlags in your app [drop us a message](mailto://mobile@immobiliare.it)**.
 ## Support
 
-<a href="http://labs.immobiliare.it"><img src="./Documentation/assets/immobiliarelabs.png" alt="Indomio" width="200"/></a>
+<a href="http://labs.immobiliare.it"><img src="./documentation/assets/immobiliarelabs.png" alt="ImmobiliareLabs" width="200"/></a>
 
 We'd love for you to contribute to RealFlags! 
 If you have questions about using RealFlags, bugs, and enhancement, please feel free to reach out by opening a [GitHub Issue](https://github.com/immobiliare/RealFlags/issues).
