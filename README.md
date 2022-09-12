@@ -189,16 +189,10 @@ pod 'RealFlagsFirebase' // to also import Firebase Data Provider
 The amazing mobile team at ImmobiliareLabs created RealFlags, the Tech dept at Immobiliare.it, the first real estate site in Italy. 
 We are currently using RealFlags in all of our products.
 
-**If you are using RealFlags in your app [drop us a message](mailto://mobile@immobiliare.it), we'll add below**.
-
-<a href="https://apps.apple.com/us/app/immobiiiare-it-indomio/id335948517"><img src="./documentation/assets/powered_by_realflags_apps.png" alt="Indomio" width="270"/></a>
-
+**If you are using RealFlags in your app [drop us a message](mailto://mobile@immobiliare.it)**.
 ## Support
 
-<p align="center">
-Made with ❤️ by <a href="https://github.com/orgs/immobiliare">ImmobiliareLabs</a> and <a href="https://github.com/immobiliare/RealFlags/graphs/contributors">Contributors</a>
-<br clear="all">
-</p>
+<a href="http://labs.immobiliare.it"><img src="./Documentation/assets/immobiliarelabs.png" alt="Indomio" width="200"/></a>
 
 We'd love for you to contribute to RealFlags! 
 If you have questions about using RealFlags, bugs, and enhancement, please feel free to reach out by opening a [GitHub Issue](https://github.com/immobiliare/RealFlags/issues).
