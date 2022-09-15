@@ -6,8 +6,7 @@ import PackageDescription
 let package = Package(
     name: "RealFlags",
     platforms: [
-        .iOS(.v13),
-        .macOS(.v10_12)
+        .iOS(.v13)
     ],
     products: [
         .library(name: "RealFlags", targets: ["RealFlags"]),
@@ -17,17 +16,19 @@ let package = Package(
         .package(
             name: "Firebase",
             url: "https://github.com/firebase/firebase-ios-sdk.git",
-            from: "8.10.0"
+            from: "9.0.0"
         )
     ],
     targets: [
         .target(
             name: "RealFlags",
             dependencies: [],
-            path: "RealFlags/Sources",
+            path: "RealFlags/Sources/RealFlags/Classes",
             resources: [
-                .process("RealFlags/Classes/Browser/*.storyboard"),
-                .process("RealFlags/Classes/Browser/Cells/*.xib")
+                .process("Browser/FlagsBrowserController.storyboard"),
+                .process("Browser/Cells/FlagBrowserDataCell.xib"),
+                .process("Browser/Cells/FlagsBrowserDefaultCell.xib"),
+                .process("Browser/Cells/FlagsBrowserToggleCell.xib")
             ]
         ),
         .target(
