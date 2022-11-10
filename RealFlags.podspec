@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "RealFlags"
-  s.version      = "1.4.0"
+  s.version      = "1.4.1"
   s.summary      = "Feature flagging framework for Swift"
   s.homepage     = "https://github.com/immobiliare/RealFlags.git"
   s.license      = { :type => "MIT", :file => "LICENSE" }
@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
     :git => 'https://github.com/immobiliare/RealFlags.git',
     :tag => s.version.to_s
   }
-  s.swift_versions = ['5.0', '5.1', '5.3', '5.4', '5.5']
+  s.swift_versions = ['5.0', '5.1', '5.3', '5.4', '5.5', '5.6', '5.7']
   s.framework = 'UIKit'
 
   s.source_files = 'RealFlags/Sources/**/*.{h,m,swift}'

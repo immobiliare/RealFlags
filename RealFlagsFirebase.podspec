@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
 
   s.source_files = 'RealFlagsFirebase/Sources/**/*.{h,m,swift}'
   s.dependency 'RealFlags', s.version.to_s
-  s.dependency 'FirebaseCore', '~> 9.0'
-  s.dependency 'FirebaseRemoteConfig', '~> 9.0'
+  s.dependency 'FirebaseCore', '~> 10.0'
+  s.dependency 'FirebaseRemoteConfig', '~> 10.0'
 
 end
