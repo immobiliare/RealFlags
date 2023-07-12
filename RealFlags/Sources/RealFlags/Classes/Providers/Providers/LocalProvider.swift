@@ -11,6 +11,9 @@
 //
 
 import Foundation
+#if canImport(Combine)
+import Combine
+#endif
 
 /// LocalProvider is a local source for feature flags. You can use this object for persistent local data
 /// or ephemeral storage.
@@ -38,6 +41,11 @@ public class LocalProvider: FlagsProvider, Identifiable {
     
     /// Storage data.
     internal var storage: [String: Any]
+    
+    #if canImport(Combine)
+    /// `PassthroughSubject` that emits when a flag's values changes inside this `LocalProvider`
+    private let didUpdateValueForKeyPublisher: PassthroughSubject<(FlagKeyPath, (any FlagProtocol)?), Never> = .init()
+    #endif
     
     // MARK: - Initialization
     
@@ -82,6 +90,11 @@ public class LocalProvider: FlagsProvider, Identifiable {
         BentoDict.setValueForDictionary(&storage, value: encodedValue, keyPath: key)
         
         try saveToDisk()
+        
+        #if canImport(Combine)
+        didUpdateValueForKeyPublisher.send((key, value))
+        #endif
+        
         return true
     }
     
@@ -119,4 +132,10 @@ public class LocalProvider: FlagsProvider, Identifiable {
         storage.removeAll()
     }
     
+    #if canImport(Combine)
+    public func didUpdateValueForKey() -> AnyPublisher<(FlagKeyPath, (any FlagProtocol)?), Never>? {
+        didUpdateValueForKeyPublisher
+            .eraseToAnyPublisher()
+    }
+    #endif
 }

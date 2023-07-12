@@ -10,7 +10,7 @@
 //  Licensed under MIT License.
 //
 
-import UIKit
+import Foundation
 
 /// This a wrapper which represent a single Feature Flag.
 /// The type that you wrap with `@Flag` must conform to `FlagProtocol`.
