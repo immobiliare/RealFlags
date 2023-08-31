@@ -66,7 +66,7 @@ public enum EncodedFlagValue: Equatable {
         }
     }
     
-    /// Trnsform boxed data in a valid `NSObject` you can store.
+    /// Transform boxed data in a valid `NSObject` you can store.
     ///
     /// - Returns: NSObject
     internal func nsObject() -> NSObject {

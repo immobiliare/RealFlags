@@ -10,7 +10,7 @@
 //  Licensed under MIT License.
 //
 
-#if !os(Linux)
+#if canImport(Combine)
 import Combine
 #endif
 
@@ -47,14 +47,12 @@ public protocol FlagsProvider {
     /// Reset the value for keypath; it will remove the value from the record of the flag provider.
     func resetValueForFlag(key: FlagKeyPath) throws
     
-    #if !os(Linux)
+    #if canImport(Combine)
     // Apple platform also support Combine framework to provide realtime notification of new events to any subscriber.
     // By default it does nothing (take a look to the default implementation in extension below).
     
-    /// You can use this value to receive updates when keys did updated in sources.
-    ///
-    /// - Parameter keys: updated keys; may be `nil` if your provider does not support this kind of granularity.
-    func didUpdateValuesForKeys(_ keys: Set<String>?) -> AnyPublisher<Set<String>, Never>?
+    /// You can use this value to receive updates when a flag's values changes inside the current `FlagsProvider`.
+    func didUpdateValueForKey() -> AnyPublisher<(FlagKeyPath, (any FlagProtocol)?), Never>?
     
     #endif
     
@@ -62,13 +60,13 @@ public protocol FlagsProvider {
 
 // MARK: - FlagsProvider (Default Publisher Behaviour)
 
-#if !os(Linux)
+#if canImport(Combine)
 
 /// Make support for real-time flag updates optional by providing a default nil implementation
 ///
 public extension FlagsProvider {
     
-    func didUpdateValuesForKeys(_ keys: Set<String>?) -> AnyPublisher<Set<String>, Never>? {
+    func didUpdateValueForKey() -> AnyPublisher<(FlagKeyPath, (any FlagProtocol)?), Never>? {
         nil
     }
 
