@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -13,17 +14,11 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="87"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="MbZ-1g-8Rz" id="DPr-rx-ZhZ">
-                <rect key="frame" x="0.0" y="0.0" width="385.5" height="87"/>
+                <rect key="frame" x="0.0" y="0.0" width="383.5" height="87"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="W8d-T6-yNd">
-                        <rect key="frame" x="316.5" y="28" width="51" height="31"/>
-                        <connections>
-                            <action selector="didChangeSwitchValue:" destination="MbZ-1g-8Rz" eventType="valueChanged" id="d9B-WI-ssW"/>
-                        </connections>
-                    </switch>
                     <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Vsa-7k-Hfg">
-                        <rect key="frame" x="15" y="10" width="281.5" height="67"/>
+                        <rect key="frame" x="15" y="10" width="353.5" height="67"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nYb-UQ-bMw">
                                 <rect key="frame" x="0.0" y="0.0" width="25" height="67"/>
@@ -44,22 +39,39 @@
                                 </constraints>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="VHU-Lf-SzP">
-                                <rect key="frame" x="35" y="0.0" width="246.5" height="67"/>
+                                <rect key="frame" x="35" y="0.0" width="104" height="67"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="Title of the cell" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W3Y-sW-Z9m">
-                                        <rect key="frame" x="0.0" y="0.0" width="246.5" height="18"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="104" height="18"/>
                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Subtitle of the cell" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WDc-XH-fYD">
-                                        <rect key="frame" x="0.0" y="18" width="246.5" height="49"/>
+                                        <rect key="frame" x="0.0" y="18" width="104" height="49"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
                             </stackView>
+                            <view contentMode="scaleToFill" horizontalHuggingPriority="249" translatesAutoresizingMaskIntoConstraints="NO" id="QaK-SF-56N">
+                                <rect key="frame" x="149" y="0.0" width="204.5" height="67"/>
+                                <subviews>
+                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="W8d-T6-yNd">
+                                        <rect key="frame" x="155.5" y="18" width="51" height="31"/>
+                                        <connections>
+                                            <action selector="didChangeSwitchValue:" destination="MbZ-1g-8Rz" eventType="valueChanged" id="d9B-WI-ssW"/>
+                                        </connections>
+                                    </switch>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstItem="W8d-T6-yNd" firstAttribute="centerY" secondItem="QaK-SF-56N" secondAttribute="centerY" id="1Is-6O-ynt"/>
+                                    <constraint firstAttribute="trailing" secondItem="W8d-T6-yNd" secondAttribute="trailing" id="Czl-7T-5xn"/>
+                                    <constraint firstItem="W8d-T6-yNd" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="QaK-SF-56N" secondAttribute="leading" id="XZG-ru-rdq"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="VHU-Lf-SzP" secondAttribute="bottom" id="o9U-75-y76"/>
@@ -68,12 +80,10 @@
                     </stackView>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="trailing" secondItem="W8d-T6-yNd" secondAttribute="trailing" constant="20" id="4QN-ut-7dP"/>
                     <constraint firstAttribute="bottom" secondItem="Vsa-7k-Hfg" secondAttribute="bottom" constant="10" id="N9a-yF-p7e"/>
-                    <constraint firstItem="W8d-T6-yNd" firstAttribute="leading" secondItem="Vsa-7k-Hfg" secondAttribute="trailing" constant="20" id="Ond-Sv-Oz5"/>
-                    <constraint firstItem="W8d-T6-yNd" firstAttribute="centerY" secondItem="DPr-rx-ZhZ" secondAttribute="centerY" id="RSW-Fx-Q7f"/>
                     <constraint firstItem="Vsa-7k-Hfg" firstAttribute="leading" secondItem="DPr-rx-ZhZ" secondAttribute="leading" constant="15" id="dXV-c6-tcZ"/>
                     <constraint firstItem="Vsa-7k-Hfg" firstAttribute="top" secondItem="DPr-rx-ZhZ" secondAttribute="top" constant="10" id="rop-iE-4Jj"/>
+                    <constraint firstAttribute="trailing" secondItem="Vsa-7k-Hfg" secondAttribute="trailing" constant="15" id="th0-aB-PvI"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
@@ -88,4 +98,9 @@
             <point key="canvasLocation" x="-748" y="28"/>
         </tableViewCell>
     </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
 </document>
