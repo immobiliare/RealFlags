@@ -26,14 +26,18 @@ public class FlagsBrowserDefaultCell: UITableViewCell, Reusable, NibType {
     
     public var isDisabled: Bool = false {
         didSet {
-            titlelabel.textColor = (isDisabled ? .lightGray : .black)
-            valueLabel?.textColor = (isDisabled ? .red : .tintColor)
-            subtitleLabel.textColor = (isDisabled ? .lightGray : .darkGray)
+            updateTextColors()
         }
     }
 
     public static var nibBundle: Bundle {
         .libraryBundle
+    }
+
+    private func updateTextColors() {
+        titlelabel.textColor = (isDisabled ? .lightGray : .black)
+        valueLabel?.textColor = (isDisabled ? .red : tintColor)
+        subtitleLabel.textColor = (isDisabled ? .lightGray : .darkGray)
     }
     
     // MARK: - Public Functions
@@ -55,15 +59,10 @@ public class FlagsBrowserDefaultCell: UITableViewCell, Reusable, NibType {
         super.prepareForReuse()
         self.isDisabled = false
     }
-    
-}
 
-// MARK: - UIColor Extension
+    public override func tintColorDidChange() {
+        super.tintColorDidChange()
 
-extension UIColor {
-    
-    static var tintColor: UIColor {
-        UIApplication.shared.windows.first?.rootViewController?.view.tintColor ?? .blue
+        updateTextColors()
     }
-    
 }
