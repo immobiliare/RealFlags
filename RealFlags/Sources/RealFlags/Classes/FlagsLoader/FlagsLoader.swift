@@ -19,13 +19,22 @@ import Foundation
 @dynamicMemberLookup
 public class FlagsLoader<Collection: FlagCollectionProtocol>: FlagsLoaderProtocol, CustomDebugStringConvertible {
     
+    /// A function which allows to provide a dynamic list of providers for a flag loader.
+    public typealias FlagsProviderDynamicCallback = (() -> [FlagsProvider])
+    
     // MARK: - Public Properties
     
     /// Collection of feature flag loaded.
     public private(set) var loadedCollection: Collection
     
     /// Providers where we'll get the data.
-    public var providers: [FlagsProvider]?
+    public var providers: [FlagsProvider]? {
+        if let dynamicProvider = self.dynamicProvidersCallback {
+            return dynamicProvider()
+        }
+        
+        return staticProviders
+    }
     
     /// How to build automatically keys for each property of the group.
     public let keyConfiguration: KeyConfiguration
@@ -33,24 +42,52 @@ public class FlagsLoader<Collection: FlagCollectionProtocol>: FlagsLoaderProtoco
     /// Metadata associated with loaded flag collection.
     public var metadata: FlagMetadata?
     
+    // MARK: - Private Properties
+    
+    /// Static list of providers if specified.
+    /// When a `FlagsProviderDynamicCallback` is passed it will empty.
+    private var staticProviders: [FlagsProvider]?
+    
+    /// Specify a callback function to provide list of dynamic providers.
+    private var dynamicProvidersCallback:  FlagsProviderDynamicCallback?
+    
     // MARK: - Initialization
     
-    /// Initiali
+    /// Initialize a new flags loader collection with static list of providers.
+    ///
     /// - Parameters:
     ///   - collection: type of collection to load. a new instance is made.
     ///   - metadata: optional metadata associated with the flag loader.
     ///   - providers: providers to use to fetch values. Providers are fetched in order.
-    ///   - keysConfiguration: configuration 
+    ///   - keysConfiguration: configuration.
     public init (_ collectionType: Collection.Type,
                  description: FlagMetadata? = nil,
-                 providers: [FlagsProvider]? = nil,
+                 providers: [FlagsProvider],
                  keyConfiguration: KeyConfiguration = .init()) {
         self.loadedCollection = collectionType.init()
-        self.providers = providers
+        self.staticProviders = providers
         self.keyConfiguration = keyConfiguration
         self.metadata = description
         initializeCollectionObjects()
     }
+    
+    /// Initialize a new flags loader collection with a function which provide providers dynamically.
+    ///
+    /// - Parameters:
+    ///   - collectionType: type of collection to load. a new instance is made.
+    ///   - description: optional metadata associated with the flag loader.
+    ///   - dynamicProviders: a function which provide a list of providers to use when querying properties from this loader.
+    ///   - keyConfiguration: configuratior.
+    public init(_ collectionType: Collection.Type,
+                description: FlagMetadata? = nil,
+                dynamicProviders: FlagsProviderDynamicCallback? = nil,
+                keyConfiguration: KeyConfiguration = .init()) {
+       self.loadedCollection = collectionType.init()
+       self.dynamicProvidersCallback = dynamicProviders
+       self.keyConfiguration = keyConfiguration
+       self.metadata = description
+       initializeCollectionObjects()
+   }
     
     // MARK: - Public Functions
     
