@@ -146,7 +146,7 @@ public class FlagsBrowserController: UIViewController {
                                 disabled: !valueIsEditable,
                                 actionType: .setBoolValue(false))
             )
-        case is Int.Type, is Int8.Type, is Int16.Type, is Int32.Type, is Int64.Type:
+        case is Int.Type, is Int8.Type, is Int16.Type, is Int32.Type, is Int64.Type, is UInt8.Type, is UInt16.Type, is UInt32.Type, is UInt64.Type:
             dataSection.childs.append(
                 FlagBrowserItem(title: "Int Value",
                                 subtitle: "Tap to modify the value",
