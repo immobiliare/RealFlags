@@ -12,7 +12,7 @@
 
 import Foundation
 
-/// Consider `FlagsManager` as an object used to contain all the laoders of feature flag.
+/// Consider `FlagsManager` as an object used to contain all the loaders of feature flag.
 /// It's an optional object you can use at your convenience (you can still instantiate and store your own
 /// `FlagsLoader` instances without needing of this object).
 public class FlagsManager {
